@@ -92,7 +92,7 @@ df3_read = pd.read_csv('/content/drive/MyDrive/baseList2.csv')  # 첫 번째 파
 df4_read = pd.read_csv('/content/drive/MyDrive/optionList2.csv') # 두 번째 파일 경로
 
 # 5. 여러 개의 인덱스의 행 삭제
-df3_read = df3_read.drop([29, 24, 55, 56, 57], axis=0)
+df3_read = df3_read.drop([29, 54, 55, 56, 57], axis=0)
 # index 29번 상품 드랍 (사유 : 중소기업에 재직해야 함)
 # index 54~57번 상품 드랍 (사유 : 토스 계좌 보유해야 함)
 
