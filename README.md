@@ -148,7 +148,7 @@ def determine_age_range(join_member):
 df2_csv["age_range"] = df2_csv["join_member"].apply(determine_age_range)
 
 # 11. SQLite3 데이터베이스에 연결
-sqlite_db_path = '/content/drive/MyDrive/database2.db'  # SQLite3 데이터베이스 파일 경로를 지정해주세요
+sqlite_db_path = '/content/drive/MyDrive/database2.db'  # SQLite3 데이터베이스 파일 경로를 지정
 conn = sqlite3.connect(sqlite_db_path)
 
 # 12. DataFrame을 SQLite3 데이터베이스에 저장 (테이블 이름은 'table2'으로 지정)
