@@ -51,11 +51,25 @@ result.to_csv('/content/drive/MyDrive/merge1.csv')
 csv_file_path = '/content/drive/MyDrive/merge1.csv'  # CSV 파일 경로를 지정
 df_csv = pd.read_csv(csv_file_path)
 
-# 10. SQLite3 데이터베이스에 연결
+# join_member 값에 따라 age_range 열 추가하는 함수 정의
+def determine_age_range(join_member):
+    if "만14세이상" in join_member:
+        return "14, 150"
+    elif "만 17세 이상" in join_member:
+        return "17, 150"
+    elif "만50세 이상" in join_member:
+        return "50, 150"
+    else:
+        return "0, 150"
+
+# 10. age_range 열 추가
+df_csv["age_range"] = df_csv["join_member"].apply(determine_age_range)
+
+# 11. SQLite3 데이터베이스에 연결
 sqlite_db_path = '/content/drive/MyDrive/database1.db'  # SQLite3 데이터베이스 파일 경로를 지정
 conn = sqlite3.connect(sqlite_db_path)
 
-# 11. DataFrame을 SQLite3 데이터베이스에 저장 (테이블 이름은 'table1'으로 지정)
+# 12. DataFrame을 SQLite3 데이터베이스에 저장 (테이블 이름은 'table1'으로 지정)
 df_csv.to_sql('table1', conn, if_exists='replace', index=False)
 
 # 12. 커넥션 종료
@@ -110,14 +124,34 @@ result2 = result2.dropna() # null 값이 존재하는 행 삭제
 result2.to_csv('/content/drive/MyDrive/merge2.csv')
 
 # 9. CSV 파일을 pandas DataFrame으로 읽기
-csv_file_path = '/content/drive/MyDrive/merge2.csv'  # CSV 파일 경로를 지정해주세요
+csv_file_path = '/content/drive/MyDrive/merge2.csv'  # CSV 파일 경로 지정
 df2_csv = pd.read_csv(csv_file_path)
 
-# 10. SQLite3 데이터베이스에 연결
+# join_member 값에 따라 age_range 열 추가하는 함수 정의
+def determine_age_range(join_member):
+    if "만14세이상" in join_member:
+      return "14, 150"
+    elif "만 17세 이상" in join_member:
+        return "17, 150"
+    elif "만19세이상" in join_member:  
+        return "19, 150"
+    elif "만19세~만34세" in join_member:
+        return "19, 34"
+    elif "만18세이상" in join_member:
+        return "18, 150"
+    elif "만 29세 이하" in join_member:
+        return "0, 29"
+    else:
+        return "0, 150"
+
+# 10. age_range 열 추가
+df2_csv["age_range"] = df2_csv["join_member"].apply(determine_age_range)
+
+# 11. SQLite3 데이터베이스에 연결
 sqlite_db_path = '/content/drive/MyDrive/database2.db'  # SQLite3 데이터베이스 파일 경로를 지정해주세요
 conn = sqlite3.connect(sqlite_db_path)
 
-# 11. DataFrame을 SQLite3 데이터베이스에 저장 (테이블 이름은 'table2'으로 지정)
+# 12. DataFrame을 SQLite3 데이터베이스에 저장 (테이블 이름은 'table2'으로 지정)
 df2_csv.to_sql('table2', conn, if_exists='replace', index=False)
 
 # 12. 커넥션 종료
