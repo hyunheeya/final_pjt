@@ -62,7 +62,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
 }
-#
+
+REST_AUTH = {
+ 'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -156,3 +159,6 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# 이메일을 전송하지않고 콘솔에 출력
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
