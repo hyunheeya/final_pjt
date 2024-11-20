@@ -750,3 +750,13 @@ def deposit_in_join_price_range(join_price, user_amount):
 def saving_in_join_price_range(join_price, user_amount):
     min_price, max_price = map(float, join_price.split(', '))
     return min_price <= user_amount <= max_price
+
+# 예금 상품 api
+def deposit_list(request):
+    deposits = Deposit.objects.all().values('id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm')
+    return JsonResponse(list(deposits), safe=False)
+
+# 적금 상품 api
+def savings_list(request):
+    savings = Savings.objects.all().values('id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm', 'rsrv_type_nm')
+    return JsonResponse(list(savings), safe=False)
