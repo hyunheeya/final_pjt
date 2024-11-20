@@ -64,7 +64,7 @@ export default {
           { id: 3, text: "선호하는 저축 금리 유형을 선택해주세요.", options: ["단리", "복리"] },
           { id: 4, text: "선호하는 저축 기간을 선택해주세요.", options: ["3개월", "6개월", "1년", "2년", "3년"] },
           { id: 5, text: "귀하의 나이는 몇 살인가요?", type: "number", placeholder: "나이를 입력해주세요" },
-          { id: 6, text: "예적금 가능한 금액은 얼마인가요?", type: "number", placeholder: "금액을 입력해주세요" },
+          { id: 6, text: "예적금 가능한 금액은 얼마인가요? (단위: 원)", type: "number", placeholder: "금액을 입력해주세요" },
         ],
         savings: [
           { id: 2, text: "어떤 가입 방식을 선호하시나요?", options: ["영업점", "인터넷", "스마트폰", "전화(텔레뱅킹)"] },
@@ -72,7 +72,7 @@ export default {
           { id: 4, text: "선호하는 저축 금리 유형을 선택해주세요.", options: ["단리", "복리"] },
           { id: 5, text: "선호하는 저축 기간을 선택해주세요.", options: ["3개월", "6개월", "1년", "2년", "3년"] },
           { id: 6, text: "귀하의 나이는 몇 살인가요?", type: "number", placeholder: "나이를 입력해주세요" },
-          { id: 7, text: "예적금 가능한 금액은 얼마인가요?", type: "number", placeholder: "금액을 입력해주세요" },
+          { id: 7, text: "예적금 가능한 금액은 얼마인가요? (단위: 원)", type: "number", placeholder: "금액을 입력해주세요" },
         ],
       },
       answers: {}, // 답변 저장
