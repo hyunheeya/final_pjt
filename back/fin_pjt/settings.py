@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'recommend',
+    'recommend',
     'accounts',
     'rest_framework',#
     'rest_framework.authtoken',
@@ -63,7 +64,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
 }
-#
+
+REST_AUTH = {
+ 'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -115,17 +119,24 @@ WSGI_APPLICATION = "fin_pjt.wsgi.application"
 # }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'updated_databaseprice1',  # 첫 번째 .db 파일 경로
-    },
-    'secondary': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'updated_databaseprice2',  # 두 번째 .db 파일 경로
-    },
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
 
-DATABASE_ROUTERS = ['fin_pjt.database_router.DatabaseRouter']
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'updated_databaseprice1',  # 첫 번째 .db 파일 경로
+#     },
+#     'secondary': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'updated_databaseprice2',  # 두 번째 .db 파일 경로
+#     },
+# }
+
+# DATABASE_ROUTERS = ['fin_pjt.database_router.DatabaseRouter']
 
 
 # Password validation

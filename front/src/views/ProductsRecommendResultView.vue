@@ -1,16 +1,28 @@
 <template>
   <div>
-    <h1>예적금 추천 결과 화면</h1>
-    <RouterLink :to="{name:'productsrecommend'}">
+    <h1>추천 결과</h1>
+    <ul>
+      <li v-for="result in results" :key="result.name">
+        {{ result.name }} - 금리: {{ result.interest_rate }}%
+      </li>
+    </ul>
+    <router-link :to="{ name: 'productsrecommend' }">
       <button>다시 추천받기</button>
-    </RouterLink>
+    </router-link>
   </div>
 </template>
 
-<script setup>
-
+<script>
+export default {
+  props: {
+    results: {
+      type: Array,
+      required: true,
+    },
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+/* 스타일 추가 */
 </style>

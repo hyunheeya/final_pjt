@@ -31,6 +31,9 @@ const router = createRouter({
       path: '/productsrecommendresult',
       name: 'productsrecommendresult',
       component: ProductsRecommendResultView,
+      props: (route) => ({
+        results: route.query.results ? JSON.parse(route.query.results) : [],
+      }),
     },
     {
       path: '/productslist',
