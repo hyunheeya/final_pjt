@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'recommend',
     'accounts',
     'rest_framework',#
     'rest_framework.authtoken',
@@ -115,6 +116,19 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'updated_databaseprice1',  # 첫 번째 .db 파일 경로
+#     },
+#     'secondary': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'updated_databaseprice2',  # 두 번째 .db 파일 경로
+#     },
+# }
+
+# DATABASE_ROUTERS = ['fin_pjt.database_router.DatabaseRouter']
 
 
 # Password validation
