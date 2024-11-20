@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'recommend',
+    'recommend',
     'accounts',
     'rest_framework',#
     'rest_framework.authtoken',
@@ -110,6 +111,13 @@ WSGI_APPLICATION = "fin_pjt.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -173,6 +181,3 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = 'accounts.User'
-
-# 이메일을 전송하지않고 콘솔에 출력
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
