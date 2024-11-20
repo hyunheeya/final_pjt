@@ -21,6 +21,11 @@
           @keyup.enter="saveAnswer(currentQuestion.id, answers[currentQuestion.id])"
           :placeholder="currentQuestion.placeholder"
         />
+        <button
+          @click="saveAnswer(currentQuestion.id, answers[currentQuestion.id])"
+        >
+          다음
+        </button>
       </div>
 
       <div v-else>
@@ -28,7 +33,7 @@
         <input
           type="text"
           v-model="answers[currentQuestion.id]"
-          @input="saveAnswer(currentQuestion.id, answers[currentQuestion.id])"
+          @click="saveAnswer(currentQuestion.id, answers[currentQuestion.id])"
         />
       </div>
     </div>
@@ -40,22 +45,12 @@
     >
       추천받기
     </button>
-
-    <!-- 추천 결과 표시 -->
-    <div v-if="recommendations.length > 0">
-      <h2>추천 결과</h2>
-      <ul>
-        <li v-for="rec in recommendations" :key="rec.name">
-          {{ rec.name }} - 금리: {{ rec.interest_rate }}%
-        </li>
-      </ul>
-    </div>
   </div>
 </template>
 
 <script>
-import { useCounterStore } from "@/stores/counter";
-import axios from "axios";
+import { useCounterStore } from "@/stores/counter"
+import axios from "axios"
 
 export default {
   data() {
@@ -63,18 +58,21 @@ export default {
       questions: {
         main: [
           { id: 1, text: "추천 받고 싶은 상품 유형이 어떤 것인가요?", options: ["예금", "적금"] },
-          { id: 5, text: "귀하의 나이는 몇 살인가요?", type: "number", placeholder: "나이를 입력해주세요" },
-          { id: 6, text: "예적금 가능한 금액은 얼마인가요?", type: "number", placeholder: "금액을 입력해주세요" },
         ],
         deposit: [
           { id: 2, text: "어떤 가입 방식을 선호하시나요?", options: ["영업점", "인터넷", "스마트폰", "전화(텔레뱅킹)"] },
           { id: 3, text: "선호하는 저축 금리 유형을 선택해주세요.", options: ["단리", "복리"] },
-          { id: 4, text: "선호하는 저축 기간을 선택해주세요.", options: ["6개월 이하", "6개월~1년", "1년 이상"] },
+          { id: 4, text: "선호하는 저축 기간을 선택해주세요.", options: ["3개월", "6개월", "1년", "2년", "3년"] },
+          { id: 5, text: "귀하의 나이는 몇 살인가요?", type: "number", placeholder: "나이를 입력해주세요" },
+          { id: 6, text: "예적금 가능한 금액은 얼마인가요?", type: "number", placeholder: "금액을 입력해주세요" },
         ],
         savings: [
           { id: 2, text: "어떤 가입 방식을 선호하시나요?", options: ["영업점", "인터넷", "스마트폰", "전화(텔레뱅킹)"] },
-          { id: 3, text: "선호하는 저축 금리 유형을 선택해주세요.", options: ["단리", "복리"] },
-          { id: 4, text: "선호하는 저축 기간을 선택해주세요.", options: ["6개월 이하", "6개월~1년", "1년 이상"] },
+          { id: 3, text: "선호하는 저축 유형을 선택해주세요.", options: ["자유적립식", "정액적립식"] },
+          { id: 4, text: "선호하는 저축 금리 유형을 선택해주세요.", options: ["단리", "복리"] },
+          { id: 5, text: "선호하는 저축 기간을 선택해주세요.", options: ["3개월", "6개월", "1년", "2년", "3년"] },
+          { id: 6, text: "귀하의 나이는 몇 살인가요?", type: "number", placeholder: "나이를 입력해주세요" },
+          { id: 7, text: "예적금 가능한 금액은 얼마인가요?", type: "number", placeholder: "금액을 입력해주세요" },
         ],
       },
       answers: {}, // 답변 저장
@@ -84,10 +82,11 @@ export default {
     };
   },
   computed: {
-    token() {
-      return useCounterStore().token; // Pinia store에서 토큰 가져오기
-    },
+  token() {
+    return useCounterStore().token || localStorage.getItem("token"); // Pinia 또는 로컬 스토리지에서 토큰 가져오기
   },
+},
+
   methods: {
   startQuestionnaire() {
     // 질문 큐 초기화 (5번과 6번을 마지막에 추가)
@@ -106,32 +105,52 @@ export default {
     this.currentQuestion = this.questionQueue.shift();
   },
   submitAnswers() {
-    const token = this.token;
-    const params = new URLSearchParams();
+  const token = this.token || localStorage.getItem("token"); // 토큰 확인
 
-    Object.keys(this.answers).forEach((key) => {
-      params.append(key, this.answers[key]);
-    });
+  if (!token) {
+    console.error("Authentication token is missing.");
+    return;
+  }
 
-    axios
-      .post("http://127.0.0.1:8000/recommend/", params, {
-        headers: {
-          Authorization: `Token ${token}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((response) => {
+  console.log("Token:", token); // 디버깅용: 토큰 값 출력
+
+  const params = new URLSearchParams();
+  Object.keys(this.answers).forEach((key) => {
+    params.append(key, this.answers[key]);
+  });
+
+  axios
+    .post("http://127.0.0.1:8000/recommend/", params, {
+      headers: {
+        Authorization: `Token ${token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+    .then((response) => {
+      if (response.data && response.data.recommendations) {
         this.recommendations = response.data.recommendations;
-
         this.$router.push({
           name: "productsrecommendresult",
           query: { results: JSON.stringify(this.recommendations) },
         });
-      })
-      .catch((error) => {
-        console.error("추천 요청 중 에러 발생:", error);
-      });
-    },
+      } else {
+        console.error("Invalid response format:", response.data);
+        // 사용자에게 오류 메시지 표시
+      }
+    })
+    .catch((error) => {
+      console.error("추천 요청 중 에러 발생:", error);
+      if (error.response) {
+        console.error("Response status:", error.response.status);
+        console.error("Response data:", error.response.data);
+        // 사용자에게 오류 메시지 표시
+      }
+    });
+}
+
+
+
+
   },
 
   mounted() {
@@ -142,7 +161,6 @@ export default {
 
 <style scoped>
 /* 스타일을 여기에 추가하세요 */
-<style scoped>
-/* 스타일을 여기에 추가하세요 */
+
 </style>
 

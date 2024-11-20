@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'recommend',
-    'recommend',
     'accounts',
     'rest_framework',#
     'rest_framework.authtoken',
@@ -55,15 +54,14 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 REST_FRAMEWORK = {
-    # Authentication
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.TokenAuthentication',  # 토큰 인증 활성화
     ],
-    # permission
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
     ],
 }
+
 
 REST_AUTH = {
  'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
@@ -72,13 +70,13 @@ REST_AUTH = {
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    'corsheaders.middleware.CorsMiddleware',#
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'allauth.account.middleware.AccountMiddleware',#
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -111,12 +109,6 @@ WSGI_APPLICATION = "fin_pjt.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 
 DATABASES = {
     "default": {
@@ -125,18 +117,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'updated_databaseprice1',  # 첫 번째 .db 파일 경로
-#     },
-#     'secondary': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'updated_databaseprice2',  # 두 번째 .db 파일 경로
-#     },
-# }
-
-# DATABASE_ROUTERS = ['fin_pjt.database_router.DatabaseRouter']
 
 
 # Password validation
@@ -181,3 +161,6 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# 개발 환경에서 이메일을 콘솔에 출력
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

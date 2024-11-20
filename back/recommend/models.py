@@ -1,8 +1,8 @@
 from django.db import models
 
 class Deposit(models.Model):
-    kor_co_nm = models.CharField(max_length=255)  # 금융회사명
-    fin_prdt_nm = models.CharField(max_length=255)  # 금융상품명
+    kor_co_nm = models.CharField(max_length=255, null=True)  # 금융회사명
+    fin_prdt_nm = models.CharField(max_length=255, null=True)  # 금융상품명
     join_way = models.CharField(max_length=255, null=True, blank=True)  # 가입 방법
     join_member = models.CharField(max_length=255, null=True, blank=True)  # 가입 대상
     join_price = models.IntegerField(null=True, blank=True)  # 가입 금액
@@ -18,8 +18,8 @@ class Deposit(models.Model):
 
 
 class Savings(models.Model):
-    kor_co_nm = models.CharField(max_length=255)  # 금융회사명
-    fin_prdt_nm = models.CharField(max_length=255)  # 금융상품명
+    kor_co_nm = models.CharField(max_length=255, null=True)  # 금융회사명
+    fin_prdt_nm = models.CharField(max_length=255, null=True)  # 금융상품명
     join_way = models.CharField(max_length=255, null=True, blank=True)  # 가입 방법
     join_member = models.CharField(max_length=255, null=True, blank=True)  # 가입 대상
     etc_note = models.TextField(null=True, blank=True)  # 기타 조건
