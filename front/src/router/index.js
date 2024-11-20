@@ -4,7 +4,10 @@ import ProductsRecommendView from '@/views/ProductsRecommendView.vue'
 import ProductsRecommendQuizView from '@/views/ProductsRecommendQuizView.vue'
 import ProductsRecommendResultView from '@/views/ProductsRecommendResultView.vue'
 import ProductsListView from '@/views/ProductsListView.vue'
-import ProductsListDetailView from '@/views/ProductsListDetailView.vue'
+// import ProductsDepositListView from '@/components/ProductsDepositListView.vue'
+// import ProductsSavingsListView from '@/components/ProductsSavingsListView.vue'
+import ProductsDepositListDetailView from '@/views/ProductsDepositListDetailView.vue'
+import ProductsSavingsListDetailView from '@/views/ProductsSavingsListDetailView.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import LoginView from '@/views/LoginView.vue'
 import ProfileView from '@/views/ProfileView.vue'
@@ -40,10 +43,26 @@ const router = createRouter({
       name: 'productslist',
       component: ProductsListView,
     },
+    // 부모-자식 컴포넌트 구조라서 라우터 필요없음
+    // {
+    //   path: '/productsdepositlist',
+    //   name: 'productsdepositlist',
+    //   component: ProductsDepositListView,
+    // },
+    // {
+    //   path: '/productssavingslist',
+    //   name: 'productssavingslist',
+    //   component: ProductsSavingsListView,
+    // },
     {
-      path: '/productslistdetail', // :id 로 바꿔야 함
-      name: 'productslistdetail',
-      component: ProductsListDetailView,
+      path: '/productsdepositlistdetail', // :id 로 바꿔야 함
+      name: 'productsdepositlistdetail',
+      component: ProductsDepositListDetailView,
+    },
+    {
+      path: '/productssavingslistdetail', // :id 로 바꿔야 함
+      name: 'productssavingslistdetail',
+      component: ProductsSavingsListDetailView,
     },
     {
       path: '/signup',
@@ -56,7 +75,7 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: '/profile', // :id 로 바꿔야 함
+      path: '/profile',
       name: 'profile',
       component: ProfileView,
     },
