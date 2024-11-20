@@ -65,7 +65,11 @@ REST_FRAMEWORK = {
 
 REST_AUTH = {
  'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+ 'USER_DETAILS_SERIALIZER': 'accounts.serializers.CustomUserDetailsSerializer',
 }
+
+# 회원 가입 시 사용하는 allauth.account.adapter.DefaultAccountAdapter 를 위에서 구현한 adapter 로 설정
+ACCOUNT_ADAPTER = 'accounts.models.CustomAccountAdapter'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

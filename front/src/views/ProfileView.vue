@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>예적금 전체 리스트</h1>
+    <h1>마이 페이지</h1>
   </div>
 </template>
 
