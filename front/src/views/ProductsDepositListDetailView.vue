@@ -4,16 +4,44 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">{{ deposit.kor_co_nm }}</h5>
+        <div>
+          <button @click="toggleLike" :class="{ 'btn-primary': isLiked, 'btn-secondary': !isLiked }">
+            {{ isLiked ? '좋아요 취소' : '좋아요' }}
+          </button>
+          <span class="ml-2">좋아요 {{ likeCount }}개</span>
+        </div>
+        <!-- 기존 상품 정보 표시 부분 -->
         <p class="card-text">
           <strong>가입 방법:</strong> {{ deposit.join_way }}<br>
           <strong>가입 대상:</strong> {{ deposit.join_member }}<br>
-          <strong>가입 금액:</strong> {{ deposit.join_price }}<br>
+          <strong>가입 금액:</strong> {{ formatJoinPrice(deposit.join_price) }}<br>
           <strong>이자율 종류:</strong> {{ deposit.intr_rate_type_nm }}<br>
+          <strong>적립 유형:</strong> {{ deposit.rsrv_type_nm }}<br>
           <strong>저축 기간:</strong> {{ deposit.save_trm }}개월<br>
           <strong>기본 이자율:</strong> {{ deposit.intr_rate }}%<br>
           <strong>우대 이자율:</strong> {{ deposit.intr_rate2 }}%<br>
-          <strong>나이 제한:</strong> {{ deposit.age_range }}
+          <strong>나이 제한:</strong> {{ formatAgeRange(deposit.age_range) }}
         </p>
+        <div v-if="deposit.etc_note">
+          <strong>기타 유의사항:</strong>
+          <p>{{ deposit.etc_note }}</p>
+        </div>
+        
+        <!-- 댓글 섹션 추가 -->
+        <div class="mt-4">
+          <h4>댓글</h4>
+          <ul class="list-unstyled">
+            <li v-for="comment in comments" :key="comment.id" class="mb-2">
+              <strong>{{ comment.user }}:</strong> {{ comment.content }}
+            </li>
+          </ul>
+          <form @submit.prevent="addComment" class="mt-3">
+            <div class="form-group">
+              <textarea v-model="newComment" class="form-control" rows="3" placeholder="댓글을 입력하세요"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">댓글 작성</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -23,21 +51,118 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
+import { useCounterStore } from '@/stores/counter'; // 스토어 import
 
 const route = useRoute();
+const store = useCounterStore(); // 스토어 인스턴스 생성
 const deposit = ref(null);
+const isLiked = ref(false);
+const likeCount = ref(0);
+const comments = ref([]);
+const newComment = ref('');
+
+// axios 요청에 인증 토큰 추가
+const getConfig = () => ({
+  headers: {
+    'Authorization': `Token ${store.token}`,
+    'X-CSRFToken': document.cookie.match(/csrftoken=([\w-]+)/)?.[1]
+  },
+  withCredentials: true
+});
 
 const fetchDepositDetail = async () => {
   try {
-    const response = await axios.get(`http://localhost:8000/api/deposit-products/${route.params.id}/`);
+    const response = await axios.get(
+      `${store.API_URL}/api/deposit-products/${route.params.id}/`,
+      getConfig()
+    );
     deposit.value = response.data;
+    isLiked.value = response.data.is_liked;
+    likeCount.value = response.data.like_count;
   } catch (error) {
     console.error('예금 상품 상세 정보를 불러오는 중 오류가 발생했습니다:', error);
   }
 };
 
+const toggleLike = async () => {
+  if (!store.isLogin) {
+    alert('로그인이 필요한 서비스입니다.');
+    router.push('/login');
+    return;
+  }
+  
+  try {
+    const response = await axios.post(
+      `${store.API_URL}/api/deposit-products/${route.params.id}/like/`,
+      {},
+      {
+        headers: {
+          'Authorization': `Token ${store.token}`
+        }
+      }
+    );
+    isLiked.value = response.data.is_liked;
+    likeCount.value = response.data.like_count;
+  } catch (error) {
+    console.error('좋아요 처리 중 오류가 발생했습니다:', error);
+  }
+};
+
+const addComment = async () => {
+  if (newComment.value.trim() === '') return;
+  try {
+    const response = await axios.post(
+      `${store.API_URL}/api/deposit-products/${route.params.id}/comments/`,
+      { content: newComment.value },
+      {
+        headers: {
+          'Authorization': `Token ${store.token}`
+        }
+      }
+    );
+    comments.value.push(response.data);
+    newComment.value = '';
+  } catch (error) {
+    console.error('댓글 작성 중 오류가 발생했습니다:', error);
+  }
+};
+
+const fetchComments = async () => {
+  if (!store.isLogin) {
+    return;  // 로그인하지 않은 경우 API 호출하지 않음
+  }
+  try {
+    const response = await axios.get(
+      `${store.API_URL}/api/deposit-products/${route.params.id}/comments/`,
+      {
+        headers: {
+          'Authorization': `Token ${store.token}`
+        }
+      }
+    );
+    comments.value = response.data;
+  } catch (error) {
+    console.error('댓글을 불러오는 중 오류가 발생했습니다:', error);
+  }
+};
+
+const formatJoinPrice = (price) => {
+  if (!price) return '정보 없음';
+  const [min, max] = price.split(', ');
+  return `${min}만원 ~ ${max}만원`;
+};
+
+const formatAgeRange = (range) => {
+  if (!range) return '제한 없음';
+  const [min, max] = range.split(', ');
+  return `${min}세 ~ ${max}세`;
+};
+
 onMounted(() => {
-  fetchDepositDetail();
+  fetchDepositDetail();  // 기본 상품 정보는 항상 가져옴
+  if (store.isLogin) {   // 로그인한 경우에만 댓글과 좋아요 정보를 가져옴
+    fetchComments();
+  }
 });
 </script>
 
