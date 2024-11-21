@@ -690,36 +690,36 @@ def recommend_savings(user_answers):
             product_weights[product.id] += 1
 
     # 저축 유형 필터링
-    if "3" in user_answers:
-        filtered_products = products.filter(rsrv_type_nm=user_answers["3"])
+    if "7" in user_answers:
+        filtered_products = products.filter(rsrv_type_nm=user_answers["7"])
         for product in filtered_products:
             product_weights[product.id] += 1
 
     # 금리 유형 필터링
-    if "4" in user_answers:
-        filtered_products = products.filter(intr_rate_type_nm=user_answers["4"])
+    if "3" in user_answers:
+        filtered_products = products.filter(intr_rate_type_nm=user_answers["3"])
         for product in filtered_products:
             product_weights[product.id] += 1
 
     # 저축 기간 필터링
-    if "5" in user_answers:
+    if "4" in user_answers:
         term_map = {"3개월": 3, "6개월": 6, "1년": 12, "2년": 24, "3년": 36}
-        save_trm = term_map.get(user_answers["5"])
+        save_trm = term_map.get(user_answers["4"])
         if save_trm:
             filtered_products = products.filter(save_trm=save_trm)
             for product in filtered_products:
                 product_weights[product.id] += 1
 
     # 나이 필터링
-    if "6" in user_answers:
-        user_age = int(user_answers["6"])
+    if "5" in user_answers:
+        user_age = int(user_answers["5"])
         filtered_products = [p for p in products if in_age_range(p.age_range, user_age)]
         for product in filtered_products:
             product_weights[product.id] += 1
 
     # 금액 필터링
-    if "7" in user_answers:
-        user_amount = int(user_answers["7"])
+    if "6" in user_answers:
+        user_amount = int(user_answers["6"])
         filtered_products = [p for p in products if saving_in_join_price_range(p.join_price, user_amount)]
         for product in filtered_products:
             product_weights[product.id] += 1
@@ -749,6 +749,8 @@ def deposit_in_join_price_range(join_price, user_amount):
 
 def saving_in_join_price_range(join_price, user_amount):
     min_price, max_price = map(float, join_price.split(', '))
+    min_price *= 10000
+    max_price *= 10000
     return min_price <= user_amount <= max_price
 
 # 예금 상품 api
