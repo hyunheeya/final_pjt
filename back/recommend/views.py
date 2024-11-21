@@ -735,6 +735,7 @@ def recommend_savings(user_answers):
         {
             "name": product.fin_prdt_nm,
             "interest_rate": product.intr_rate,
+            "save_trm": product.save_trm,
             "weight": product_weights[product.id]
         }
         for product in top3_products
