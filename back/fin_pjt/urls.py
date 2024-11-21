@@ -14,6 +14,7 @@ urlpatterns = [
     # 예금
     path('api/deposit-products/', deposit_list, name='deposit_list'),
     path('api/deposit-products/<str:fin_prdt_nm>/', deposit_detail, name='deposit_detail'),
+    # 적금
     path('api/savings-products/', savings_list, name='savings_list'),
-    path('api/savings-products/<str:fin_prdt_nm>/', savings_detail, name='savings_detail'),
+    path('api/savings-products/<str:fin_prdt_nm>/<str:rsrv_type_nm>/', savings_detail, name='savings_detail'),
 ]
