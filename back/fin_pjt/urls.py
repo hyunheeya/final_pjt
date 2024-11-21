@@ -16,10 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from recommend.views import deposit_list, savings_list
+from accounts.views import get_user_info
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('accounts/', include('dj_rest_auth.urls')),
     path('accounts/signup/', include('dj_rest_auth.registration.urls')),
-    path('recommend/', include('recommend.urls'))
+    path('recommend/', include('recommend.urls')),
+    ## account_api
+    path('api/user-info/',get_user_info, name='user_info'),
+    ## recommend_api
+    path('api/deposit-products/', deposit_list, name='deposit_list'),
+    path('api/savings-products/', savings_list, name='savings_list'),
 ]

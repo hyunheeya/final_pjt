@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref,computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 import { useRouter } from "vue-router";
@@ -6,6 +6,16 @@ import { useRouter } from "vue-router";
 export const useCounterStore = defineStore("counter", () => {
   const API_URL = "http://127.0.0.1:8000";
   const token = ref(localStorage.getItem("token") || null);
+  const userInfo = ref(null);
+
+  // 로그인 여부 확인
+  const isLogin = computed(() => {
+    if (token.value === null) {
+      return false
+    } else {
+      return true
+    }
+  })
   const router = useRouter();
 
   // 회원가입
@@ -24,6 +34,7 @@ export const useCounterStore = defineStore("counter", () => {
       // 회원가입 후 자동 로그인
       await logIn({ username, password: password1 });
     } catch (err) {
+      alert('회원정보를 다시 확인해주세요.')
       console.error("회원가입 실패:", err.response?.data || err);
     }
   };
@@ -43,16 +54,43 @@ export const useCounterStore = defineStore("counter", () => {
 
       router.push({ name: "home" });
     } catch (err) {
+      alert('아이디 및 비밀번호를 확인해주세요!')
       console.error("로그인 실패:", err.response?.data || err);
     }
   };
 
-  // 로그아웃
-  const logOut = () => {
-    token.value = null;
-    localStorage.removeItem("token");
-    router.push({ name: "login" });
+  // 유저 정보 가져오기
+  const getUserInfo = async () => {
+    if (isLogin.value && !userInfo.value) {
+      try {
+        const response = await axios.get(`${API_URL}/api/user-info/`, {
+          headers: { Authorization: `Token ${token.value}` }  // 'Bearer' 대신 'Token' 사용
+        });
+        userInfo.value = response.data;
+      } catch (error) {
+        console.error('사용자 정보 가져오기 실패:', error);
+        userInfo.value = null;
+      }
+    }
+    return userInfo.value;
   };
 
-  return { API_URL, token, signUp, logIn, logOut };
+  // 로그아웃
+  const logOut = async () => {
+  try {
+    // 서버에 로그아웃 요청 (필요한 경우)
+    // await axios.post(`${API_URL}/accounts/logout/`);
+
+    // 로컬 상태 및 스토리지 정리
+    token.value = null;
+    localStorage.removeItem("token");
+
+    // 홈 페이지로 리다이렉트
+    router.push({ name: "home" });
+  } catch (err) {
+    console.error("로그아웃 실패:", err);
+  }
+  };
+
+  return { API_URL, token, userInfo, isLogin, signUp, logIn, getUserInfo, logOut };
 });
