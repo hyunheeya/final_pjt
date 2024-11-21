@@ -24,7 +24,7 @@
         <button
           @click="saveAnswer(currentQuestion.id, answers[currentQuestion.id])"
         >
-          다음
+          넥스트
         </button>
       </div>
 
