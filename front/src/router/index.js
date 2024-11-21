@@ -55,12 +55,12 @@ const router = createRouter({
     //   component: ProductsSavingsListView,
     // },
     {
-      path: '/productsdepositlistdetail', // :id 로 바꿔야 함
+      path: '/productsdepositlistdetail/:fin_prdt_nm',  // 파라미터 : 상품명
       name: 'productsdepositlistdetail',
       component: ProductsDepositListDetailView,
     },
     {
-      path: '/productssavingslistdetail', // :id 로 바꿔야 함
+      path: '/productssavingslistdetail/:fin_prdt_nm',  // 파라미터 : 상품명
       name: 'productssavingslistdetail',
       component: ProductsSavingsListDetailView,
     },
