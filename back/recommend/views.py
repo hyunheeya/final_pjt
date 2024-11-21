@@ -680,7 +680,8 @@ def recommend_deposit(user_answers):
             "save_trm": product.save_trm,
             "weight": product_weights[product.id],
             "product_type": user_answers["1"],
-            "fin_prdt_nm": product.fin_prdt_nm
+            "fin_prdt_nm": product.fin_prdt_nm,
+            "id": product.pk
         }
         for product in top3_products
     ]
@@ -743,7 +744,8 @@ def recommend_savings(user_answers):
             "save_trm": product.save_trm,
             "weight": product_weights[product.id],
             "product_type": user_answers["1"],
-            "fin_prdt_nm": product.fin_prdt_nm
+            "fin_prdt_nm": product.fin_prdt_nm,
+            "id": product.pk
         }
         for product in top3_products
     ]
