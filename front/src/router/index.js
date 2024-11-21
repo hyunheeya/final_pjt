@@ -55,12 +55,12 @@ const router = createRouter({
     //   component: ProductsSavingsListView,
     // },
     {
-      path: '/productsdepositlistdetail/:fin_prdt_nm',  // 파라미터 : 상품명(fin_prdt_nm)
+      path: '/productsdepositlistdetail/:id',  // 파라미터 : 상품명(fin_prdt_nm)
       name: 'productsdepositlistdetail',
       component: ProductsDepositListDetailView,
     },
     {
-      path: '/productssavingslistdetail/:fin_prdt_nm/:rsrv_type_nm', // 파라미터:상품명(fin_prdt_nm)과 적립방식(rsrv_type_nm)
+      path: '/productssavingslistdetail/:id', // 파라미터:상품명(fin_prdt_nm)과 적립방식(rsrv_type_nm)
       name: 'productssavingslistdetail',
       component: ProductsSavingsListDetailView,
     },
