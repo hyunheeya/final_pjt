@@ -607,11 +607,13 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from .models import Deposit, Savings
+from products.models import Like
 # 예적금 api
-from django.db.models import Count, Min, Max
+from django.db.models import Min, Max
+from rest_framework.response import Response # DRF
 from django.shortcuts import get_object_or_404
-from urllib.parse import unquote # 상품명 특수문자 처리
-from .serializers import DepositSerializer
+
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -794,23 +796,35 @@ def deposit_list(request):
     return JsonResponse(list(deposits), safe=False)
 
 # 예금 상품 상세 조회
+@api_view(['GET'])
 def deposit_detail(request, id):
-    deposit = get_object_or_404(Deposit, id=id)
-    data = {
-        'id': deposit.id,
-        'kor_co_nm': deposit.kor_co_nm,
-        'fin_prdt_nm': deposit.fin_prdt_nm,
-        'join_way': deposit.join_way,
-        'join_member': deposit.join_member,
-        'join_price': deposit.join_price,
-        'intr_rate_type': deposit.intr_rate_type,
-        'intr_rate_type_nm': deposit.intr_rate_type_nm,
-        'save_trm': deposit.save_trm,
-        'intr_rate': deposit.intr_rate,
-        'intr_rate2': deposit.intr_rate2,
-        'age_range': deposit.age_range
-    }
-    return JsonResponse(data)
+    try:
+        deposit = get_object_or_404(Deposit, id=id)
+        # 좋아요 정보 추가
+        is_liked = False
+        if request.user.is_authenticated:
+            is_liked = Like.objects.filter(deposit=deposit, user=request.user).exists()
+        like_count = deposit.likes.count()
+        
+        data = {
+            'id': deposit.id,
+            'kor_co_nm': deposit.kor_co_nm,
+            'fin_prdt_nm': deposit.fin_prdt_nm,
+            'join_way': deposit.join_way,
+            'join_member': deposit.join_member,
+            'join_price': deposit.join_price,
+            'intr_rate_type': deposit.intr_rate_type,
+            'intr_rate_type_nm': deposit.intr_rate_type_nm,
+            'save_trm': deposit.save_trm,
+            'intr_rate': deposit.intr_rate,
+            'intr_rate2': deposit.intr_rate2,
+            'age_range': deposit.age_range,
+            'is_liked': is_liked,
+            'like_count': like_count
+        }
+        return Response(data)
+    except Exception as e:
+        return Response({'error': str(e)}, status=404)
 
 # def deposit_detail(request, fin_prdt_nm):
 #     # URL 디코딩 및 공백/특수문자 처리
