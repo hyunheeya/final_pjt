@@ -26,11 +26,12 @@ const router = createRouter({
       name: 'productsrecommend',
       component: ProductsRecommendView,
       beforeEnter: (to, from) => {
-        if (!useCounterStore.isLogin) {
-          console.log('로그인이 필요합니다.');
-          return { name: 'login' };
-        }
-      }
+        const counterStore = useCounterStore() // 스토어 인스턴스 가져오기
+        if (!counterStore.isLogin) {
+          console.log(counterStore.isLogin)
+          console.log('로그인이 필요합니다.')
+          return { name: 'login' }
+        }}
     },
     {
       path: '/productsrecommendquiz',
@@ -50,11 +51,12 @@ const router = createRouter({
       name: 'productslist',
       component: ProductsListView,
       beforeEnter: (to, from) => {
-        if (!useCounterStore.isLogin) {
-          console.log('로그인이 필요합니다.');
-          return { name: 'login' };
-        }
-      }
+        const counterStore = useCounterStore() // 스토어 인스턴스 가져오기
+        if (!counterStore.isLogin) {
+          console.log(counterStore.isLogin)
+          console.log('로그인이 필요합니다.')
+          return { name: 'login' }
+        }}
     },
     // 부모-자식 컴포넌트 구조라서 라우터 필요없음
     // {
