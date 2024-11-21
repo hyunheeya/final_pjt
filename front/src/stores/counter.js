@@ -64,12 +64,21 @@ export const useCounterStore = defineStore("counter", () => {
     if (isLogin.value && !userInfo.value) {
       try {
         const response = await axios.get(`${API_URL}/api/user-info/`, {
-          headers: { Authorization: `Token ${token.value}` }  // 'Bearer' 대신 'Token' 사용
+          headers: { 
+            'Authorization': `Token ${token.value}`,
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true
         });
         userInfo.value = response.data;
       } catch (error) {
         console.error('사용자 정보 가져오기 실패:', error);
         userInfo.value = null;
+        // 토큰이 유효하지 않은 경우 로그아웃 처리
+        if (error.response?.status === 401) {
+          token.value = null;
+          localStorage.removeItem("token");
+        }
       }
     }
     return userInfo.value;
@@ -77,19 +86,26 @@ export const useCounterStore = defineStore("counter", () => {
 
   // 로그아웃
   const logOut = async () => {
-  try {
-    // 서버에 로그아웃 요청 (필요한 경우)
-    // await axios.post(`${API_URL}/accounts/logout/`);
-
-    // 로컬 상태 및 스토리지 정리
-    token.value = null;
-    localStorage.removeItem("token");
-
-    // 홈 페이지로 리다이렉트
-    router.push({ name: "home" });
-  } catch (err) {
-    console.error("로그아웃 실패:", err);
-  }
+    try {
+      // 서버에 로그아웃 요청
+      await axios.post(`${API_URL}/accounts/logout/`, {}, {
+        headers: {
+          'Authorization': `Token ${token.value}`
+        }
+      });
+      
+      token.value = null;
+      localStorage.removeItem("token");
+      userInfo.value = null;  // 사용자 정보도 초기화
+      
+      router.push({ name: "home" });
+    } catch (err) {
+      console.error("로그아웃 실패:", err);
+      // 에러가 발생해도 로컬 상태는 초기화
+      token.value = null;
+      localStorage.removeItem("token");
+      userInfo.value = null;
+    }
   };
 
   return { API_URL, token, userInfo, isLogin, signUp, logIn, getUserInfo, logOut };

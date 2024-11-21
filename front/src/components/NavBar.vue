@@ -48,6 +48,7 @@
 import { useRouter } from "vue-router";
 import { useCounterStore } from "@/stores/counter";
 import { computed } from "vue";
+import { onMounted } from 'vue';
 
 const router = useRouter();
 const store = useCounterStore();
@@ -61,11 +62,15 @@ const logOut = () => {
 const navigateTo = (routeName) => {
   router.push({ name: routeName });
 };
+
+onMounted(() => {
+  console.log('Is logged in:', isLogin.value);
+});
 </script>
 
 
 <style scoped>
-.navbar-nav .nav-link {
-  margin-right: 15px; /* 메뉴 간격 설정 */
-}
+  .navbar-nav .nav-link {
+    margin-right: 15px; /* 메뉴 간격 설정 */
+  }
 </style>
