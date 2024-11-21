@@ -1,18 +1,3 @@
-<!-- <template>
-  <div>
-    <h2>적금 전체 상품 조회</h2>
-    <RouterLink :to="{name:'productssavingslistdetail'}">적금 상품 상세 조회 하기</RouterLink>
-  </div>
-</template>
-
-<script setup>
-
-</script>
-
-<style scoped>
-
-</style> -->
-
 <template>
   <div class="container">
     <h2 class="mb-4">적금 전체 상품 조회</h2>
@@ -27,7 +12,13 @@
               <strong>저축 기간:</strong> {{ product.min_save_trm }}개월 ~ {{ product.max_save_trm }}개월
             </p>
             <RouterLink 
-              :to="{ name: 'productssavingslistdetail', params: { fin_prdt_nm: product.fin_prdt_nm } }" 
+              :to="{ 
+                name: 'productssavingslistdetail', 
+                params: { 
+                  fin_prdt_nm: product.fin_prdt_nm,
+                  rsrv_type_nm: product.rsrv_type_nm 
+                } 
+              }" 
               class="btn btn-primary"
             >
               상세 정보

@@ -49,7 +49,9 @@ const product = ref(null);
 
 const fetchProductDetails = async () => {
   try {
-    const response = await axios.get(`http://localhost:8000/api/savings-products/${encodeURIComponent(route.params.fin_prdt_nm)}/`);
+    const response = await axios.get(
+      `http://localhost:8000/api/savings-products/${encodeURIComponent(route.params.fin_prdt_nm)}/${encodeURIComponent(route.params.rsrv_type_nm)}/`
+    );
     product.value = response.data;
   } catch (error) {
     console.error('상품 정보를 불러오는 중 오류가 발생했습니다:', error);

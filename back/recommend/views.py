@@ -804,7 +804,8 @@ def deposit_detail(request, fin_prdt_nm):
 ## 적금 상품 api
 # 적금 상품 전체 조회
 def savings_list(request):
-    savings_accounts = Savings.objects.values('kor_co_nm', 'fin_prdt_nm').annotate(
+    # 상품명과 적립방식으로 그룹화
+    savings = Savings.objects.values('kor_co_nm', 'fin_prdt_nm', 'rsrv_type_nm').annotate(
         min_intr_rate=Min('intr_rate'),
         max_intr_rate=Max('intr_rate'),
         min_save_trm=Min('save_trm'),
@@ -812,37 +813,45 @@ def savings_list(request):
     ).distinct()
 
     result = []
-    for savings_account in savings_accounts:
+    for saving in savings:
         result.append({
-            'kor_co_nm': savings_account['kor_co_nm'],
-            'fin_prdt_nm': savings_account['fin_prdt_nm'],
-            'min_intr_rate': savings_account['min_intr_rate'],
-            'max_intr_rate': savings_account['max_intr_rate'],
-            'min_save_trm': savings_account['min_save_trm'],
-            'max_save_trm': savings_account['max_save_trm'],
+            'kor_co_nm': saving['kor_co_nm'],
+            'fin_prdt_nm': saving['fin_prdt_nm'],
+            'rsrv_type_nm': saving['rsrv_type_nm'],  # 적립 방식 추가
+            'min_intr_rate': saving['min_intr_rate'],
+            'max_intr_rate': saving['max_intr_rate'],
+            'min_save_trm': saving['min_save_trm'],
+            'max_save_trm': saving['max_save_trm'],
         })
 
     return JsonResponse(result, safe=False)
 
 # 적금 상품 상세 조회
-def savings_detail(request, fin_prdt_nm):
-    savings = Savings.objects.filter(fin_prdt_nm=fin_prdt_nm).first()
-    if not savings:
+def savings_detail(request, fin_prdt_nm, rsrv_type_nm):
+    # 상품명과 적립방식으로 필터링
+    saving = Savings.objects.filter(
+        fin_prdt_nm=fin_prdt_nm,
+        rsrv_type_nm=rsrv_type_nm
+    ).first()
+
+    if not saving:
         return JsonResponse({'error': '상품을 찾을 수 없습니다.'}, status=404)
 
     # 동일 상품의 모든 금리 정보 조회
-    rates = Savings.objects.filter(fin_prdt_nm=fin_prdt_nm).values('save_trm', 'intr_rate', 'intr_rate2')
+    rates = Savings.objects.filter(
+        fin_prdt_nm=fin_prdt_nm,
+        rsrv_type_nm=rsrv_type_nm
+    ).values('save_trm', 'intr_rate', 'intr_rate2')
 
     data = {
-        'kor_co_nm': savings.kor_co_nm,
-        'fin_prdt_nm': savings.fin_prdt_nm,
-        'join_way': savings.join_way,
-        'join_member': savings.join_member,
-        'join_price': savings.join_price,
-        'intr_rate_type': savings.intr_rate_type,
-        'intr_rate_type_nm': savings.intr_rate_type_nm,
-        'rsrv_type': savings.rsrv_type,
-        'rsrv_type_nm': savings.rsrv_type_nm,
+        'kor_co_nm': saving.kor_co_nm,
+        'fin_prdt_nm': saving.fin_prdt_nm,
+        'rsrv_type_nm': saving.rsrv_type_nm,
+        'join_way': saving.join_way,
+        'join_member': saving.join_member,
+        'join_price': saving.join_price,
+        'intr_rate_type': saving.intr_rate_type,
+        'intr_rate_type_nm': saving.intr_rate_type_nm,
         'save_trm_rates': list(rates)
     }
     return JsonResponse(data)
