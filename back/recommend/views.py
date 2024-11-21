@@ -801,9 +801,6 @@ def deposit_detail(request, fin_prdt_nm):
     return JsonResponse(data)
 
 ## 적금 상품 api
-# def savings_list(request):
-#     savings = Savings.objects.all().values('id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm', 'rsrv_type_nm')
-#     return JsonResponse(list(savings), safe=False)
 # 적금 상품 전체 조회
 def savings_list(request):
     savings_accounts = Savings.objects.values('kor_co_nm', 'fin_prdt_nm').annotate(
