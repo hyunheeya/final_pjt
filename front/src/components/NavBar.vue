@@ -48,7 +48,6 @@
 import { useRouter } from "vue-router";
 import { useCounterStore } from "@/stores/counter";
 import { computed } from "vue";
-import { onMounted } from 'vue';
 
 const router = useRouter();
 const store = useCounterStore();
@@ -63,9 +62,6 @@ const navigateTo = (routeName) => {
   router.push({ name: routeName });
 };
 
-onMounted(() => {
-  console.log('Is logged in:', isLogin.value);
-});
 </script>
 
 

@@ -607,9 +607,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from .models import Deposit, Savings
-from products.models import Like
+from products.models import DepositLike
 # 예적금 api
-from django.db.models import Min, Max
 from rest_framework.response import Response # DRF
 from django.shortcuts import get_object_or_404
 
@@ -803,7 +802,7 @@ def deposit_detail(request, id):
         # 좋아요 정보 추가
         is_liked = False
         if request.user.is_authenticated:
-            is_liked = Like.objects.filter(deposit=deposit, user=request.user).exists()
+            is_liked = DepositLike.objects.filter(deposit=deposit, user=request.user).exists()
         like_count = deposit.likes.count()
         
         data = {
