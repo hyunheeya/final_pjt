@@ -677,7 +677,10 @@ def recommend_deposit(user_answers):
         {
             "name": product.fin_prdt_nm,
             "interest_rate": product.intr_rate,
-            "weight": product_weights[product.id]
+            "save_trm": product.save_trm,
+            "weight": product_weights[product.id],
+            "product_type": user_answers["1"],
+            "fin_prdt_nm": product.fin_prdt_nm
         }
         for product in top3_products
     ]
@@ -737,7 +740,10 @@ def recommend_savings(user_answers):
         {
             "name": product.fin_prdt_nm,
             "interest_rate": product.intr_rate,
-            "weight": product_weights[product.id]
+            "save_trm": product.save_trm,
+            "weight": product_weights[product.id],
+            "product_type": user_answers["1"],
+            "fin_prdt_nm": product.fin_prdt_nm
         }
         for product in top3_products
     ]
