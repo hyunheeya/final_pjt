@@ -11,11 +11,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import ProductsDepositListView from '@/components/ProductsDepositListView.vue';
-import ProductsSavingsListView from '@/components/ProductsSavingsListView.vue';
+import { ref, onMounted } from 'vue'
+import ProductsDepositListView from '@/components/ProductsDepositListView.vue'
+import ProductsSavingsListView from '@/components/ProductsSavingsListView.vue'
 
-const currentView = ref('deposit');
+const currentView = ref('deposit')
 
 const showComponent = (view) => {
   currentView.value = view;
