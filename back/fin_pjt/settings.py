@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'recommend',
     'accounts',
+    'products',
     'rest_framework',#
     'rest_framework.authtoken',
     'dj_rest_auth',
@@ -53,12 +54,21 @@ INSTALLED_APPS = [
 #
 SITE_ID = 1
 
+# CORS 관련 설정
+CORS_ORIGIN_ALLOW_ALL = True  # 개발 환경에서만 사용하세요
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',  # 토큰 인증 활성화
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
+    ],
+    ## 댓글, 좋아요
+        'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
     ],
 }
 
@@ -71,11 +81,12 @@ REST_AUTH = {
 # 회원 가입 시 사용하는 allauth.account.adapter.DefaultAccountAdapter 를 위에서 구현한 adapter 로 설정
 ACCOUNT_ADAPTER = 'accounts.models.CustomAccountAdapter'
 
+
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
     'corsheaders.middleware.CorsMiddleware',
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -88,6 +99,45 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
+
+# CORS 관련 설정
+CORS_ALLOW_CREDENTIALS = True  # 쿠키 포함 허용
+
+# CORS 미들웨어가 응답에 추가할 헤더를 지정
+CORS_EXPOSE_HEADERS = [
+    'Access-Control-Allow-Credentials',
+    'Access-Control-Allow-Origin',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'access-control-allow-origin',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+##
 
 ROOT_URLCONF = "fin_pjt.urls"
 
