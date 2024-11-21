@@ -11,6 +11,7 @@ import ProductsSavingsListDetailView from '@/views/ProductsSavingsListDetailView
 import SignUpView from '@/views/SignUpView.vue'
 import LoginView from '@/views/LoginView.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import useCounterStore from '@/stores/counter.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +25,12 @@ const router = createRouter({
       path: '/productsrecommend',
       name: 'productsrecommend',
       component: ProductsRecommendView,
+      beforeEnter: (to, from) => {
+        if (!useCounterStore.isLogin) {
+          console.log('로그인이 필요합니다.');
+          return { name: 'login' };
+        }
+      }
     },
     {
       path: '/productsrecommendquiz',
@@ -42,6 +49,12 @@ const router = createRouter({
       path: '/productslist',
       name: 'productslist',
       component: ProductsListView,
+      beforeEnter: (to, from) => {
+        if (!useCounterStore.isLogin) {
+          console.log('로그인이 필요합니다.');
+          return { name: 'login' };
+        }
+      }
     },
     // 부모-자식 컴포넌트 구조라서 라우터 필요없음
     // {
