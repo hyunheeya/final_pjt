@@ -13,28 +13,19 @@
           {{ option }}
         </button>
       </div>
-      <div v-else-if="currentQuestion.type === 'number'">
-        <!-- 숫자 입력 -->
-        <input
-          type="number"
-          v-model="answers[currentQuestion.id]"
-          @keyup.enter="saveAnswer(currentQuestion.id, answers[currentQuestion.id])"
-          :placeholder="currentQuestion.placeholder"
-        />
-        <button
-          @click="saveAnswer(currentQuestion.id, answers[currentQuestion.id])"
-        >
+      <div v-else="currentQuestion.type === 'number'">
+          <!-- 숫자 입력 -->
+          <input
+            type="text"
+            id="ageInput"
+            v-model="answers[currentQuestion.id]"
+            @input="validateNumberInput"
+            :placeholder="currentQuestion.placeholder"
+          />
+          <button
+            @click="saveAnswer(currentQuestion.id, answers[currentQuestion.id])">
           다음
-        </button>
-      </div>
-
-      <div v-else>
-        <!-- 텍스트 입력 -->
-        <input
-          type="text"
-          v-model="answers[currentQuestion.id]"
-          @click="saveAnswer(currentQuestion.id, answers[currentQuestion.id])"
-        />
+          </button>
       </div>
     </div>
 
@@ -53,6 +44,7 @@ import { useCounterStore } from "@/stores/counter"
 import axios from "axios"
 
 export default {
+  
   data() {
     return {
       questions: {
@@ -63,22 +55,23 @@ export default {
           { id: 2, text: "어떤 가입 방식을 선호하시나요?", options: ["영업점", "인터넷", "스마트폰", "전화(텔레뱅킹)"] },
           { id: 3, text: "선호하는 저축 금리 유형을 선택해주세요.", options: ["단리", "복리"] },
           { id: 4, text: "선호하는 저축 기간을 선택해주세요.", options: ["3개월", "6개월", "1년", "2년", "3년"] },
-          { id: 5, text: "귀하의 나이는 몇 살인가요?", type: "number", placeholder: "나이를 입력해주세요" },
-          { id: 6, text: "예적금 가능한 금액은 얼마인가요? (단위: 원)", type: "number", placeholder: "금액을 입력해주세요" },
+          { id: 5, text: "귀하의 나이는 몇 살인가요? (숫자만 입력해 주세요.)", type: "number", placeholder: "나이를 입력해주세요" },
+          { id: 6, text: "예금 가능한 금액은 얼마인가요? (단위: 원)", type: "number", placeholder: "금액을 입력해주세요" },
         ],
         savings: [
           { id: 2, text: "어떤 가입 방식을 선호하시나요?", options: ["영업점", "인터넷", "스마트폰", "전화(텔레뱅킹)"] },
-          { id: 3, text: "선호하는 저축 유형을 선택해주세요.", options: ["자유적립식", "정액적립식"] },
-          { id: 4, text: "선호하는 저축 금리 유형을 선택해주세요.", options: ["단리", "복리"] },
-          { id: 5, text: "선호하는 저축 기간을 선택해주세요.", options: ["3개월", "6개월", "1년", "2년", "3년"] },
-          { id: 6, text: "귀하의 나이는 몇 살인가요?", type: "number", placeholder: "나이를 입력해주세요" },
-          { id: 7, text: "예적금 가능한 금액은 얼마인가요? (단위: 원)", type: "number", placeholder: "금액을 입력해주세요" },
+          { id: 3, text: "선호하는 저축 금리 유형을 선택해주세요.", options: ["단리", "복리"] },
+          { id: 4, text: "선호하는 저축 기간을 선택해주세요.", options: ["3개월", "6개월", "1년", "2년", "3년"] },
+          { id: 5, text: "귀하의 나이는 몇 살인가요? (숫자만 입력해 주세요.)", type: "number", placeholder: "나이를 입력해주세요" },
+          { id: 6, text: "적금 가능한 금액은 얼마인가요? (단위: 원)", type: "number", placeholder: "금액을 입력해주세요" },
+          { id: 7, text: "선호하는 저축 유형을 선택해주세요.", options: ["자유적립식", "정액적립식"] },
         ],
       },
       answers: {}, // 답변 저장
       currentQuestion: null, // 현재 질문
       questionQueue: [], // 처리할 질문 목록
       recommendations: [], // 추천 결과
+      ageWarning: '', // 나이 입력 경고 메시지
     };
   },
   computed: {
@@ -94,16 +87,52 @@ export default {
     this.currentQuestion = this.questionQueue.shift();
   },
   saveAnswer(questionId, answer) {
-    this.answers[questionId] = answer;
+    // 입력값이 숫자인 경우 처리
+    if (this.currentQuestion.type === 'number') {
+        const numericAnswer = parseInt(answer, 10)
+        this.answers[questionId] = numericAnswer // 숫자 값 저장
+    } else {
+        // 일반 텍스트 또는 옵션 타입 질문 처리
+        this.answers[questionId] = answer;
+    }
 
     // 다음 질문 설정
     if (questionId === 1) {
-      const productType = answer === "예금" ? "deposit" : "savings";
+      const productType = answer === "예금" ? "deposit" : "savings"
       this.questionQueue = [...this.questions[productType], ...this.questions.main.slice(1)]; // 5, 6번 추가
     }
 
     this.currentQuestion = this.questionQueue.shift();
   },
+  validateNumberInput(event) {
+      const input = event.target
+      const originalValue = input.value
+      const numericValue = originalValue.replace(/[^0-9]/g, '')
+      if (this.currentQuestion.id === 5) 
+      { if (numericValue !== originalValue || numericValue === '' || parseInt(numericValue, 10) < 0) {
+          this.answers[this.currentQuestion.id] = numericValue
+          alert('숫자만 입력해주세요.')
+        } 
+        else {
+          const age = parseInt(numericValue, 10)
+          if (age > 150) {
+            input.value = ''
+            alert('최대 나이는 150세입니다.')
+          } else {
+            // 여기서 유효한 나이를 저장
+            this.answers[this.currentQuestion.id] = numericValue}}}
+
+      else // currentQuestion.id === 6
+      { if (numericValue !== originalValue || numericValue === '' || parseInt(numericValue, 10) < 0) {
+          this.answers[this.currentQuestion.id] = numericValue
+          alert('숫자만 입력해주세요.')
+        } 
+        else {
+            // 여기서 유효한 금액을 저장
+            this.answers[this.currentQuestion.id] = numericValue
+          }
+
+  }},
   submitAnswers() {
   const token = this.token || localStorage.getItem("token"); // 토큰 확인
 
@@ -145,22 +174,17 @@ export default {
         console.error("Response data:", error.response.data);
         // 사용자에게 오류 메시지 표시
       }
-    });
+    })
+}},
+
+  mounted() {
+    this.startQuestionnaire()
+  },
 }
 
 
-
-
-  },
-
-  mounted() {
-    this.startQuestionnaire();
-  },
-};
 </script>
 
 <style scoped>
 /* 스타일을 여기에 추가하세요 */
-
 </style>
-
