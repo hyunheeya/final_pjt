@@ -187,6 +187,4 @@ export default {
 
 <style scoped>
 /* 스타일을 여기에 추가하세요 */
-
 </style>
-
