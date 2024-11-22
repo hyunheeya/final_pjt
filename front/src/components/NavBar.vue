@@ -22,6 +22,9 @@
           <li class="nav-item">
             <a class="nav-link" href="#" @click.prevent="navigateTo('productslist')">예적금 상품 전체 리스트</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click.prevent="navigateTo('bankmap')">주변 은행 검색</a>
+          </li>
         </ul>
         <!-- 회원가입, 로그인 버튼 -->
          
