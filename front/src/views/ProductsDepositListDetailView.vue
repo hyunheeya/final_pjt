@@ -23,7 +23,6 @@
           <strong>가입 대상:</strong> {{ deposit.join_member }}<br>
           <strong>가입 금액:</strong> {{ formatJoinPrice(deposit.join_price) }}<br>
           <strong>이자율 종류:</strong> {{ deposit.intr_rate_type_nm }}<br>
-          <strong>적립 유형:</strong> {{ deposit.rsrv_type_nm }}<br>
           <strong>저축 기간:</strong> {{ deposit.save_trm }}개월<br>
           <strong>기본 이자율:</strong> {{ deposit.intr_rate }}%<br>
           <strong>우대 이자율:</strong> {{ deposit.intr_rate2 }}%<br>
@@ -40,6 +39,13 @@
           <ul class="list-unstyled">
             <li v-for="comment in comments" :key="comment.id" class="mb-2">
               <strong>{{ comment.user }}:</strong> {{ comment.content }}
+              <button 
+                v-if="store.isLogin && store.userInfo && comment.user === store.userInfo.username" 
+                @click="deleteComment(comment.id)" 
+                class="btn btn-danger btn-sm ms-2"
+              >
+                삭제
+              </button>
             </li>
           </ul>
           <form @submit.prevent="addComment" class="mt-3">
@@ -113,48 +119,7 @@ const toggleLike = async () => {
   }
 };
 
-// const fetchDepositDetail = async () => {
-//   try {
-//     const response = await axios.get(
-//       `${store.API_URL}/api/products/deposit-products/${route.params.id}/`,
-//       {
-//         headers: {
-//           'Authorization': `Token ${store.token}`
-//         }
-//       }
-//     );
-//     deposit.value = response.data;
-//     isLiked.value = response.data.is_liked;  // 좋아요 상태 설정
-//     likeCount.value = response.data.like_count;  // 좋아요 개수 설정
-//   } catch (error) {
-//     console.error('예금 상품 상세 정보를 불러오는 중 오류가 발생했습니다:', error);
-//   }
-// };
-
-// const toggleLike = async () => {
-//   if (!store.isLogin) {
-//     alert('로그인이 필요한 서비스입니다.');
-//     router.push('/login');
-//     return;
-//   }
-  
-//   try {
-//     const response = await axios.post(
-//       `${store.API_URL}/api/products/deposit-products/${route.params.id}/like/`,
-//       {},
-//       {
-//         headers: {
-//           'Authorization': `Token ${store.token}`
-//         }
-//       }
-//     );
-//     isLiked.value = response.data.is_liked;
-//     likeCount.value = response.data.like_count;
-//   } catch (error) {
-//     console.error('좋아요 처리 중 오류가 발생했습니다:', error);
-//   }
-// };
-
+// 댓글 추가
 const addComment = async () => {
   if (newComment.value.trim() === '') return;
   try {
@@ -174,6 +139,7 @@ const addComment = async () => {
   }
 };
 
+// 댓글 조회
 const fetchComments = async () => {
   if (!store.isLogin) {
     return;  // 로그인하지 않은 경우 API 호출하지 않음
@@ -190,6 +156,27 @@ const fetchComments = async () => {
     comments.value = response.data;
   } catch (error) {
     console.error('댓글을 불러오는 중 오류가 발생했습니다:', error);
+  }
+};
+
+// 댓글 삭제
+const deleteComment = async (commentId) => {
+  if (!confirm('댓글을 삭제하시겠습니까?')) return;
+  
+  try {
+    await axios.delete(
+      `${store.API_URL}/api/products/deposit-products/${route.params.id}/comment/${commentId}/delete/`,
+      {
+        headers: {
+          'Authorization': `Token ${store.token}`
+        }
+      }
+    );
+    // 댓글 목록에서 삭제된 댓글 제거
+    comments.value = comments.value.filter(comment => comment.id !== commentId);
+  } catch (error) {
+    console.error('댓글 삭제 중 오류가 발생했습니다:', error);
+    alert('댓글 삭제에 실패했습니다.');
   }
 };
 
