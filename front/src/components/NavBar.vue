@@ -40,7 +40,7 @@
         <!-- 로그인 한 경우 -->
         <div class="d-flex" v-if="isLogin">
           <a class="btn btn-outline-primary me-2" href="#" @click.prevent="navigateTo('profile')">마이페이지</a>
-          <a class="btn btn-outline-secondary" href="#" @click.prevent="navigateTo('logOut')">로그아웃</a>
+          <a class="btn btn-outline-secondary" href="#" @click.prevent="logOut">로그아웃</a>
         </div>
       </div>
     </div>
@@ -58,14 +58,14 @@ import { computed } from "vue";
 const router = useRouter();
 const store = useCounterStore();
 const isLogin = computed(() => store.isLogin);
-const logOut = () => {
-  store.logOut();
-  router.push({ name: "home" }); // 로그아웃 후 홈으로 이동
-};
 
-// 네비게이션 함수
+// 네비게이션 
 const navigateTo = (routeName) => {
   router.push({ name: routeName });
+};
+
+const logOut = () => {
+  store.logOut(); // 스토어의 로그아웃 함수 호출
 };
 
 </script>
