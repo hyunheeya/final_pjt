@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
+from django.core.paginator import Paginator # 페이지
 
 ## 예금 상품 api
 # 예금 상품 전체 조회
@@ -85,6 +86,31 @@ def sorted_savings(request):
         'id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm', 'rsrv_type_nm'
     )
     return JsonResponse(list(savings), safe=False)
+
+# 적금 페이지네이션
+def paginated_sorted_savings_list(request):
+    page = int(request.GET.get('page', 1))  # 요청받은 페이지 번호 (기본값: 1)
+    per_page = int(request.GET.get('per_page', 5))  # 페이지당 항목 수 (기본값: 10)
+    
+    # 금리순 데이터
+    savings = Savings.objects.all().order_by('-intr_rate').values(
+        'id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm', 'rsrv_type_nm'
+    )
+    
+    # 페이지네이터 적용
+    paginator = Paginator(savings, per_page)
+    try:
+        paginated_data = paginator.page(page)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+    return JsonResponse({
+        'results': list(paginated_data),  # 현재 페이지의 데이터
+        'page': paginated_data.number,    # 현재 페이지 번호
+        'total_pages': paginator.num_pages,  # 전체 페이지 수
+        'total_items': paginator.count,      # 전체 데이터 수
+    })
+
 
 # 예금 댓글 추가
 @api_view(['POST'])
