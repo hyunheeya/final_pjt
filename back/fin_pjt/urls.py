@@ -12,7 +12,7 @@ urlpatterns = [
     path('accounts/', include('dj_rest_auth.urls')),
     path('accounts/signup/', include('dj_rest_auth.registration.urls')),
     path('recommend/', include('recommend.urls')),
-    path('board/', include('board.urls')),
+    path('api/board/', include('board.urls')),
 
     ## account_api
     path('api/user-info/',get_user_info, name='user_info'),

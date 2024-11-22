@@ -11,5 +11,5 @@ from django.shortcuts import get_object_or_404
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def recommend_products(request):
+def articles(request):
     pass

@@ -107,6 +107,21 @@ const router = createRouter({
       name: 'board',
       component: BoardView,
     },
+    {
+      path: '/create',
+      name: 'create',
+      component: CreateView,
+    },
+    {
+      path: '/boardarticle',
+      name: 'boardarticle',
+      component: BoardArticleView,
+    },
+    {
+      path: '/boardarticledetail',
+      name: 'boardarticledetail',
+      component: BoardArticleDetailView,
+    },
   ],
 })
 
