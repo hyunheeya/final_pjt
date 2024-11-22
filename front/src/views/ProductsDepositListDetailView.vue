@@ -5,10 +5,17 @@
       <div class="card-body">
         <h5 class="card-title">{{ deposit.kor_co_nm }}</h5>
         <div>
-          <span class="ml-2">좋아요 {{ likeCount }}개 </span>
-          <button @click="toggleLike" :class="{ 'btn-primary': isLiked, 'btn-secondary': !isLiked }">
-            {{ isLiked ? '좋아요 취소' : '좋아요' }}
+          <button 
+            @click="toggleLike" 
+            :class="isLiked ? 'btn-danger' : 'btn-outline-danger'" 
+            class="btn"
+          >
+            ❤️ {{ likeCount }}
           </button>
+          <!-- <span class="ml-2">좋아요 {{ likeCount }}개 </span>
+          <button @click="toggleLike" :class="{ 'btn-primary': isLiked, 'btn-secondary': !isLiked }">❤️
+            {{ isLiked ? '좋아요 취소' : '좋아요' }}
+          </button> -->
         </div>
         <!-- 기존 상품 정보 표시 부분 -->
         <p class="card-text">
@@ -16,7 +23,6 @@
           <strong>가입 대상:</strong> {{ deposit.join_member }}<br>
           <strong>가입 금액:</strong> {{ formatJoinPrice(deposit.join_price) }}<br>
           <strong>이자율 종류:</strong> {{ deposit.intr_rate_type_nm }}<br>
-          <strong>적립 유형:</strong> {{ deposit.rsrv_type_nm }}<br>
           <strong>저축 기간:</strong> {{ deposit.save_trm }}개월<br>
           <strong>기본 이자율:</strong> {{ deposit.intr_rate }}%<br>
           <strong>우대 이자율:</strong> {{ deposit.intr_rate2 }}%<br>
@@ -33,6 +39,13 @@
           <ul class="list-unstyled">
             <li v-for="comment in comments" :key="comment.id" class="mb-2">
               <strong>{{ comment.user }}:</strong> {{ comment.content }}
+              <button 
+                v-if="store.isLogin && store.userInfo && comment.user === store.userInfo.username" 
+                @click="deleteComment(comment.id)" 
+                class="btn btn-danger btn-sm ms-2"
+              >
+                삭제
+              </button>
             </li>
           </ul>
           <form @submit.prevent="addComment" class="mt-3">
@@ -44,16 +57,20 @@
         </div>
       </div>
     </div>
+    <div class="mt-3">
+      <button @click="goBack" class="btn btn-secondary">이전으로 돌아가기</button>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useCounterStore } from '@/stores/counter';
 
 const route = useRoute();
+const router = useRouter();
 const store = useCounterStore();
 const deposit = ref(null);
 const isLiked = ref(false);
@@ -61,57 +78,51 @@ const likeCount = ref(0);
 const comments = ref([]);
 const newComment = ref('');
 
-// axios 요청에 인증 토큰 추가
-const getConfig = () => ({
-  headers: {
-    'Authorization': `Token ${store.token}`,
-    'X-CSRFToken': document.cookie.match(/csrftoken=([\w-]+)/)?.[1]
-  },
-  withCredentials: true
-});
-
+// 예금 상세 정보 가져오기
 const fetchDepositDetail = async () => {
   try {
     const response = await axios.get(
       `${store.API_URL}/api/products/deposit-products/${route.params.id}/`,
       {
         headers: {
-          'Authorization': `Token ${store.token}`
-        }
+          Authorization: `Token ${store.token}`,
+        },
       }
     );
     deposit.value = response.data;
-    isLiked.value = response.data.is_liked;  // 좋아요 상태 설정
-    likeCount.value = response.data.like_count;  // 좋아요 개수 설정
+    isLiked.value = response.data.is_liked; // 좋아요 상태 설정
+    likeCount.value = response.data.like_count; // 좋아요 개수 설정
   } catch (error) {
     console.error('예금 상품 상세 정보를 불러오는 중 오류가 발생했습니다:', error);
   }
 };
 
+// 좋아요 상태 토글
 const toggleLike = async () => {
   if (!store.isLogin) {
     alert('로그인이 필요한 서비스입니다.');
     router.push('/login');
     return;
   }
-  
+
   try {
     const response = await axios.post(
       `${store.API_URL}/api/products/deposit-products/${route.params.id}/like/`,
       {},
       {
         headers: {
-          'Authorization': `Token ${store.token}`
-        }
+          Authorization: `Token ${store.token}`,
+        },
       }
     );
-    isLiked.value = response.data.is_liked;
-    likeCount.value = response.data.like_count;
+    isLiked.value = response.data.is_liked; // 좋아요 상태 업데이트
+    likeCount.value = response.data.like_count; // 좋아요 개수 업데이트
   } catch (error) {
     console.error('좋아요 처리 중 오류가 발생했습니다:', error);
   }
 };
 
+// 댓글 추가
 const addComment = async () => {
   if (newComment.value.trim() === '') return;
   try {
@@ -131,6 +142,7 @@ const addComment = async () => {
   }
 };
 
+// 댓글 조회
 const fetchComments = async () => {
   if (!store.isLogin) {
     return;  // 로그인하지 않은 경우 API 호출하지 않음
@@ -147,6 +159,27 @@ const fetchComments = async () => {
     comments.value = response.data;
   } catch (error) {
     console.error('댓글을 불러오는 중 오류가 발생했습니다:', error);
+  }
+};
+
+// 댓글 삭제
+const deleteComment = async (commentId) => {
+  if (!confirm('댓글을 삭제하시겠습니까?')) return;
+  
+  try {
+    await axios.delete(
+      `${store.API_URL}/api/products/deposit-products/${route.params.id}/comment/${commentId}/delete/`,
+      {
+        headers: {
+          'Authorization': `Token ${store.token}`
+        }
+      }
+    );
+    // 댓글 목록에서 삭제된 댓글 제거
+    comments.value = comments.value.filter(comment => comment.id !== commentId);
+  } catch (error) {
+    console.error('댓글 삭제 중 오류가 발생했습니다:', error);
+    alert('댓글 삭제에 실패했습니다.');
   }
 };
 
@@ -176,12 +209,23 @@ const formatAgeRange = (range) => {
   return `${min}세 ~ ${max}세`;
 };
 
-onMounted(() => {
-  fetchDepositDetail();  // 기본 상품 정보는 항상 가져옴
-  if (store.isLogin) {   // 로그인한 경우에만 댓글과 좋아요 정보를 가져옴
-    fetchComments();
+// 이전 페이지로 돌아가기
+const goBack = () => {
+  router.push({ name: 'productslist' }); // 라우터 이름으로 이동
+};
+
+onMounted(async () => {
+  try {
+    await store.getUserInfo(); // 사용자 정보 로드
+    fetchDepositDetail(); // 예금 상세 정보 가져오기
+    if (store.isLogin) {
+      fetchComments(); // 댓글 목록 가져오기
+    }
+  } catch (error) {
+    console.error('초기 데이터 로드 중 오류가 발생했습니다:', error);
   }
 });
+
 </script>
 
 <style scoped>
