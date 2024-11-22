@@ -151,9 +151,23 @@ const fetchComments = async () => {
 };
 
 const formatJoinPrice = (price) => {
-  if (!price) return '정보 없음';
-  const [min, max] = price.split(', ');
-  return `${min}만원 ~ ${max}만원`;
+  try {
+    if (Array.isArray(price)) {
+      return `${price[0]}만원 ~ ${price[1]}만원`;
+    } else if (typeof price === 'string') {
+      const [min, max] = price.split(',').map(num => num.trim());
+      return `${min}만원 ~ ${max}만원`;
+    } else if (typeof price === 'number') {
+      return `${price}만원`;
+    } else if (price === null || price === undefined) {
+      return '가입 금액 정보 없음';
+    }
+    // 예외적인 경우 처리
+    return '알 수 없는 형식';
+  } catch (error) {
+    console.error('가입 금액 형식 변환 중 오류:', error);
+    return '가입 금액 정보 없음';
+  }
 };
 
 const formatAgeRange = (range) => {
