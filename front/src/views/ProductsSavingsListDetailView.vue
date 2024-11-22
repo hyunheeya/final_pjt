@@ -99,6 +99,9 @@ const toggleLike = async () => {
     );
     isLiked.value = response.data.is_liked;
     likeCount.value = response.data.like_count;
+
+    // 좋아요 이후 사용자 정보 갱신
+    await store.getUserInfo();
   } catch (error) {
     console.error('좋아요 처리 중 오류가 발생했습니다:', error);
   }
@@ -141,14 +144,17 @@ const addComment = async () => {
 // 댓글 삭제
 const deleteComment = async (commentId) => {
   if (!confirm('댓글을 삭제하시겠습니까?')) return;
-
+  
   try {
     await axios.delete(
       `${store.API_URL}/api/products/savings-products/${route.params.id}/comment/${commentId}/delete/`,
       {
-        headers: { Authorization: `Token ${store.token}` },
+        headers: {
+          'Authorization': `Token ${store.token}`
+        }
       }
     );
+    // 댓글 목록에서 삭제된 댓글 제거
     comments.value = comments.value.filter(comment => comment.id !== commentId);
   } catch (error) {
     console.error('댓글 삭제 중 오류가 발생했습니다:', error);
@@ -159,12 +165,13 @@ const deleteComment = async (commentId) => {
 // 댓글 목록 가져오기
 const fetchComments = async () => {
   if (!store.isLogin) return;
-
   try {
     const response = await axios.get(
       `${store.API_URL}/api/products/savings-products/${route.params.id}/comments/`,
       {
-        headers: { Authorization: `Token ${store.token}` },
+        headers: {
+          'Authorization': `Token ${store.token}`
+        }
       }
     );
     comments.value = response.data;
@@ -214,7 +221,8 @@ const formatAgeRange = (ageRange) => {
 
 
 // 컴포넌트 로드 시 데이터 가져오기
-onMounted(() => {
+onMounted(async () => {
+  await store.getUserInfo(); // 사용자 정보 로드
   fetchSavingsDetail();
   fetchLikeStatus();
   if (store.isLogin) {
