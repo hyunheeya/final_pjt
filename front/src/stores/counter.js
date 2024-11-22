@@ -64,7 +64,7 @@ export const useCounterStore = defineStore("counter", () => {
   const getUserInfo = async () => {
     if (isLogin.value && !userInfo.value) {
       try {
-        const response = await axios.get(`${API_URL}/api/user-info/`, {
+        const response = await axios.get(`${API_URL}/api/accounts/user-info/`, {
           headers: { 
             'Authorization': `Token ${token.value}`,
             'Content-Type': 'application/json',

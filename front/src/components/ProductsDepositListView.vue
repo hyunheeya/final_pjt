@@ -46,7 +46,7 @@ const groupedProducts = computed(() => {
 
 const fetchDepositProducts = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/deposit-products/');
+    const response = await axios.get('http://localhost:8000/api/products/deposit-products/');
     depositProducts.value = response.data;
   } catch (error) {
     console.error('예금 상품을 불러오는 중 오류가 발생했습니다:', error);
