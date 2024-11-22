@@ -20,6 +20,13 @@
               >
                 상세 정보
               </RouterLink>
+              <button 
+                @click="toggleLike(product)" 
+                :class="product.is_liked ? 'btn-danger' : 'btn-outline-danger'" 
+                class="btn"
+              >
+                ❤️ {{ product.like_count }}
+              </button>
             </div>
           </div>
         </div>
@@ -30,6 +37,92 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue';
+import axios from 'axios';
+
+const savingsProducts = ref([]); // 적금 상품 데이터
+
+// 적금 상품을 그룹화
+const groupedProducts = computed(() => {
+  const grouped = {};
+  savingsProducts.value.forEach(product => {
+    if (!grouped[product.fin_prdt_nm]) {
+      grouped[product.fin_prdt_nm] = [];
+    }
+    grouped[product.fin_prdt_nm].push(product);
+  });
+  return grouped;
+});
+
+// 적금 상품 목록 가져오기
+const fetchSavingsProducts = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/products/savings-products/', {
+      headers: { Authorization: `Token ${localStorage.getItem('token')}` },
+    });
+
+    // 상품 목록 초기화 및 기본값 설정
+    savingsProducts.value = response.data.map(product => ({
+      ...product,
+      is_liked: false, // 기본값
+      like_count: 0,   // 기본값
+    }));
+
+    // 좋아요 상태 가져오기 (비동기 요청)
+    const likePromises = savingsProducts.value.map(async (product) => {
+      const likeResponse = await fetchLikeStatus(product.id);
+      product.is_liked = likeResponse.is_liked;
+      product.like_count = likeResponse.like_count;
+    });
+
+    await Promise.all(likePromises); // 모든 좋아요 상태 로드 대기
+  } catch (error) {
+    console.error('적금 상품을 불러오는 중 오류가 발생했습니다:', error);
+  }
+};
+
+// 좋아요 상태 가져오기
+const fetchLikeStatus = async (savingsId) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8000/api/products/savings-products/${savingsId}/like-status/`,
+      {
+        headers: { Authorization: `Token ${localStorage.getItem('token')}` },
+      }
+    );
+    return response.data; // { is_liked, like_count }
+  } catch (error) {
+    console.error(`상품 ID ${savingsId}의 좋아요 상태를 가져오는 중 오류 발생:`, error);
+    return { is_liked: false, like_count: 0 }; // 기본값 반환
+  }
+};
+
+// 좋아요 상태 토글
+const toggleLike = async (product) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:8000/api/products/savings-products/${product.id}/like/`,
+      {},
+      {
+        headers: { Authorization: `Token ${localStorage.getItem('token')}` },
+      }
+    );
+
+    // 응답 데이터로 좋아요 상태와 갯수 업데이트
+    product.is_liked = response.data.is_liked;
+    product.like_count = response.data.like_count;
+  } catch (error) {
+    console.error('좋아요 처리 중 오류가 발생했습니다:', error);
+  }
+};
+
+// 컴포넌트가 로드될 때 데이터 가져오기
+onMounted(() => {
+  fetchSavingsProducts();
+});
+</script>
+
+<!-- <script setup>
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 
@@ -58,7 +151,7 @@ const fetchSavingsProducts = async () => {
 onMounted(() => {
   fetchSavingsProducts();
 });
-</script>
+</script> -->
 
 <style scoped>
 .card {

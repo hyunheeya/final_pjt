@@ -4,14 +4,13 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">{{ savings.kor_co_nm }}</h5>
-        <!-- 좋아요 버튼 추가 -->
-        <div>
-          <span class="ml-2">좋아요 {{ likeCount }}개 </span>
-          <button @click="toggleLike" :class="{ 'btn-primary': isLiked, 'btn-secondary': !isLiked }">
-            {{ isLiked ? '좋아요 취소' : '좋아요' }}
+        <button 
+            @click="toggleLike" 
+            :class="isLiked ? 'btn-danger' : 'btn-outline-danger'" 
+            class="btn"
+          >
+            ❤️ {{ likeCount }}
           </button>
-        </div>
-
         <p class="card-text">
           <strong>가입 방법:</strong> {{ savings.join_way }}<br>
           <strong>가입 대상:</strong> {{ savings.join_member }}<br>
@@ -59,20 +58,20 @@ import { useCounterStore } from '@/stores/counter';
 
 const route = useRoute();
 const store = useCounterStore();
-const savings = ref(null);
-const isLiked = ref(false);
-const likeCount = ref(0);
-const comments = ref([]);
-const newComment = ref('');
 
+const savings = ref(null); // 적금 상품 정보
+const isLiked = ref(false); // 좋아요 상태
+const likeCount = ref(0); // 좋아요 개수
+const comments = ref([]); // 댓글 목록
+const newComment = ref(''); // 새로운 댓글 내용
+
+// 적금 상세 정보 가져오기
 const fetchSavingsDetail = async () => {
   try {
     const response = await axios.get(
       `${store.API_URL}/api/products/savings-products/${route.params.id}/`,
       {
-        headers: {
-          'Authorization': `Token ${store.token}`
-        }
+        headers: { Authorization: `Token ${store.token}` },
       }
     );
     savings.value = response.data;
@@ -83,6 +82,96 @@ const fetchSavingsDetail = async () => {
   }
 };
 
+// 좋아요 상태 토글
+const toggleLike = async () => {
+  if (!store.isLogin) {
+    alert('로그인이 필요한 서비스입니다.');
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      `${store.API_URL}/api/products/savings-products/${route.params.id}/like/`,
+      {},
+      {
+        headers: { Authorization: `Token ${store.token}` },
+      }
+    );
+    isLiked.value = response.data.is_liked;
+    likeCount.value = response.data.like_count;
+  } catch (error) {
+    console.error('좋아요 처리 중 오류가 발생했습니다:', error);
+  }
+};
+
+// 좋아요 상태 가져오기
+const fetchLikeStatus = async () => {
+  try {
+    const response = await axios.get(
+      `${store.API_URL}/api/products/savings-products/${route.params.id}/like-status/`,
+      {
+        headers: { Authorization: `Token ${store.token}` },
+      }
+    );
+    isLiked.value = response.data.is_liked;
+    likeCount.value = response.data.like_count;
+  } catch (error) {
+    console.error('좋아요 상태를 불러오는 중 오류 발생:', error);
+  }
+};
+
+// 댓글 작성
+const addComment = async () => {
+  if (newComment.value.trim() === '') return;
+  try {
+    const response = await axios.post(
+      `${store.API_URL}/api/products/savings-products/${route.params.id}/comment/add/`,
+      { content: newComment.value },
+      {
+        headers: { Authorization: `Token ${store.token}` },
+      }
+    );
+    comments.value.push(response.data);
+    newComment.value = '';
+  } catch (error) {
+    console.error('댓글 작성 중 오류가 발생했습니다:', error);
+  }
+};
+
+// 댓글 삭제
+const deleteComment = async (commentId) => {
+  if (!confirm('댓글을 삭제하시겠습니까?')) return;
+
+  try {
+    await axios.delete(
+      `${store.API_URL}/api/products/savings-products/${route.params.id}/comment/${commentId}/delete/`,
+      {
+        headers: { Authorization: `Token ${store.token}` },
+      }
+    );
+    comments.value = comments.value.filter(comment => comment.id !== commentId);
+  } catch (error) {
+    console.error('댓글 삭제 중 오류가 발생했습니다:', error);
+    alert('댓글 삭제에 실패했습니다.');
+  }
+};
+
+// 댓글 목록 가져오기
+const fetchComments = async () => {
+  if (!store.isLogin) return;
+
+  try {
+    const response = await axios.get(
+      `${store.API_URL}/api/products/savings-products/${route.params.id}/comments/`,
+      {
+        headers: { Authorization: `Token ${store.token}` },
+      }
+    );
+    comments.value = response.data;
+  } catch (error) {
+    console.error('댓글을 불러오는 중 오류가 발생했습니다:', error);
+  }
+};
 
 // 가격 데이터 변환
 const formatJoinPrice = (price) => {
@@ -124,111 +213,10 @@ const formatAgeRange = (ageRange) => {
 };
 
 
-// 좋아요
-const toggleLike = async () => {
-  if (!store.isLogin) {
-    alert('로그인이 필요한 서비스입니다.');
-    router.push('/login');
-    return;
-  }
-  
-  try {
-    const response = await axios.post(
-      `${store.API_URL}/api/products/savings-products/${route.params.id}/like/`,
-      {},
-      {
-        headers: {
-          'Authorization': `Token ${store.token}`
-        }
-      }
-    );
-    isLiked.value = response.data.is_liked;
-    likeCount.value = response.data.like_count;
-  } catch (error) {
-    console.error('좋아요 처리 중 오류가 발생했습니다:', error);
-  }
-};
-
-// 댓글 작성
-const addComment = async () => {
-  if (newComment.value.trim() === '') return;
-  try {
-    const response = await axios.post(
-      `${store.API_URL}/api/products/savings-products/${route.params.id}/comment/add/`,
-      { content: newComment.value },
-      {
-        headers: {
-          'Authorization': `Token ${store.token}`
-        }
-      }
-    );
-    comments.value.push(response.data);
-    newComment.value = '';
-  } catch (error) {
-    console.error('댓글 작성 중 오류가 발생했습니다:', error);
-  }
-};
-
-// 댓글 삭제
-const deleteComment = async (commentId) => {
-  if (!confirm('댓글을 삭제하시겠습니까?')) return;
-  
-  try {
-    await axios.delete(
-      `${store.API_URL}/api/products/savings-products/${route.params.id}/comment/${commentId}/delete/`,
-      {
-        headers: {
-          'Authorization': `Token ${store.token}`
-        }
-      }
-    );
-    // 댓글 목록에서 삭제된 댓글 제거
-    comments.value = comments.value.filter(comment => comment.id !== commentId);
-  } catch (error) {
-    console.error('댓글 삭제 중 오류가 발생했습니다:', error);
-    alert('댓글 삭제에 실패했습니다.');
-  }
-};
-
-const fetchComments = async () => {
-  if (!store.isLogin) return;
-  try {
-    const response = await axios.get(
-      `${store.API_URL}/api/products/savings-products/${route.params.id}/comments/`,
-      {
-        headers: {
-          'Authorization': `Token ${store.token}`
-        }
-      }
-    );
-    comments.value = response.data;
-  } catch (error) {
-    console.error('댓글을 불러오는 중 오류가 발생했습니다:', error);
-  }
-};
-
-// 좋아요 상태 확인
-const fetchLikeStatus = async () => {
-  try {
-    const response = await axios.get(
-      `${store.API_URL}/api/products/savings-products/${route.params.id}/like-status/`,
-      {
-        headers: {
-          'Authorization': `Token ${store.token}`
-        }
-      }
-    );
-    isLiked.value = response.data.is_liked;
-    likeCount.value = response.data.like_count;
-  } catch (error) {
-    console.error('좋아요 상태를 불러오는 중 오류가 발생했습니다:', error);
-  }
-};
-
+// 컴포넌트 로드 시 데이터 가져오기
 onMounted(() => {
-  store.getUserInfo();
-  fetchLikeStatus();
   fetchSavingsDetail();
+  fetchLikeStatus();
   if (store.isLogin) {
     fetchComments();
   }

@@ -57,10 +57,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useCounterStore } from '@/stores/counter';
 
 const route = useRoute();
+const router = useRouter();
 const store = useCounterStore();
 const deposit = ref(null);
 const isLiked = ref(false);
