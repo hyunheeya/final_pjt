@@ -4,9 +4,10 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 
 export const useCounterStore = defineStore("counter", () => {
-  const API_URL = "http://127.0.0.1:8000";
-  const token = ref(localStorage.getItem("token") || null);
-  const userInfo = ref(null);
+  const API_URL = "http://127.0.0.1:8000"
+  const token = ref(localStorage.getItem("token") || null)
+  const userInfo = ref(null)
+  const articles = ref([])
 
   // 로그인 여부 확인
   const isLogin = computed(() => {
@@ -107,6 +108,13 @@ export const useCounterStore = defineStore("counter", () => {
       userInfo.value = null;
     }
   };
+
+  const getArticles = function() {
+    axios({
+      method: 'get',
+      url: `${API_URL}/api/articles/`
+    })
+  }
 
   return { API_URL, token, userInfo, isLogin, signUp, logIn, getUserInfo, logOut };
 });

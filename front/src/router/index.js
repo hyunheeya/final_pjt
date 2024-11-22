@@ -14,6 +14,8 @@ import ProfileView from '@/views/ProfileView.vue'
 import BankMapView from '@/views/BankMapView.vue'
 import BoardView from '@/views/BoardView.vue'
 import CreateView from '@/views/CreateView.vue'
+import BoardArticleView from '@/components/BoardArticleView.vue'
+import BoardArticleDetailView from '@/components/BoardArticleDetailView.vue'
 import useCounterStore from '@/stores/counter.js'
 
 const router = createRouter({
@@ -106,6 +108,28 @@ const router = createRouter({
       path: '/board',
       name: 'board',
       component: BoardView,
+      beforeEnter: (to, from) => {
+        const counterStore = useCounterStore() // 스토어 인스턴스 가져오기
+        if (!counterStore.isLogin) {
+          console.log(counterStore.isLogin)
+          console.log('로그인이 필요합니다.')
+          return { name: 'login' }
+        }}
+    },
+    {
+      path: '/create',
+      name: 'create',
+      component: CreateView,
+    },
+    {
+      path: '/boardarticle',
+      name: 'boardarticle',
+      component: BoardArticleView,
+    },
+    {
+      path: '/boardarticledetail',
+      name: 'boardarticledetail',
+      component: BoardArticleDetailView,
     },
   ],
 })
