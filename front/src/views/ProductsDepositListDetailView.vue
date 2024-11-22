@@ -206,12 +206,18 @@ const formatAgeRange = (range) => {
   return `${min}세 ~ ${max}세`;
 };
 
-onMounted(() => {
-  fetchDepositDetail();  // 기본 상품 정보는 항상 가져옴
-  if (store.isLogin) {   // 로그인한 경우에만 댓글과 좋아요 정보를 가져옴
-    fetchComments();
+onMounted(async () => {
+  try {
+    await store.getUserInfo(); // 사용자 정보 로드
+    fetchDepositDetail(); // 예금 상세 정보 가져오기
+    if (store.isLogin) {
+      fetchComments(); // 댓글 목록 가져오기
+    }
+  } catch (error) {
+    console.error('초기 데이터 로드 중 오류가 발생했습니다:', error);
   }
 });
+
 </script>
 
 <style scoped>
