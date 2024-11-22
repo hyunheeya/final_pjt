@@ -73,7 +73,7 @@ const getConfig = () => ({
 const fetchDepositDetail = async () => {
   try {
     const response = await axios.get(
-      `${store.API_URL}/api/deposit-products/${route.params.id}/`,
+      `${store.API_URL}/api/products/deposit-products/${route.params.id}/`,
       {
         headers: {
           'Authorization': `Token ${store.token}`
@@ -97,7 +97,7 @@ const toggleLike = async () => {
   
   try {
     const response = await axios.post(
-      `${store.API_URL}/api/deposit-products/${route.params.id}/like/`,
+      `${store.API_URL}/api/products/deposit-products/${route.params.id}/like/`,
       {},
       {
         headers: {
@@ -116,7 +116,7 @@ const addComment = async () => {
   if (newComment.value.trim() === '') return;
   try {
     const response = await axios.post(
-      `${store.API_URL}/api/deposit-products/${route.params.id}/comment/add/`,
+      `${store.API_URL}/api/products/deposit-products/${route.params.id}/comment/add/`,
       { content: newComment.value },
       {
         headers: {
@@ -137,7 +137,7 @@ const fetchComments = async () => {
   }
   try {
     const response = await axios.get(
-      `${store.API_URL}/api/deposit-products/${route.params.id}/comments/`,
+      `${store.API_URL}/api/products/deposit-products/${route.params.id}/comments/`,
       {
         headers: {
           'Authorization': `Token ${store.token}`

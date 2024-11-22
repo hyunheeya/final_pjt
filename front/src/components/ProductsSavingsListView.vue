@@ -48,7 +48,7 @@ const groupedProducts = computed(() => {
 
 const fetchSavingsProducts = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/savings-products/');
+    const response = await axios.get('http://localhost:8000/api/products/savings-products/');
     savingsProducts.value = response.data;
   } catch (error) {
     console.error('적금 상품을 불러오는 중 오류가 발생했습니다:', error);

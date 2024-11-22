@@ -149,7 +149,7 @@ export default {
   });
 
   axios
-    .post("http://127.0.0.1:8000/recommend/", params, {
+    .post("http://127.0.0.1:8000/api/recommend/recommend_products/", params, {
       headers: {
         Authorization: `Token ${token}`,
         "Content-Type": "application/x-www-form-urlencoded",
