@@ -4,8 +4,8 @@ import ProductsRecommendView from '@/views/ProductsRecommendView.vue'
 import ProductsRecommendQuizView from '@/views/ProductsRecommendQuizView.vue'
 import ProductsRecommendResultView from '@/views/ProductsRecommendResultView.vue'
 import ProductsListView from '@/views/ProductsListView.vue'
-// import ProductsDepositListView from '@/components/ProductsDepositListView.vue'
-// import ProductsSavingsListView from '@/components/ProductsSavingsListView.vue'
+import ProductsDepositListView from '@/components/ProductsDepositListView.vue'
+import ProductsSavingsListView from '@/components/ProductsSavingsListView.vue'
 import ProductsDepositListDetailView from '@/views/ProductsDepositListDetailView.vue'
 import ProductsSavingsListDetailView from '@/views/ProductsSavingsListDetailView.vue'
 import SignUpView from '@/views/SignUpView.vue'
@@ -55,6 +55,18 @@ const router = createRouter({
       path: '/productslist',
       name: 'productslist',
       component: ProductsListView,
+      children: [
+        {
+          path: 'deposit', // 부모 경로를 기준으로 함
+          name: 'ProductsDepositListView',
+          component: ProductsDepositListView, // 자식 컴포넌트
+        },
+        {
+          path: '/productssavingslist',
+          name: 'productssavingslist',
+          component: ProductsSavingsListView,
+        },
+      ],
       beforeEnter: (to, from) => {
         const counterStore = useCounterStore() // 스토어 인스턴스 가져오기
         if (!counterStore.isLogin) {

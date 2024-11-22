@@ -47,16 +47,20 @@
         </div>
       </div>
     </div>
+    <div class="mt-3">
+      <button @click="goBack" class="btn btn-secondary">이전으로 돌아가기</button>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useCounterStore } from '@/stores/counter';
 
 const route = useRoute();
+const router = useRouter();
 const store = useCounterStore();
 
 const savings = ref(null); // 적금 상품 정보
@@ -217,6 +221,12 @@ const formatAgeRange = (ageRange) => {
     console.error('나이 범위 형식 변환 중 오류:', error);
     return '나이 제한 정보 없음';
   }
+};
+
+// 이전 페이지로 돌아가기
+//쿼리 파라미터를 읽어 currentView를 savings로 설정
+const goBack = () => {
+  router.push({ name: 'productslist', query: { tab: 'savings' } });
 };
 
 

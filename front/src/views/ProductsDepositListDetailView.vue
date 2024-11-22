@@ -57,6 +57,9 @@
         </div>
       </div>
     </div>
+    <div class="mt-3">
+      <button @click="goBack" class="btn btn-secondary">이전으로 돌아가기</button>
+    </div>
   </div>
 </template>
 
@@ -204,6 +207,11 @@ const formatAgeRange = (range) => {
   if (!range) return '제한 없음';
   const [min, max] = range.split(', ');
   return `${min}세 ~ ${max}세`;
+};
+
+// 이전 페이지로 돌아가기
+const goBack = () => {
+  router.push({ name: 'productslist' }); // 라우터 이름으로 이동
 };
 
 onMounted(async () => {
