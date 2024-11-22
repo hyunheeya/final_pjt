@@ -5,10 +5,17 @@
       <div class="card-body">
         <h5 class="card-title">{{ deposit.kor_co_nm }}</h5>
         <div>
-          <span class="ml-2">좋아요 {{ likeCount }}개 </span>
+          <button 
+            @click="toggleLike" 
+            :class="isLiked ? 'btn-danger' : 'btn-outline-danger'" 
+            class="btn"
+          >
+            ❤️ {{ likeCount }}
+          </button>
+          <!-- <span class="ml-2">좋아요 {{ likeCount }}개 </span>
           <button @click="toggleLike" :class="{ 'btn-primary': isLiked, 'btn-secondary': !isLiked }">❤️
             {{ isLiked ? '좋아요 취소' : '좋아요' }}
-          </button>
+          </button> -->
         </div>
         <!-- 기존 상품 정보 표시 부분 -->
         <p class="card-text">
@@ -61,56 +68,91 @@ const likeCount = ref(0);
 const comments = ref([]);
 const newComment = ref('');
 
-// axios 요청에 인증 토큰 추가
-const getConfig = () => ({
-  headers: {
-    'Authorization': `Token ${store.token}`,
-    'X-CSRFToken': document.cookie.match(/csrftoken=([\w-]+)/)?.[1]
-  },
-  withCredentials: true
-});
-
+// 예금 상세 정보 가져오기
 const fetchDepositDetail = async () => {
   try {
     const response = await axios.get(
       `${store.API_URL}/api/products/deposit-products/${route.params.id}/`,
       {
         headers: {
-          'Authorization': `Token ${store.token}`
-        }
+          Authorization: `Token ${store.token}`,
+        },
       }
     );
     deposit.value = response.data;
-    isLiked.value = response.data.is_liked;  // 좋아요 상태 설정
-    likeCount.value = response.data.like_count;  // 좋아요 개수 설정
+    isLiked.value = response.data.is_liked; // 좋아요 상태 설정
+    likeCount.value = response.data.like_count; // 좋아요 개수 설정
   } catch (error) {
     console.error('예금 상품 상세 정보를 불러오는 중 오류가 발생했습니다:', error);
   }
 };
 
+// 좋아요 상태 토글
 const toggleLike = async () => {
   if (!store.isLogin) {
     alert('로그인이 필요한 서비스입니다.');
     router.push('/login');
     return;
   }
-  
+
   try {
     const response = await axios.post(
       `${store.API_URL}/api/products/deposit-products/${route.params.id}/like/`,
       {},
       {
         headers: {
-          'Authorization': `Token ${store.token}`
-        }
+          Authorization: `Token ${store.token}`,
+        },
       }
     );
-    isLiked.value = response.data.is_liked;
-    likeCount.value = response.data.like_count;
+    isLiked.value = response.data.is_liked; // 좋아요 상태 업데이트
+    likeCount.value = response.data.like_count; // 좋아요 개수 업데이트
   } catch (error) {
     console.error('좋아요 처리 중 오류가 발생했습니다:', error);
   }
 };
+
+// const fetchDepositDetail = async () => {
+//   try {
+//     const response = await axios.get(
+//       `${store.API_URL}/api/products/deposit-products/${route.params.id}/`,
+//       {
+//         headers: {
+//           'Authorization': `Token ${store.token}`
+//         }
+//       }
+//     );
+//     deposit.value = response.data;
+//     isLiked.value = response.data.is_liked;  // 좋아요 상태 설정
+//     likeCount.value = response.data.like_count;  // 좋아요 개수 설정
+//   } catch (error) {
+//     console.error('예금 상품 상세 정보를 불러오는 중 오류가 발생했습니다:', error);
+//   }
+// };
+
+// const toggleLike = async () => {
+//   if (!store.isLogin) {
+//     alert('로그인이 필요한 서비스입니다.');
+//     router.push('/login');
+//     return;
+//   }
+  
+//   try {
+//     const response = await axios.post(
+//       `${store.API_URL}/api/products/deposit-products/${route.params.id}/like/`,
+//       {},
+//       {
+//         headers: {
+//           'Authorization': `Token ${store.token}`
+//         }
+//       }
+//     );
+//     isLiked.value = response.data.is_liked;
+//     likeCount.value = response.data.like_count;
+//   } catch (error) {
+//     console.error('좋아요 처리 중 오류가 발생했습니다:', error);
+//   }
+// };
 
 const addComment = async () => {
   if (newComment.value.trim() === '') return;
