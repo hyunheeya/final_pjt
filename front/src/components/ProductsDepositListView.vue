@@ -21,8 +21,8 @@
             </div>
           </div>
         </div>
-        <hr>
       </div>
+      <hr>
     </div>
   </div>
 </template>

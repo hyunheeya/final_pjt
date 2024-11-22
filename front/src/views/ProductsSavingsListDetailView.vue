@@ -19,8 +19,8 @@
           <strong>저축 기간:</strong> {{ savings.save_trm }}개월<br>
           <strong>기본 금리:</strong> {{ savings.intr_rate }}%<br>
           <strong>우대 금리:</strong> {{ savings.intr_rate2 }}%<br>
-          <strong>가입 나이:</strong> {{ savings.age_range }}세<br>
-          <strong>가입 금액:</strong> {{ savings.join_price }}만원<br>
+          <strong>가입 나이:</strong> {{ formatAgeRange(savings.age_range) }}<br>
+          <strong>가입 금액:</strong> {{ formatJoinPrice(savings.join_price) }}<br>
           <strong>기타 유의사항:</strong> {{ savings.etc_note }}
         </p>
 
@@ -83,6 +83,48 @@ const fetchSavingsDetail = async () => {
   }
 };
 
+
+// 가격 데이터 변환
+const formatJoinPrice = (price) => {
+  try {
+    if (Array.isArray(price)) {
+      return `${price[0]}만원 ~ ${price[1]}만원`;
+    } else if (typeof price === 'string') {
+      const [min, max] = price.split(',').map(num => num.trim());
+      return `${min}만원 ~ ${max}만원`;
+    } else if (typeof price === 'number') {
+      return `${price}만원`;
+    } else if (price === null || price === undefined) {
+      return '가입 금액 정보 없음';
+    }
+    // 예외적인 경우 처리
+    return '알 수 없는 형식';
+  } catch (error) {
+    console.error('가입 금액 형식 변환 중 오류:', error);
+    return '가입 금액 정보 없음';
+  }
+};
+
+
+// 나이 데이터 변환
+const formatAgeRange = (ageRange) => {
+  try {
+    if (Array.isArray(ageRange)) {
+      return `${ageRange[0]}세 ~ ${ageRange[1]}세`;
+    }
+    else if (typeof ageRange === 'string') {
+      const [min, max] = ageRange.split(',').map(num => num.trim());
+      return `${min}세 ~ ${max}세`;
+    }
+    return ageRange;
+  } catch (error) {
+    console.error('나이 범위 형식 변환 중 오류:', error);
+    return '나이 제한 정보 없음';
+  }
+};
+
+
+// 좋아요
 const toggleLike = async () => {
   if (!store.isLogin) {
     alert('로그인이 필요한 서비스입니다.');
@@ -107,6 +149,7 @@ const toggleLike = async () => {
   }
 };
 
+// 댓글 작성
 const addComment = async () => {
   if (newComment.value.trim() === '') return;
   try {
@@ -164,8 +207,27 @@ const fetchComments = async () => {
   }
 };
 
+// 좋아요 상태 확인
+const fetchLikeStatus = async () => {
+  try {
+    const response = await axios.get(
+      `${store.API_URL}/api/savings-products/${route.params.id}/like-status/`,
+      {
+        headers: {
+          'Authorization': `Token ${store.token}`
+        }
+      }
+    );
+    isLiked.value = response.data.is_liked;
+    likeCount.value = response.data.like_count;
+  } catch (error) {
+    console.error('좋아요 상태를 불러오는 중 오류가 발생했습니다:', error);
+  }
+};
+
 onMounted(() => {
   store.getUserInfo();
+  fetchLikeStatus();
   fetchSavingsDetail();
   if (store.isLogin) {
     fetchComments();
