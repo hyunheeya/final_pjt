@@ -66,8 +66,9 @@ export default {
   },
   methods: {
     loadKakaoMap() {
-      const script = document.createElement("script");
-      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=96592eaa5bb1f4cf31a9f52c02a8fe3a&libraries=services`;
+      const apiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY
+      const script = document.createElement("script")
+      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${apiKey}&libraries=services`
       script.onload = () => {
         window.kakao.maps.load(() => {
           const container = document.getElementById("map");

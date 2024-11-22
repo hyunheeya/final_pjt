@@ -4,12 +4,16 @@ from recommend.views import deposit_list, savings_list, deposit_detail, savings_
 from accounts.views import get_user_info
 from products.views import deposit_add_comment, delete_comment, deposit_toggle_like, deposit_get_comments, deposit_get_like_status
 from products.views import savings_add_comment, savings_toggle_like, savings_get_comments, savings_get_like_status
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('accounts/', include('dj_rest_auth.urls')),
     path('accounts/signup/', include('dj_rest_auth.registration.urls')),
     path('recommend/', include('recommend.urls')),
+    path('board/', include('board.urls')),
+
     ## account_api
     path('api/user-info/',get_user_info, name='user_info'),
     ## recommend_api
@@ -31,4 +35,4 @@ urlpatterns = [
     path('api/savings-products/<int:product_id>/comment/<int:comment_id>/delete/',delete_comment,name='delete_comment'),
     path('api/savings-products/<int:deposit_id>/like/',savings_toggle_like, name='toggle_like'),
     path('api/savings-products/<int:deposit_id>/like-status/',savings_get_like_status, name='get_like_status'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
