@@ -315,32 +315,6 @@ def savings_add_comment(request, savings_id):
         'created_at': comment.created_at.strftime('%Y-%m-%d %H:%M:%S')
     }, status=status.HTTP_201_CREATED)
     
-# 적금 좋아요
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def savings_toggle_like(request, savings_id):
-    try:
-        savings = get_object_or_404(Savings, id=savings_id)
-        like, created = SavingsLike.objects.get_or_create(
-            savings=savings,
-            user=request.user
-        )
-        if not created:
-            like.delete()
-            is_liked = False
-        else:
-            is_liked = True
-        like_count = savings.likes.count()
-        return Response({
-            'status': 'success',
-            'is_liked': is_liked,
-            'like_count': like_count
-        })
-    except Savings.DoesNotExist:
-        return Response(
-            {'error': '적금 상품을 찾을 수 없습니다.'}, 
-            status=status.HTTP_404_NOT_FOUND
-        )
     
 # 적금 댓글 조회
 @api_view(['GET'])
@@ -367,6 +341,33 @@ def savings_delete_comment(request, savings_id, comment_id):
         )
     comment.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+# 적금 좋아요
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def savings_toggle_like(request, savings_id):
+    try:
+        savings = get_object_or_404(Savings, id=savings_id)
+        like, created = SavingsLike.objects.get_or_create(
+            savings=savings,
+            user=request.user
+        )
+        if not created:
+            like.delete()
+            is_liked = False
+        else:
+            is_liked = True
+        like_count = savings.likes.count()
+        return Response({
+            'status': 'success',
+            'is_liked': is_liked,
+            'like_count': like_count
+        })
+    except Savings.DoesNotExist:
+        return Response(
+            {'error': '적금 상품을 찾을 수 없습니다.'}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
 
 # 적금 좋아요 상태
 @api_view(['GET'])

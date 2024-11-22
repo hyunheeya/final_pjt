@@ -75,17 +75,6 @@ const router = createRouter({
           return { name: 'login' }
         }}
     },
-    // 부모-자식 컴포넌트 구조라서 라우터 필요없음
-    // {
-    //   path: '/productsdepositlist',
-    //   name: 'productsdepositlist',
-    //   component: ProductsDepositListView,
-    // },
-    // {
-    //   path: '/productssavingslist',
-    //   name: 'productssavingslist',
-    //   component: ProductsSavingsListView,
-    // },
     {
       path: '/productsdepositlistdetail/:id',  // 파라미터 : 상품명(fin_prdt_nm)
       name: 'productsdepositlistdetail',

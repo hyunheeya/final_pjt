@@ -10,7 +10,7 @@
               <h5 class="card-title">{{ product.kor_co_nm }}</h5>
               <p class="card-text">
                 <strong>기본 금리:</strong> {{ product.intr_rate }}%<br>
-                <strong>최고 금리:</strong> {{ product.intr_rate2 }}%<br>
+                <!-- <strong>최고 금리:</strong> {{ product.intr_rate2 }}%<br> -->
                 <strong>저축 기간:</strong> {{ product.save_trm }}개월<br>
                 <strong>적립 유형:</strong> {{ product.rsrv_type_nm }}
               </p>
