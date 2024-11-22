@@ -14,7 +14,6 @@ def deposit_list(request):
     deposits = Deposit.objects.all().values('id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm')
     return JsonResponse(list(deposits), safe=False)
 
-
 # 예금 상품 상세 조회
 @api_view(['GET'])
 def deposit_detail(request, id):
@@ -59,34 +58,8 @@ def sorted_deposits(request):
 def savings_list(request):
     savings = Savings.objects.all().values('id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm', 'rsrv_type_nm')
     return JsonResponse(list(savings), safe=False)
-# def savings_list(request):
-#     # 상품명과 적립방식으로 그룹화
-#     savings = Savings.objects.values('kor_co_nm', 'fin_prdt_nm', 'rsrv_type_nm').annotate(
-#         min_intr_rate=Min('intr_rate'),
-#         max_intr_rate=Max('intr_rate'),
-#         min_save_trm=Min('save_trm'),
-#         max_save_trm=Max('save_trm')
-#     ).distinct()
-
-#     result = []
-#     for saving in savings:
-#         result.append({
-#             'kor_co_nm': saving['kor_co_nm'],
-#             'fin_prdt_nm': saving['fin_prdt_nm'],
-#             'rsrv_type_nm': saving['rsrv_type_nm'],  # 적립 방식 추가
-#             'min_intr_rate': saving['min_intr_rate'],
-#             'max_intr_rate': saving['max_intr_rate'],
-#             'min_save_trm': saving['min_save_trm'],
-#             'max_save_trm': saving['max_save_trm'],
-#         })
-
-#     return JsonResponse(result, safe=False)
 
 # 적금 상품 상세 조회
-def savings_list(request):
-    savings = Savings.objects.all().values('id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'intr_rate2', 'save_trm', 'rsrv_type_nm')
-    return JsonResponse(list(savings), safe=False)
-
 def savings_detail(request, id):
     saving = Savings.objects.get(id=id)
     data = {
@@ -106,35 +79,12 @@ def savings_detail(request, id):
     }
     return JsonResponse(data)
 
-# def savings_detail(request, fin_prdt_nm, rsrv_type_nm):
-#     # 상품명과 적립방식으로 필터링
-#     saving = Savings.objects.filter(
-#         fin_prdt_nm=fin_prdt_nm,
-#         rsrv_type_nm=rsrv_type_nm
-#     ).first()
-
-#     if not saving:
-#         return JsonResponse({'error': '상품을 찾을 수 없습니다.'}, status=404)
-
-#     # 동일 상품의 모든 금리 정보 조회
-#     rates = Savings.objects.filter(
-#         fin_prdt_nm=fin_prdt_nm,
-#         rsrv_type_nm=rsrv_type_nm
-#     ).values('save_trm', 'intr_rate', 'intr_rate2')
-
-#     data = {
-#         'kor_co_nm': saving.kor_co_nm,
-#         'fin_prdt_nm': saving.fin_prdt_nm,
-#         'rsrv_type_nm': saving.rsrv_type_nm,
-#         'join_way': saving.join_way,
-#         'join_member': saving.join_member,
-#         'join_price': saving.join_price,
-#         'intr_rate_type': saving.intr_rate_type,
-#         'intr_rate_type_nm': saving.intr_rate_type_nm,
-#         'save_trm_rates': list(rates)
-#     }
-#     return JsonResponse(data)
-
+# 적금 상품 금리순 정렬 조회
+def sorted_savings(request):
+    savings = Savings.objects.all().order_by('-intr_rate').values(
+        'id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm', 'rsrv_type_nm'
+    )
+    return JsonResponse(list(savings), safe=False)
 
 # 예금 댓글 추가
 @api_view(['POST'])
