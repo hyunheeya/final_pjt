@@ -5,7 +5,7 @@ from .views import (
     deposit_add_comment, deposit_get_comments, deposit_delete_comment,
     deposit_toggle_like, deposit_get_like_status,
     savings_add_comment, savings_get_comments, savings_delete_comment,
-    savings_toggle_like, savings_get_like_status
+    savings_toggle_like, savings_get_like_status, sorted_deposits,
 )
 
 app_name = 'products'
@@ -14,6 +14,7 @@ urlpatterns = [
     # 예금 상품 리스트 및 상세
     path('deposit-products/', deposit_list, name='deposit_list'),
     path('deposit-products/<int:id>/', deposit_detail, name='deposit_detail'),
+    path('deposit-products/sorted/', sorted_deposits, name='sorted_deposits'),
 
     # 적금 상품 리스트 및 상세
     path('savings-products/', savings_list, name='savings_list'),
