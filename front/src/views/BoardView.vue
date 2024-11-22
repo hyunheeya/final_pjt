@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>톡!톡! 게시판</h1>
-    <RouterLink :to="{ name: 'CreatView' }">
+    <RouterLink :to="{ name: 'create' }">
       [CREATE]
     </RouterLink>
     <hr>
@@ -11,7 +11,7 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import BoardArticleView from '@/views/BoardArticleView.vue'
+import BoardArticleView from '@/components/BoardArticleView.vue'
 </script>
 
 <style scoped>

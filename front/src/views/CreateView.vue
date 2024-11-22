@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>게시글 작성</h1>
-    <form>
+    <form @submit.prevent="createArticle">
       <div>
         <label for="title">제목 : </label>
         <input type="text" id="title" v-model.trim="title">
@@ -36,7 +36,10 @@ const createArticle = function() {
     },
   })
   .then(() => {
-    router.push({ name: 'BoardArticleView'})
+    router.push({ name: 'boardarticle'})
+  })
+  .catch((err) => {
+    console.log(err)
   })
 }
 
