@@ -6,7 +6,7 @@
         <h5 class="card-title">{{ deposit.kor_co_nm }}</h5>
         <div>
           <span class="ml-2">좋아요 {{ likeCount }}개 </span>
-          <button @click="toggleLike" :class="{ 'btn-primary': isLiked, 'btn-secondary': !isLiked }">
+          <button @click="toggleLike" :class="{ 'btn-primary': isLiked, 'btn-secondary': !isLiked }">❤️
             {{ isLiked ? '좋아요 취소' : '좋아요' }}
           </button>
         </div>
