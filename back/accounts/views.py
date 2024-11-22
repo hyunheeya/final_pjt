@@ -8,6 +8,7 @@ from rest_framework.response import Response
 def get_user_info(request):
     user = request.user
     return Response({
+        'id': user.id,
         'username': user.username,
         'email': user.email,
         'nickname': user.nickname,

@@ -11,6 +11,7 @@ import ProductsSavingsListDetailView from '@/views/ProductsSavingsListDetailView
 import SignUpView from '@/views/SignUpView.vue'
 import LoginView from '@/views/LoginView.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import BankMapView from '@/views/BankMapView.vue'
 import useCounterStore from '@/stores/counter.js'
 
 const router = createRouter({
@@ -93,6 +94,11 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: ProfileView,
+    },
+    {
+      path: '/bankmap',
+      name: 'bankmap',
+      component: BankMapView,
     },
   ],
 })

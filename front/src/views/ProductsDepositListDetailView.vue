@@ -5,10 +5,10 @@
       <div class="card-body">
         <h5 class="card-title">{{ deposit.kor_co_nm }}</h5>
         <div>
+          <span class="ml-2">좋아요 {{ likeCount }}개 </span>
           <button @click="toggleLike" :class="{ 'btn-primary': isLiked, 'btn-secondary': !isLiked }">
             {{ isLiked ? '좋아요 취소' : '좋아요' }}
           </button>
-          <span class="ml-2">좋아요 {{ likeCount }}개</span>
         </div>
         <!-- 기존 상품 정보 표시 부분 -->
         <p class="card-text">
@@ -51,10 +51,10 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
-import { useCounterStore } from '@/stores/counter'; // 스토어 import
+import { useCounterStore } from '@/stores/counter';
 
 const route = useRoute();
-const store = useCounterStore(); // 스토어 인스턴스 생성
+const store = useCounterStore();
 const deposit = ref(null);
 const isLiked = ref(false);
 const likeCount = ref(0);
@@ -74,11 +74,15 @@ const fetchDepositDetail = async () => {
   try {
     const response = await axios.get(
       `${store.API_URL}/api/deposit-products/${route.params.id}/`,
-      getConfig()
+      {
+        headers: {
+          'Authorization': `Token ${store.token}`
+        }
+      }
     );
     deposit.value = response.data;
-    isLiked.value = response.data.is_liked;
-    likeCount.value = response.data.like_count;
+    isLiked.value = response.data.is_liked;  // 좋아요 상태 설정
+    likeCount.value = response.data.like_count;  // 좋아요 개수 설정
   } catch (error) {
     console.error('예금 상품 상세 정보를 불러오는 중 오류가 발생했습니다:', error);
   }
@@ -112,7 +116,7 @@ const addComment = async () => {
   if (newComment.value.trim() === '') return;
   try {
     const response = await axios.post(
-      `${store.API_URL}/api/deposit-products/${route.params.id}/comments/`,
+      `${store.API_URL}/api/deposit-products/${route.params.id}/comment/add/`,
       { content: newComment.value },
       {
         headers: {

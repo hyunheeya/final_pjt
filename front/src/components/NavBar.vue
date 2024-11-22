@@ -22,6 +22,9 @@
           <li class="nav-item">
             <a class="nav-link" href="#" @click.prevent="navigateTo('productslist')">예적금 상품 전체 리스트</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click.prevent="navigateTo('bankmap')">주변 은행 검색</a>
+          </li>
         </ul>
         <!-- 회원가입, 로그인 버튼 -->
          
@@ -61,11 +64,12 @@ const logOut = () => {
 const navigateTo = (routeName) => {
   router.push({ name: routeName });
 };
+
 </script>
 
 
 <style scoped>
-.navbar-nav .nav-link {
-  margin-right: 15px; /* 메뉴 간격 설정 */
-}
+  .navbar-nav .nav-link {
+    margin-right: 15px; /* 메뉴 간격 설정 */
+  }
 </style>
