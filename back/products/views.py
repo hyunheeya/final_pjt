@@ -24,19 +24,22 @@ def deposit_list(request):
     
     # 정렬 적용
     if sort_by == 'rate':
-        query = query.order_by('-intr_rate')
+        query = query.order_by('-intr_rate') # 금리순
+    elif sort_by == 'bank':
+        query = query.order_by('kor_co_nm') # 은행명
+    elif sort_by == 'likes':
+        query = query.order_by('-like_count')  # 좋아요 많은 순
+    else:
+        query = query.order_by('id') # 좋아요
     
-    # 시리얼라이저로 데이터 변환
     serializer = DepositSerializer(query, many=True)
     data = serializer.data
     
-    # 로그인한 사용자의 좋아요 정보를 한 번에 조회
     if request.user.is_authenticated:
         user_likes = set(DepositLike.objects.filter(
             user=request.user
         ).values_list('deposit_id', flat=True))
         
-        # 좋아요 정보 추가
         for item in data:
             item['is_liked'] = item['id'] in user_likes
     else:
@@ -90,7 +93,13 @@ def savings_list(request):
     
     # 정렬 적용
     if sort_by == 'rate':
-        query = query.order_by('-intr_rate')
+        query = query.order_by('-intr_rate') # 금리순
+    elif sort_by == 'bank':
+        query = query.order_by('kor_co_nm') # 은행명
+    elif sort_by == 'likes':
+        query = query.order_by('-like_count')  # 좋아요 많은 순
+    else:
+        query = query.order_by('id') # 전체
     
     # 시리얼라이저로 데이터 변환
     serializer = SavingsSerializer(query, many=True)
