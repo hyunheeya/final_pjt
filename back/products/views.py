@@ -24,13 +24,13 @@ def deposit_list(request):
     
     # 정렬 적용
     if sort_by == 'rate':
-        query = query.order_by('-intr_rate')
+        query = query.order_by('-intr_rate') # 금리순
     elif sort_by == 'bank':
-        query = query.order_by('kor_co_nm')
+        query = query.order_by('kor_co_nm') # 은행명
     elif sort_by == 'likes':
         query = query.order_by('-like_count')  # 좋아요 많은 순
     else:
-        query = query.order_by('id')
+        query = query.order_by('id') # 좋아요
     
     serializer = DepositSerializer(query, many=True)
     data = serializer.data
@@ -93,7 +93,13 @@ def savings_list(request):
     
     # 정렬 적용
     if sort_by == 'rate':
-        query = query.order_by('-intr_rate')
+        query = query.order_by('-intr_rate') # 금리순
+    elif sort_by == 'bank':
+        query = query.order_by('kor_co_nm') # 은행명
+    elif sort_by == 'likes':
+        query = query.order_by('-like_count')  # 좋아요 많은 순
+    else:
+        query = query.order_by('id') # 전체
     
     # 시리얼라이저로 데이터 변환
     serializer = SavingsSerializer(query, many=True)
