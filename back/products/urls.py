@@ -6,7 +6,7 @@ from .views import (
     deposit_toggle_like, deposit_get_like_status,
     savings_add_comment, savings_get_comments, savings_delete_comment,
     savings_toggle_like, savings_get_like_status, sorted_deposits,
-    sorted_savings,paginated_sorted_savings_list,
+    sorted_savings,paginated_savings_list,
 )
 
 app_name = 'products'
@@ -23,7 +23,7 @@ urlpatterns = [
     path('savings-products/sorted/', sorted_savings, name='sorted_savings'),  # 적금 금리순 조회
 
     # 적금 페이지네이션
-    path('savings-products/sorted-paginated/', paginated_sorted_savings_list, name='paginated_sorted_savings_list'),
+    path('savings-products/sorted-paginated/', paginated_savings_list, name='paginated_savings_list'),
 
     # 예금 상품 좋아요 및 댓글
     path('deposit-products/<int:deposit_id>/comments/', deposit_get_comments, name='deposit_get_comments'),

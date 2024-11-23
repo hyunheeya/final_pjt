@@ -47,19 +47,20 @@
     </div>
 
     <!-- 적금 상품 리스트 -->
-    <div v-for="(products, productName) in groupedSavingsProducts" :key="productName" class="mb-4">
-      <h3>{{ productName }}</h3>
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div v-for="product in products" :key="product.id" class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">{{ product.kor_co_nm }}</h5>
-              <p class="card-text">
-                <strong>저축 기간:</strong> {{ product.save_trm }}개월<br>
-                <strong>금리:</strong> {{ product.intr_rate }}%<br>
-                <strong>적금 종류:</strong> {{ product.rsrv_type_nm }}<br>
-              </p>
-              <RouterLink 
+    <div v-if="savingsProducts.length > 0">
+      <div v-for="(products, productName) in groupedSavingsProducts" :key="productName" class="mb-4">
+        <h3>{{ productName }}</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          <div v-for="product in products" :key="product.id" class="col">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">{{ product.kor_co_nm }}</h5>
+                <p class="card-text">
+                  <strong>저축 기간:</strong> {{ product.save_trm }}개월<br>
+                  <strong>금리:</strong> {{ product.intr_rate }}%<br>
+                  <strong>적금 종류:</strong> {{ product.rsrv_type_nm }}<br>
+                </p>
+                <RouterLink 
                 :to="{ name: 'productssavingslistdetail', params: { id: product.id } }" 
                 class="btn btn-primary"
               >
@@ -72,11 +73,14 @@
               >
                 ❤️ {{ product.like_count }}
               </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <hr />
+    </div>
+    <div v-else>
+      <p>적금 데이터를 불러오는 중입니다...</p>
     </div>
 
     <!-- 페이지네이션 컨트롤 -->
@@ -191,23 +195,24 @@ const fetchPaginatedSavings = async (page = 1) => {
       headers: { Authorization: `Token ${store.token}` },
     });
 
-    // 데이터가 배열인지 확인 후 저장
+    // 응답 데이터가 배열인지 확인하고 저장
     if (Array.isArray(response.data)) {
-      savingsProducts.value = response.data; // API가 배열 데이터를 직접 반환하는 경우
-      currentPage.value = page;             // 현재 페이지 번호 수동 설정
-      totalPages.value = Math.ceil(response.data.length / perPage); // 총 페이지 수 계산
+      // 배열 데이터 처리
+      savingsProducts.value = response.data; // API가 배열 형식 데이터를 반환하는 경우
+      currentPage.value = page;             // 현재 페이지를 설정
+      totalPages.value = Math.ceil(response.data.length / perPage); // 페이지 수 계산 (더미로 설정)
     } else if (response.data.results && Array.isArray(response.data.results)) {
-      // API가 results 키를 포함한 경우
+      // results 키가 포함된 경우 처리
       savingsProducts.value = response.data.results;
       currentPage.value = response.data.page;
       totalPages.value = response.data.total_pages;
     } else {
       console.error('API 응답이 예상한 구조가 아닙니다:', response.data);
-      savingsProducts.value = []; // 기본값
+      savingsProducts.value = []; // 기본값으로 빈 배열 설정
     }
   } catch (error) {
     console.error('페이지네이션 데이터를 가져오는 중 오류 발생:', error);
-    savingsProducts.value = []; // 에러 발생 시 빈 배열로 초기화
+    savingsProducts.value = []; // 오류 발생 시 빈 배열로 초기화
   }
 };
 
@@ -263,6 +268,7 @@ const toggleSavingsLike = async (product) => {
 onMounted(() => {
   savingsProducts.value = []; // 초기 상태를 빈 배열로 설정
   fetchAllSavings();
+  loadSavingsLikeStatuses();
 });
 </script>
 
