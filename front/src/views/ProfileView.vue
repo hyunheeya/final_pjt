@@ -1,61 +1,87 @@
 <template>
   <div class="profile">
     <h1>프로필</h1>
-    <div v-if="userInfo">
-      <div v-if="!isEditing">
-        <p><strong>사용자명:</strong> {{ userInfo.username }}</p>
-        <p><strong>이메일:</strong> {{ userInfo.email }}</p>
-        <p><strong>닉네임:</strong> {{ userInfo.nickname }}</p>
-        <!-- <button @click="startEditing">프로필 수정</button> -->
+        <!-- 탭 -->
+        <div class="product-tabs">
+      <button 
+        @click="showComponent('mypage')" 
+        :class="['tab-button', currentView === 'mypage' ? 'active' : '']"
+      >
+        프로필
+      </button>
+      <button 
+        @click="showComponent('mylikelist')" 
+        :class="['tab-button', currentView === 'mylikelist' ? 'active' : '']"
+      >
+        좋아요한 상품
+      </button>
+      <button 
+        @click="showComponent('mycommentlist')" 
+        :class="['tab-button', currentView === 'mycommentlist' ? 'active' : '']"
+      >
+        내가 쓴 댓글
+      </button>
+
+    </div>
+        <!-- 컴포넌트 표시 영역 -->
+      <div class="tab-content">
+        <ProfileMyPage v-if="currentView === 'mypage'" />
+        <ProfileMyLikeList v-if="currentView === 'mylikelist'" />
+        <ProfileMyCommentList v-if="currentView === 'mycommentlist'" />
       </div>
-      <form v-else @submit.prevent="updateProfile">
-        <div>
-          <label for="nickname">닉네임:</label>
-          <input id="nickname" v-model="editedInfo.nickname" required>
-        </div>
-        <!-- 다른 수정 가능한 필드들 추가 -->
-        <button type="submit">저장</button>
-        <button @click="cancelEditing">취소</button>
-      </form>
-    </div>
-    <div v-else>
-      <p>로딩 중...</p>
-    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from 'vue';
-import { useCounterStore } from "@/stores/counter";
+import { ref, onMounted} from 'vue';
+import ProfileMyPage from '@/components/ProfileMyPage.vue';
+import ProfileMyLikeList from '@/components/ProfileMyLikeList.vue';
+import ProfileMyCommentList from '@/components/ProfileMyCommentList.vue';
 
-const store = useCounterStore();
-const userInfo = ref(null);
-const isEditing = ref(false);
-const editedInfo = reactive({});
 
-onMounted(async () => {
-  if (store.isLogin) {
-    userInfo.value = await store.getUserInfo();
-  }
+
+const currentView = ref('mypage')
+
+const showComponent = (view) => {
+  currentView.value = view;
+};
+
+// 첫 화면은 마이페이지 보여주기
+onMounted(() => {
+  showComponent('mypage');
 });
-
-const startEditing = () => {
-  editedInfo.nickname = userInfo.value.nickname;
-  isEditing.value = true;
-};
-
-const cancelEditing = () => {
-  isEditing.value = false;
-};
-
-const updateProfile = async () => {
-  try {
-    // API를 통해 프로필 정보 업데이트
-    // 예: await store.updateUserInfo(editedInfo);
-    userInfo.value = { ...userInfo.value, ...editedInfo };
-    isEditing.value = false;
-  } catch (error) {
-    console.error('프로필 업데이트 실패:', error);
-  }
-};
 </script>
+
+<style scoped>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.product-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.tab-button {
+  padding: 0.75rem 2rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.tab-button.active {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+}
+
+</style>
