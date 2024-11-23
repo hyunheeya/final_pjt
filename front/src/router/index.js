@@ -97,11 +97,6 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: '/profile',
-      name: 'profile',
-      component: ProfileView,
-    },
-    {
       path: '/bankmap',
       name: 'bankmap',
       component: BankMapView,
@@ -132,6 +127,11 @@ const router = createRouter({
       path: '/board/articles/:id',
       name: 'boardarticledetail',
       component: BoardArticleDetailView,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView,
     },
     {
       path: '/board/articles/:id/edit',

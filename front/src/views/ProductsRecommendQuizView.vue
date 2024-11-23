@@ -1,41 +1,48 @@
 <template>
-  <div>
-    <h1>금융 상품 추천</h1>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">금융 상품 추천</h1>
     <!-- 현재 질문 표시 -->
-    <div v-if="currentQuestion">
-      <p>{{ currentQuestion.text }}</p>
-      <div v-if="currentQuestion.options && currentQuestion.options.length > 0">
+    <div v-if="currentQuestion" class="card p-4 shadow-sm">
+      <p class="lead text-center mb-4">{{ currentQuestion.text }}</p>
+      <!-- 선택형 옵션 -->
+      <div v-if="currentQuestion.options && currentQuestion.options.length > 0" class="d-flex justify-content-center flex-wrap">
         <button
           v-for="option in currentQuestion.options"
           :key="option"
           @click="saveAnswer(currentQuestion.id, option)"
+          class="btn btn-outline-primary m-2"
         >
           {{ option }}
         </button>
       </div>
-      <div v-else="currentQuestion.type === 'number'">
-          <!-- 숫자 입력 -->
-          <input
-            type="text"
-            id="ageInput"
-            v-model="answers[currentQuestion.id]"
-            @input="validateNumberInput"
-            :placeholder="currentQuestion.placeholder"
-          />
-          <button
-            @click="saveAnswer(currentQuestion.id, answers[currentQuestion.id])">
+      <!-- 숫자 입력 -->
+      <div v-else="currentQuestion.type === 'number'" class="text-center">
+        <input
+          type="text"
+          id="ageInput"
+          v-model="answers[currentQuestion.id]"
+          @input="validateNumberInput"
+          :placeholder="currentQuestion.placeholder"
+          class="form-control my-3"
+        />
+        <button
+          @click="saveAnswer(currentQuestion.id, answers[currentQuestion.id])"
+          class="btn btn-primary"
+        >
           다음
-          </button>
+        </button>
       </div>
     </div>
 
     <!-- 추천 버튼 -->
-    <button
-      v-if="!currentQuestion && recommendations.length === 0"
-      @click="submitAnswers"
-    >
-      추천받기
-    </button>
+    <div v-if="!currentQuestion && recommendations.length === 0" class="text-center mt-4">
+      <button
+        @click="submitAnswers"
+        class="btn btn-success btn-lg"
+      >
+        추천받기
+      </button>
+    </div>
   </div>
 </template>
 
@@ -186,5 +193,12 @@ export default {
 </script>
 
 <style scoped>
-/* 스타일을 여기에 추가하세요 */
+  .card {
+  max-width: 600px;
+  margin: 0 auto;
+  }
+
+  button {
+    min-width: 120px;
+  }
 </style>

@@ -3,7 +3,7 @@ from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import UserDetailsSerializer
 from django.contrib.auth import get_user_model
-from .models import User
+from django.contrib.auth.models import User
 
 UserModel = get_user_model()
 
@@ -21,6 +21,7 @@ class CustomRegisterSerializer(RegisterSerializer):
          'nickname': self.validated_data.get('nickname', ''),
       }
 
+# 유저 정보
 class CustomUserDetailsSerializer(UserDetailsSerializer):
  class Meta:
    extra_fields = []
@@ -41,3 +42,15 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
    model = UserModel
    fields = ('pk', *extra_fields)
    read_only_fields = ('email',)
+
+# 유저 정보 업데이트
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'nickname')
+        
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        instance.nickname = validated_data.get('nickname', instance.nickname)
+        instance.save()
+        return instance

@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="mt-3">
-      <button @click="goBack" class="btn btn-secondary">이전으로 돌아가기</button>
+      <button @click="goBack" class="btn btn-secondary">목록으로 돌아가기</button>
     </div>
   </div>
 </template>
