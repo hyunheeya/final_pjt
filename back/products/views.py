@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from .models import DepositComment, DepositLike, SavingsComment, SavingsLike
 from .models import Deposit, Savings
+from .serializers import DepositSerializer
 from django.db.models import Count
 #
 from rest_framework.decorators import api_view, permission_classes
@@ -11,11 +12,53 @@ from django.http import JsonResponse
 
 ## 예금 상품 api
 # 예금 상품 전체 조회
+# def deposit_list(request):
+#     # 정렬 기준 파라미터 받기
+#     sort_by = request.GET.get('sort', 'default')
+    
+#     # 기본 쿼리셋 구성
+#     query = Deposit.objects.annotate(
+#         like_count=Count('likes')
+#     )
+    
+#     # 정렬 적용
+#     if sort_by == 'rate':
+#         query = query.order_by('-intr_rate')
+#     else:
+#         query = query.order_by('id')
+    
+#     # 필요한 필드만 가져오기
+#     deposits = query.values(
+#         'id', 
+#         'kor_co_nm', 
+#         'fin_prdt_nm', 
+#         'intr_rate', 
+#         'save_trm',
+#         'like_count'
+#     )
+    
+#     # 좋아요 정보 처리
+#     deposits_list = list(deposits)
+#     if request.user.is_authenticated:
+#         # 사용자의 좋아요 정보를 한 번에 가져오기
+#         user_likes = set(DepositLike.objects.filter(
+#             user=request.user
+#         ).values_list('deposit_id', flat=True))
+        
+#         for deposit in deposits_list:
+#             deposit['is_liked'] = deposit['id'] in user_likes
+#     else:
+#         for deposit in deposits_list:
+#             deposit['is_liked'] = False
+    
+#     return JsonResponse(deposits_list, safe=False)
+
+@api_view(['GET'])
 def deposit_list(request):
-    # 정렬 기준 파라미터 받기
+    # 정렬 기준 확인
     sort_by = request.GET.get('sort', 'default')
     
-    # 기본 쿼리셋 구성
+    # 예금 상품과 좋아요 정보를 한 번에 조회
     query = Deposit.objects.annotate(
         like_count=Count('likes')
     )
@@ -23,34 +66,25 @@ def deposit_list(request):
     # 정렬 적용
     if sort_by == 'rate':
         query = query.order_by('-intr_rate')
-    else:
-        query = query.order_by('id')
     
-    # 필요한 필드만 가져오기
-    deposits = query.values(
-        'id', 
-        'kor_co_nm', 
-        'fin_prdt_nm', 
-        'intr_rate', 
-        'save_trm',
-        'like_count'
-    )
+    # 시리얼라이저로 데이터 변환
+    serializer = DepositSerializer(query, many=True)
+    data = serializer.data
     
-    # 좋아요 정보 처리
-    deposits_list = list(deposits)
+    # 로그인한 사용자의 좋아요 정보를 한 번에 조회
     if request.user.is_authenticated:
-        # 사용자의 좋아요 정보를 한 번에 가져오기
         user_likes = set(DepositLike.objects.filter(
             user=request.user
         ).values_list('deposit_id', flat=True))
         
-        for deposit in deposits_list:
-            deposit['is_liked'] = deposit['id'] in user_likes
+        # 좋아요 정보 추가
+        for item in data:
+            item['is_liked'] = item['id'] in user_likes
     else:
-        for deposit in deposits_list:
-            deposit['is_liked'] = False
+        for item in data:
+            item['is_liked'] = False
     
-    return JsonResponse(deposits_list, safe=False)
+    return Response(data)
 
 # 예금 상품 상세 조회
 @api_view(['GET'])
@@ -82,14 +116,6 @@ def deposit_detail(request, id):
         return Response(data)
     except Exception as e:
         return Response({'error': str(e)}, status=404)
-    
-# # 금리순으로 (내림차순) 예금 상품 조회
-# def sorted_deposits(request):
-#     deposits = Deposit.objects.all().order_by('-intr_rate').values(
-#         'id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm'
-#     )
-#     return JsonResponse(list(deposits), safe=False)
-
 
 ## 적금 상품 api
 # 적금 상품 전체 조회

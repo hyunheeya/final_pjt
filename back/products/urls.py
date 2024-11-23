@@ -15,7 +15,6 @@ urlpatterns = [
     # 예금 상품 리스트 및 상세
     path('deposit-products/', deposit_list, name='deposit_list'),
     path('deposit-products/<int:id>/', deposit_detail, name='deposit_detail'),
-    # path('deposit-products/sorted/', sorted_deposits, name='sorted_deposits'),
 
     # 적금 상품 리스트 및 상세
     path('savings-products/', savings_list, name='savings_list'),
