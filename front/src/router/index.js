@@ -16,6 +16,7 @@ import BoardView from '@/views/BoardView.vue'
 import CreateView from '@/views/CreateView.vue'
 import BoardArticleView from '@/components/BoardArticleView.vue'
 import BoardArticleDetailView from '@/components/BoardArticleDetailView.vue'
+import ExchangesView from '@/views/ExchangesView.vue'
 import useCounterStore from '@/stores/counter.js'
 
 const router = createRouter({
@@ -131,6 +132,11 @@ const router = createRouter({
       path: '/boardarticledetail',
       name: 'boardarticledetail',
       component: BoardArticleDetailView,
+    },
+    {
+      path: '/exchanges',
+      name: 'exchanges',
+      component: ExchangesView,
     },
   ],
 })
