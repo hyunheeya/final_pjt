@@ -45,3 +45,10 @@ def article_detail(request, article_pk):
     elif request.method == 'DELETE':
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_admin(request):
+    return Response({
+        'is_admin': request.user.is_staff
+    })
