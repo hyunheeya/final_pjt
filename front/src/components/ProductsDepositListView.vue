@@ -1,92 +1,11 @@
-
-<!-- <template>
-  <div class="container">
-    <h2 class="mb-4">예금 상품 조회</h2>
-    <div class="mb-4">
-      <button @click="fetchAllDeposits" class="btn btn-primary">전체 보기</button>
-      <button @click="fetchDepositsByInterest" class="btn btn-secondary">금리순 보기</button>
-    </div>
-    <div v-for="(products, productName) in groupedProducts" :key="productName" class="mb-4">
-      <h3>{{ productName }}</h3>
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div v-for="product in products" :key="product.id" class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">{{ product.kor_co_nm }}</h5>
-              <p class="card-text">
-                <strong>저축 기간:</strong> {{ product.save_trm }}개월<br>
-                <strong>기본 금리:</strong> {{ product.intr_rate }}%<br>
-              </p>
-              <RouterLink 
-                :to="{ name: 'productsdepositlistdetail', params: { id: product.id } }" 
-                class="btn btn-primary"
-              >
-                상세 정보
-              </RouterLink>
-              <button 
-                @click="toggleLike(product)" 
-                :class="product.is_liked ? 'btn-danger' : 'btn-outline-danger'" 
-                class="btn"
-              >
-                ❤️ {{ product.like_count }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr />
-    </div>
-  </div>
-</template> -->
-
-<!-- <template>
-  <div class="container">
-    <h2 class="mb-4">예금 상품 조회</h2>
-    <div class="mb-4">
-      <button @click="showAllDeposits" class="btn btn-primary">전체 보기</button>
-      <button @click="showDepositsByRate" class="btn btn-secondary">금리순 보기</button>
-    </div>
-    <div v-for="(products, productName) in groupedProducts" :key="productName" class="mb-4">
-      <h3>{{ productName }}</h3>
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div v-for="product in products" :key="product.id" class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">{{ product.kor_co_nm }}</h5>
-              <p class="card-text">
-                <strong>저축 기간:</strong> {{ product.save_trm }}개월<br>
-                <strong>기본 금리:</strong> {{ product.intr_rate }}%<br>
-              </p>
-              <div class="d-flex justify-content-between">
-                <RouterLink 
-                  :to="{ name: 'productsdepositlistdetail', params: { id: product.id } }" 
-                  class="btn btn-primary"
-                >
-                  상세 정보
-                </RouterLink>
-                <button 
-                  @click="toggleLike(product)" 
-                  :class="['btn', product.is_liked ? 'btn-danger' : 'btn-outline-danger']"
-                >
-                  <span class="heart-icon">❤️</span> 
-                  <span class="like-count">{{ product.like_count }}</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr />
-    </div>
-  </div>
-</template> -->
-
 <template>
   <div class="container">
     <h2 class="mb-4">예금 상품 조회</h2>
     <div class="mb-4">
-      <button @click="fetchDeposits('default')" class="btn btn-primary me-2">전체 보기</button>
-      <button @click="fetchDeposits('rate')" class="btn btn-secondary">금리순 보기</button>
+      <button @click="showAllDeposits" class="btn btn-primary me-2">전체</button>
+      <button @click="showDepositsByRate" class="btn btn-secondary me-2">금리순</button>
+      <button @click="fetchDeposits('likes')" class="btn btn-secondary me-2">좋아요순</button>
+      <button @click="showDepositsByBank" class="btn btn-secondary me-2">은행명순</button>
     </div>
     <div v-for="(products, productName) in groupedProducts" :key="productName" class="mb-4">
       <h3 class="mb-3">{{ productName }}</h3>
@@ -154,6 +73,26 @@ const fetchDeposits = async (sortType = 'default') => {
   } catch (error) {
     console.error('데이터를 불러오는 중 오류가 발생했습니다:', error);
   }
+};
+
+// 전체보기
+const showAllDeposits = () => {
+  fetchDeposits('default');
+};
+
+// 금리순 보기
+const showDepositsByRate = () => {
+  fetchDeposits('rate');
+};
+
+// 은행명순 보기
+const showDepositsByBank = () => {
+  fetchDeposits('bank');
+};
+
+// 좋아요순 보기 함수 추가
+const showDepositsByLikes = () => {
+  fetchDeposits('likes');
 };
 
 // 좋아요 상태 토글
