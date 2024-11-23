@@ -8,7 +8,7 @@
         @keyup.enter="searchBanks" 
         style="width: 200px; padding: 8px; margin-right: 10px;"
       />
-      <button @click="searchBanks">주변 은행 검색</button>
+      <button @click="searchBanks" class="btn btn-primary">주변 은행 검색</button>
     </div>
     <div class="map-list-container">
       <div id="map"></div>
@@ -270,7 +270,7 @@ export default {
 }
 
 #map {
-  width: calc(100% - 320px) !important;
+  width: 100% !important;
   height: 500px !important;
 }
 
@@ -333,4 +333,5 @@ export default {
 .pagination span {
   font-size: 14px;
 }
+
 </style>
