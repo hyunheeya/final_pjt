@@ -5,6 +5,7 @@ from django.db.models import Count
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import status
 
 # 유저 정보
 @api_view(['GET'])
@@ -18,7 +19,24 @@ def get_user_info(request):
         'nickname': user.nickname,
     })
 
-# 유저 좋아요
+# 개인정보 수정
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_profile(request):
+    user = request.user
+    if 'email' in request.data:
+        user.email = request.data['email']
+    if 'nickname' in request.data:
+        user.nickname = request.data['nickname']
+    user.save()
+    
+    return Response({
+        'username': user.username,
+        'email': user.email,
+        'nickname': user.nickname
+    })
+
+# 좋아요한 상품
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_liked_products(request):
@@ -46,6 +64,7 @@ def user_liked_products(request):
         'savings': savings_serializer.data
     })
 
+# 내가 쓴 댓글
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_comments(request):
