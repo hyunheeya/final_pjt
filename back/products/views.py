@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from .models import DepositComment, DepositLike, SavingsComment, SavingsLike
 from .models import Deposit, Savings
-from .serializers import DepositSerializer
+from .serializers import DepositSerializer, SavingsSerializer
 from django.db.models import Count
 #
 from rest_framework.decorators import api_view, permission_classes
@@ -12,47 +12,6 @@ from django.http import JsonResponse
 
 ## 예금 상품 api
 # 예금 상품 전체 조회
-# def deposit_list(request):
-#     # 정렬 기준 파라미터 받기
-#     sort_by = request.GET.get('sort', 'default')
-    
-#     # 기본 쿼리셋 구성
-#     query = Deposit.objects.annotate(
-#         like_count=Count('likes')
-#     )
-    
-#     # 정렬 적용
-#     if sort_by == 'rate':
-#         query = query.order_by('-intr_rate')
-#     else:
-#         query = query.order_by('id')
-    
-#     # 필요한 필드만 가져오기
-#     deposits = query.values(
-#         'id', 
-#         'kor_co_nm', 
-#         'fin_prdt_nm', 
-#         'intr_rate', 
-#         'save_trm',
-#         'like_count'
-#     )
-    
-#     # 좋아요 정보 처리
-#     deposits_list = list(deposits)
-#     if request.user.is_authenticated:
-#         # 사용자의 좋아요 정보를 한 번에 가져오기
-#         user_likes = set(DepositLike.objects.filter(
-#             user=request.user
-#         ).values_list('deposit_id', flat=True))
-        
-#         for deposit in deposits_list:
-#             deposit['is_liked'] = deposit['id'] in user_likes
-#     else:
-#         for deposit in deposits_list:
-#             deposit['is_liked'] = False
-    
-#     return JsonResponse(deposits_list, safe=False)
-
 @api_view(['GET'])
 def deposit_list(request):
     # 정렬 기준 확인
@@ -119,9 +78,38 @@ def deposit_detail(request, id):
 
 ## 적금 상품 api
 # 적금 상품 전체 조회
+@api_view(['GET'])
 def savings_list(request):
-    savings = Savings.objects.all().values('id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm', 'rsrv_type_nm')
-    return JsonResponse(list(savings), safe=False)
+    # 정렬 기준 확인
+    sort_by = request.GET.get('sort', 'default')
+    
+    # 적금 상품과 좋아요 정보를 한 번에 조회
+    query = Savings.objects.annotate(
+        like_count=Count('likes')
+    )
+    
+    # 정렬 적용
+    if sort_by == 'rate':
+        query = query.order_by('-intr_rate')
+    
+    # 시리얼라이저로 데이터 변환
+    serializer = SavingsSerializer(query, many=True)
+    data = serializer.data
+    
+    # 로그인한 사용자의 좋아요 정보를 한 번에 조회
+    if request.user.is_authenticated:
+        user_likes = set(SavingsLike.objects.filter(
+            user=request.user
+        ).values_list('savings_id', flat=True))
+        
+        # 좋아요 정보 추가
+        for item in data:
+            item['is_liked'] = item['id'] in user_likes
+    else:
+        for item in data:
+            item['is_liked'] = False
+    
+    return Response(data)
 
 # 적금 상품 상세 조회
 def savings_detail(request, id):
@@ -142,13 +130,6 @@ def savings_detail(request, id):
         'join_price': saving.join_price
     }
     return JsonResponse(data)
-
-# 적금 상품 금리순 정렬 조회
-def sorted_savings(request):
-    savings = Savings.objects.all().order_by('-intr_rate').values(
-        'id', 'kor_co_nm', 'fin_prdt_nm', 'intr_rate', 'save_trm', 'rsrv_type_nm'
-    )
-    return JsonResponse(list(savings), safe=False)
 
 # 예금 댓글 추가
 @api_view(['POST'])
