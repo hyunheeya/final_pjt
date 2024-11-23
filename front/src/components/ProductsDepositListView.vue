@@ -182,16 +182,17 @@ onMounted(() => {
   fetchDeposits();
 });
 </script>
-<style scoped>
-.bank-logo {
-  max-height: 50px;
-  display: block;
-  margin: 0 auto;
-  object-fit: contain;
-}
 
-.card-header {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid rgba(0,0,0,.125);
-}
+<style scoped>
+  .bank-logo {
+    max-height: 50px;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+  }
 </style>
