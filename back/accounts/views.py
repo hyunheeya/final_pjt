@@ -1,4 +1,4 @@
-from products.models import Deposit,Savings
+from products.models import Deposit,Savings,DepositComment,SavingsComment
 from products.serializers import DepositSerializer,SavingsSerializer
 from django.db.models import Count
 
@@ -44,4 +44,36 @@ def user_liked_products(request):
     return Response({
         'deposits': deposit_serializer.data,
         'savings': savings_serializer.data
+    })
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_comments(request):
+    # 예금 상품 댓글
+    deposit_comments = DepositComment.objects.filter(
+        user=request.user
+    ).select_related('deposit').values(
+        'id',
+        'content',
+        'created_at',
+        'deposit__fin_prdt_nm',
+        'deposit__kor_co_nm',
+        'deposit__id'
+    )
+
+    # 적금 상품 댓글
+    savings_comments = SavingsComment.objects.filter(
+        user=request.user
+    ).select_related('savings').values(
+        'id',
+        'content',
+        'created_at',
+        'savings__fin_prdt_nm',
+        'savings__kor_co_nm',
+        'savings__id'
+    )
+
+    return Response({
+        'deposit_comments': list(deposit_comments),
+        'savings_comments': list(savings_comments)
     })
