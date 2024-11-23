@@ -18,7 +18,6 @@
 
 <script setup>
 // import BoardArticleDetailView from '@/components/BoardArticleDetailView.vue'
-
 defineProps({
   articles: {
     type: Array,
