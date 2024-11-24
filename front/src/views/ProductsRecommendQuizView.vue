@@ -148,8 +148,6 @@ export default {
     return;
   }
 
-  console.log("Token:", token); // 디버깅용: 토큰 값 출력
-
   const params = new URLSearchParams();
   Object.keys(this.answers).forEach((key) => {
     params.append(key, this.answers[key]);

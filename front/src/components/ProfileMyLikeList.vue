@@ -1,22 +1,36 @@
 <template>
   <div class="container">
     <h2 class="mb-4">내가 좋아요한 상품</h2>
-    <div class="mb-4">
+
+    <!-- 네 가지 기능 버튼 -->
+    <div class="mb-4 d-flex flex-wrap gap-2">
       <button 
         @click="currentView = 'deposit'" 
-        :class="['btn', 'me-2', currentView === 'deposit' ? 'btn-primary' : 'btn-outline-primary']"
+        :class="['btn', currentView === 'deposit' ? 'btn-primary' : 'btn-outline-primary']"
       >
         예금
       </button>
       <button 
-        @click="currentView = 'savings'"
-        :class="['btn', 'me-2', currentView === 'savings' ? 'btn-primary' : 'btn-outline-primary']"
+        @click="currentView = 'savings'" 
+        :class="['btn', currentView === 'savings' ? 'btn-primary' : 'btn-outline-primary']"
       >
         적금
       </button>
+      <button 
+        @click="currentView = 'depositGraph'" 
+        :class="['btn', currentView === 'depositGraph' ? 'btn-success' : 'btn-outline-success']"
+      >
+        예금 금리 비교하기
+      </button>
+      <button 
+        @click="currentView = 'savingsGraph'" 
+        :class="['btn', currentView === 'savingsGraph' ? 'btn-success' : 'btn-outline-success']"
+      >
+        적금 금리 비교하기
+      </button>
     </div>
 
-    <!-- 예금 좋아요 목록 -->
+    <!-- 예금 리스트 -->
     <div v-if="currentView === 'deposit'" class="row row-cols-1 row-cols-md-3 g-4">
       <div v-for="product in likedDeposits" :key="product.id" class="col">
         <div class="card h-100">
@@ -41,7 +55,7 @@
       </div>
     </div>
 
-    <!-- 적금 좋아요 목록 -->
+    <!-- 적금 리스트 -->
     <div v-if="currentView === 'savings'" class="row row-cols-1 row-cols-md-3 g-4">
       <div v-for="product in likedSavings" :key="product.id" class="col">
         <div class="card h-100">
@@ -65,45 +79,158 @@
         </div>
       </div>
     </div>
+
+    <!-- 예금 금리 비교 -->
+    <div v-if="currentView === 'depositGraph'">
+      <h3 class="text-center mb-4">예금 금리 비교</h3>
+      <canvas id="depositChart" width="400" height="200"></canvas>
+    </div>
+
+    <!-- 적금 금리 비교 -->
+    <div v-if="currentView === 'savingsGraph'">
+      <h3 class="text-center mb-4">적금 금리 비교</h3>
+      <canvas id="savingsChart" width="400" height="200"></canvas>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick,watch } from 'vue';
 import axios from 'axios';
+import Chart from 'chart.js/auto';
 import useCounterStore from '@/stores/counter';
 
 const store = useCounterStore();
-const currentView = ref('deposit');
+const currentView = ref('deposit'); 
 const likedDeposits = ref([]);
 const likedSavings = ref([]);
+let depositChart = null; // 예금 Chart.js 인스턴스
+let savingsChart = null; // 적금 Chart.js 인스턴스
 
-// 예금 좋아요 목록 가져오기
-const fetchLikedDeposits = async () => {
+// 좋아요한 상품 데이터 가져오기
+const fetchLikedProducts = async () => {
   try {
     const response = await axios.get(`${store.API_URL}/api/accounts/liked-products/`, {
-      headers: { Authorization: `Token ${store.token}` }
+      headers: { Authorization: `Token ${store.token}` },
     });
     likedDeposits.value = response.data.deposits;
-  } catch (error) {
-    console.error('예금 좋아요 목록 조회 실패:', error);
-  }
-};
-
-// 적금 좋아요 목록 가져오기
-const fetchLikedSavings = async () => {
-  try {
-    const response = await axios.get(`${store.API_URL}/api/accounts/liked-products/`, {
-      headers: { Authorization: `Token ${store.token}` }
-    });
     likedSavings.value = response.data.savings;
   } catch (error) {
-    console.error('적금 좋아요 목록 조회 실패:', error);
+    console.error('좋아요한 상품 데이터 조회 실패:', error);
   }
 };
 
-onMounted(() => {
-  fetchLikedDeposits();
-  fetchLikedSavings();
+// currentView 감시
+watch(currentView, async (newView) => {
+  if (newView === 'depositGraph') {
+    await renderDepositChart();
+  } else if (newView === 'savingsGraph') {
+    await renderSavingsChart();
+  }
 });
+
+// 예금 금리 비교 그래프
+const renderDepositChart = async () => {
+  await nextTick(); // DOM이 완전히 렌더링된 뒤 실행
+  const labels = likedDeposits.value.map(product => product.fin_prdt_nm);
+  const data = likedDeposits.value.map(product => product.intr_rate);
+
+  if (depositChart) {
+    depositChart.destroy();
+  }
+
+  const ctx = document.getElementById('depositChart').getContext('2d');
+  depositChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: '금리 (%)',
+          data: data,
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+};
+
+// 적금 금리 비교 그래프
+const renderSavingsChart = async () => {
+  await nextTick(); // DOM이 완전히 렌더링된 뒤 실행
+  const labels = likedSavings.value.map(product => product.fin_prdt_nm);
+  const data = likedSavings.value.map(product => product.intr_rate);
+
+  if (savingsChart) {
+    savingsChart.destroy();
+  }
+
+  const ctx = document.getElementById('savingsChart').getContext('2d');
+  savingsChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: '금리 (%)',
+          data: data,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+};
+
+// 금리 비교 버튼 클릭
+const showGraph = async (view) => {
+  currentView.value = view;
+
+  if (view === 'depositGraph') {
+    await renderDepositChart(); // 예금 그래프 렌더링
+  } else if (view === 'savingsGraph') {
+    await renderSavingsChart(); // 적금 그래프 렌더링
+  }
+};
+
+onMounted(fetchLikedProducts);
 </script>
+
+
+<style scoped>
+canvas {
+  max-width: 100%;
+  height: 400px;
+}
+</style>
