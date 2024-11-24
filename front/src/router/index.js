@@ -14,8 +14,9 @@ import ProfileView from '@/views/ProfileView.vue'
 import BankMapView from '@/views/BankMapView.vue'
 import BoardView from '@/views/BoardView.vue'
 import CreateView from '@/views/CreateView.vue'
-import BoardArticleView from '@/components/BoardArticleView.vue'
-import BoardArticleDetailView from '@/components/BoardArticleDetailView.vue'
+import BoardArticleListView from '@/views/BoardArticleListView.vue'
+import BoardArticleDetailView from '@/views/BoardArticleDetailView.vue'
+import BoardArticleEditView from '@/views/BoardArticleEditView.vue'
 import ExchangesView from '@/views/ExchangesView.vue'
 import useCounterStore from '@/stores/counter.js'
 
@@ -124,14 +125,19 @@ const router = createRouter({
       component: CreateView,
     },
     {
-      path: '/boardarticle',
-      name: 'boardarticle',
-      component: BoardArticleView,
+      path: '/board/articles',
+      name: 'boardarticlelist',
+      component: BoardArticleListView,
     },
     {
-      path: '/boardarticledetail',
+      path: '/board/articles/:id',
       name: 'boardarticledetail',
       component: BoardArticleDetailView,
+    },
+    {
+      path: '/board/articles/:id/edit',
+      name: 'edit',
+      component: BoardArticleEditView,
     },
     {
       path: '/exchanges',
