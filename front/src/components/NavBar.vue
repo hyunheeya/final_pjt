@@ -86,4 +86,10 @@ const logOut = () => {
   max-height: 50px; /* 최대 높이 제한 (선택 사항) */  
   object-fit: contain; /* 이미지 비율 유지 */
   }
+
+  .d-flex p {
+  margin: 0; /* p 태그의 기본 여백 제거 */
+  padding: 5px
+  }
+
 </style>
