@@ -10,20 +10,26 @@ from django.conf import settings
 @permission_classes([AllowAny])
 def exchangerate(request, currency):
     try:
-        # 요청에서 날짜 파라미터 가져오기
-        search_date = request.GET.get('searchdate')
+        # URL에서 직접 쿼리 파라미터 확인
+        search_date = request.query_params.get('searchdate')
+        # print(f"Received query parameter searchdate: {search_date}")
         
         if not search_date:
             search_date = datetime.now().strftime('%Y%m%d')
+            # print(f"Using default date: {search_date}")
             
-        # 디버깅용 로그
-        print(f"Received search date: {search_date}")
+        try:
+            datetime.strptime(search_date, '%Y%m%d')
+        except ValueError:
+            return Response(
+                {'error': '잘못된 날짜 형식입니다'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
-        url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON"        # today = datetime.now().strftime('%Y%m%d')
-        # today = 20241120
-        # today = 20241121
-        # today = 20241122
-        # today = 20241010
+        # 디버깅을 위한 로그 추가
+        # print(f"Processing request for currency: {currency}, date: {search_date}")
+        
+        url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON"
 
         params = {
             'authkey': settings.EXCHANGE_API_KEY,
@@ -32,8 +38,8 @@ def exchangerate(request, currency):
         }
 
         # 디버깅용 로그
-        print(f"Currency requested: {currency}")
-        print(f"API params: {params}")
+        # print(f"Currency requested: {currency}")
+        # print(f"API params: {params}")
         
         response = requests.get(
             url, 
@@ -41,8 +47,8 @@ def exchangerate(request, currency):
             verify=False,
         )
         
-        print(f"API response status: {response.status_code}")
-        print(f"API response content: {response.text}")
+        # print(f"API response status: {response.status_code}")
+        # print(f"API response content: {response.text}")
         
         if response.status_code != 200:
             return Response(
@@ -52,34 +58,37 @@ def exchangerate(request, currency):
 
         exchange_data = response.json()
         
-        # 환율 데이터가 비어있는 경우
-        if not exchange_data:
+        if not isinstance(exchange_data, list):
             return Response(
-                {'error': '해당 통화의 환율 정보가 없습니다'}, 
+                {'error': '유효하지 않은 API 응답 형식'}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-        # 통화 검색 (대소문자 구분 없이)
-        for item in exchange_data:
-            if item.get('cur_unit').upper() == currency.upper():
-                try:
-                    # 쉼표 제거 후 float로 변환
-                    rate = float(item['tts'].replace(',', ''))
-                    return Response({'rate': rate})
-                except (ValueError, KeyError) as e:
-                    print(f"Rate conversion error: {str(e)}")
-                    return Response(
-                        {'error': '환율 데이터 변환 오류'}, 
-                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                    )
-
-        return Response(
-            {'error': '환율 데이터를 불러올 수 없습니다'}, 
-            status=status.HTTP_404_NOT_FOUND
+            
+        # 통화 검색 로직 개선
+        currency_data = next(
+            (item for item in exchange_data 
+             if item.get('cur_unit', '').upper() == currency.upper()),
+            None
         )
-
+        
+        if not currency_data:
+            return Response(
+                {'error': f'{search_date} 날짜의 {currency} 환율 정보가 없습니다'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+            
+        # 환율 데이터 반환
+        try:
+            rate = float(currency_data['tts'].replace(',', ''))
+            return Response({'rate': rate})
+        except (ValueError, KeyError) as e:
+            return Response(
+                {'error': '환율 데이터 변환 오류'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+            
     except Exception as e:
-        print(f"Unexpected error: {str(e)}")
+        # print(f"Unexpected error: {str(e)}")
         return Response(
             {'error': '서버 오류가 발생했습니다'}, 
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
