@@ -35,12 +35,14 @@
          
         <!-- 로그인 안 한 경우 -->
         <div class="d-flex" v-if="!isLogin">
+          <p>로그인을 해주세요</p>
           <a class="btn btn-outline-primary me-2" href="#" @click.prevent="navigateTo('signup')">회원가입</a>
           <a class="btn btn-outline-secondary" href="#" @click.prevent="navigateTo('login')">로그인</a>
         </div>
 
         <!-- 로그인 한 경우 -->
         <div class="d-flex" v-if="isLogin">
+          <p>{{ username }}님 환영합니다!</p>
           <a class="btn btn-outline-primary me-2" href="#" @click.prevent="navigateTo('profile')">마이페이지</a>
           <a class="btn btn-outline-secondary" href="#" @click.prevent="logOut">로그아웃</a>
         </div>
@@ -59,6 +61,7 @@ import { computed } from "vue";
 
 const router = useRouter();
 const store = useCounterStore();
+const username = computed(() => store.userInfo?.username);
 const isLogin = computed(() => store.isLogin);
 
 // 네비게이션 
