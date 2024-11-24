@@ -3,7 +3,9 @@
     <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
       <!-- 로고 -->
-      <a class="navbar-brand" href="#">로고</a>
+      <router-link to="/">
+        <img src="/design/StarPot_logo_ai.png" alt="StarPot Logo" class="logo me-3" />
+      </router-link>
 
       <!-- 토글 버튼 -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,9 +15,6 @@
       <!-- 네비게이션 메뉴 -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#" @click.prevent="navigateTo('home')">홈</a>
-          </li>
           <li class="nav-item">
             <a class="nav-link" href="#" @click.prevent="navigateTo('productsrecommend')">예적금 상품 추천</a>
           </li>
@@ -77,5 +76,11 @@ const logOut = () => {
 <style scoped>
   .navbar-nav .nav-link {
     margin-right: 15px; /* 메뉴 간격 설정 */
+  }
+
+  .logo {
+  height: 100%; /* 네비게이션 바 높이에 맞게 */
+  max-height: 50px; /* 최대 높이 제한 (선택 사항) */  
+  object-fit: contain; /* 이미지 비율 유지 */
   }
 </style>
