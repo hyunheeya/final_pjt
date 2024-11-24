@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-    <div class="text-end mt-4">
+    <div class="text-center mt-4">
       <RouterLink :to="{ name: 'productsrecommend' }" class="btn btn-primary">
         다시 추천받기
       </RouterLink>
