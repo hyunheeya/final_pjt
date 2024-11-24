@@ -27,12 +27,12 @@
           <li class="nav-item">
             <a class="nav-link" href="#" @click.prevent="navigateTo('board')">톡톡 게시판</a>
           </li>
-          <!-- <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="#" @click.prevent="navigateTo('exchanges')">환율 계산기</a>
-          </li> -->
+          </li>
         </ul>
-        <!-- 회원가입, 로그인 버튼 -->
-         
+
+        <!-- 회원가입, 로그인 버튼 --> 
         <!-- 로그인 안 한 경우 -->
         <div class="d-flex" v-if="!isLogin">
           <p>로그인을 해주세요</p>

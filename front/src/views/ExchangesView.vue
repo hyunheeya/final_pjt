@@ -33,6 +33,8 @@
   </template>
   
   <script>
+  import axios from 'axios'
+  
   export default {
     name: 'ExchangeCalculator',
     data() {
@@ -47,17 +49,21 @@
       }
     },
     methods: {
-        async getExchangeRate() {
+      async getExchangeRate() {
     try {
-        // YYYYMMDD 형식으로 날짜 변환
+        // 날짜가 없을 경우 오늘 날짜 사용
+        if (!this.selectedDate) {
+            this.selectedDate = new Date().toISOString().split('T')[0];
+        }
+        
         const formattedDate = this.selectedDate.replace(/-/g, '');
-        console.log('Requesting date:', formattedDate);
+        console.log(`요청 정보: 통화=${this.selectedCurrency}, 날짜=${formattedDate}`);
         
         const response = await axios.get(
             `http://127.0.0.1:8000/api/exchanges/rates/${this.selectedCurrency}/`,
             {
-                params: {
-                    searchdate: formattedDate  // 날짜 파라미터 전달
+                params: { 
+                    searchdate: formattedDate 
                 },
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,20 +72,23 @@
             }
         );
 
-        if (response.data && response.data.rate) {
+        console.log('API 응답:', response.data);  // 디버깅용 로그 추가
+
+        if (response.data && typeof response.data.rate === 'number') {
             this.exchangeRate = response.data.rate;
             this.calculate();
+        } else {
+            throw new Error('유효하지 않은 환율 데이터');
         }
     } catch (error) {
-        console.error('API Error:', error.response?.data);
-        const errorMessage = error.response?.data?.error || '환율 정보가 없습니다';
-        alert(errorMessage);
+        console.error('API 오류:', error);
         this.exchangeRate = 0;
+        alert(error.response?.data?.error || '환율 정보를 가져오는데 실패했습니다');
     }
 },
       calculate() {
         if (!this.amount) {
-          this.convertedAmount = 0;
+          this.convertedAmount = 0;xxxxxxxxxxxx
           return;
         }
         
