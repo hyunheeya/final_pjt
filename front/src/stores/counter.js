@@ -8,6 +8,7 @@ export const useCounterStore = defineStore("counter", () => {
   const token = ref(localStorage.getItem("token") || null)
   const userInfo = ref(null)
   const articles = ref([])
+  const isLoading = ref(false)
 
   // 로그인 여부 확인
   const isLogin = computed(() => {
@@ -109,13 +110,32 @@ export const useCounterStore = defineStore("counter", () => {
     }
   };
 
-  const getArticles = function() {
-    axios({
-      method: 'get',
-      url: `${API_URL}/api/articles/`
-    })
+  // 게시글 목록 가져오기
+  const fetchArticles = async () => {
+    isLoading.value = true;
+    try {
+      const response = await axios.get(`${API_URL}/api/board/articles/`, {
+        headers: { 'Authorization': `Token ${token.value}` }
+      });
+      articles.value = response.data;
+    } catch (err) {
+      console.error("게시글 목록 가져오기 실패:", err);
+    } finally {
+      isLoading.value = false;
+    }}
+  // 관리자 여부 확인
+  const checkAdminStatus = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/board/check-admin/`, {
+        headers: { 'Authorization': `Token ${token.value}` }
+      });
+      return response.data.is_admin;
+    } catch (err) {
+      console.error("관리자 상태 확인 실패:", err);
+      return false;
+    }
   }
 
-  return { API_URL, token, userInfo, isLogin, signUp, logIn, getUserInfo, logOut };
+  return { API_URL, token, userInfo, isLogin, articles, isLoading, signUp, logIn, getUserInfo, logOut, fetchArticles, checkAdminStatus };
 });
 export default useCounterStore

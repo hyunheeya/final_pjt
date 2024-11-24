@@ -1,25 +1,26 @@
 <template>
-  <div>
-    <h1>게시글 작성</h1>
+  <div class="container mt-5">
+    <h1 class="mb-4">게시글 작성</h1>
     <form @submit.prevent="createArticle">
-      <div>
-        <label for="title">제목 : </label>
-        <input type="text" id="title" v-model.trim="title">
+      <div class="mb-3">
+        <label for="title" class="form-label">제목:</label>
+        <input type="text" class="form-control" id="title" v-model.trim="title">
       </div>
-      <div>
-        <label for="content">내용 : </label>
-        <textarea id="content" v-model.trim="content"></textarea>
+      <div class="mb-3">
+        <label for="content" class="form-label">내용:</label>
+        <textarea class="form-control" id="content" rows="5" v-model.trim="content"></textarea>
       </div>
-      <div>
-        <label for="image">이미지 : </label>
+      <div class="mb-3">
+        <label for="image" class="form-label">이미지:</label>
         <input 
           type="file" 
+          class="form-control" 
           id="image" 
           @change="handleImageChange"
           accept="image/*"
         >
       </div>
-      <input type="submit">
+      <button type="submit" class="btn btn-primary">게시글 작성</button>
     </form>
   </div>
 </template>
@@ -41,14 +42,17 @@ const handleImageChange = (event) => {
 }
 
 const createArticle = function() {
+  const formData = new FormData()
+  formData.append('title', title.value)
+  formData.append('content', content.value)
+  if (image.value) {
+    formData.append('image', image.value)
+  }
+
   axios({
     method: 'post',
     url: `${store.API_URL}/api/board/articles/`,
-    data: {
-      title: title.value,
-      content: content.value,
-      image: image.value
-    },
+    data: formData,
     headers: {
       'Authorization': `Token ${store.token}`,
       'Content-Type': 'multipart/form-data'
@@ -61,9 +65,4 @@ const createArticle = function() {
     console.log(err)
   })
 }
-
 </script>
-
-<style scoped>
-
-</style>
