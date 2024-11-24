@@ -13,5 +13,6 @@ urlpatterns = [
     path('api/products/', include('products.urls')),  # 상품 관련 API
     path('api/accounts/', include('accounts.urls')),  # 사용자 정보
     path('api/board/', include('board.urls')),  # 게시판 관련
+    path('api/exchanges/', include('exchanges.urls')),  # 환율
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
