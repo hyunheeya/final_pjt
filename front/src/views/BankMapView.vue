@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <h1 class="h1">주변 은행 검색하기</h1>
+    <p class="p">근처 은행을 찾아보세요.</p>
     <div class="search-container">
       <input 
         type="text" 
@@ -256,6 +258,11 @@ export default {
   flex-direction: column;
   height: 600px;
   margin: 20px;
+}
+
+.h1,p{
+  margin: 0;
+  padding: 5px;
 }
 
 .search-container {

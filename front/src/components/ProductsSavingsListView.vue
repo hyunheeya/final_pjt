@@ -2,10 +2,30 @@
   <div class="container">
     <h2 class="mb-4">적금 상품 조회</h2>
     <div class="mb-4">
-      <button @click="showAllSavings" class="btn btn-primary me-2">전체</button>
-      <button @click="showSavingsByRate" class="btn btn-secondary me-2">금리순</button>
-      <button @click="showSavingsByLikes" class="btn btn-secondary me-2">좋아요순</button>
-      <button @click="showSavingsByBank" class="btn btn-secondary me-2">은행명순</button>
+      <button 
+        @click="showAllSavings" 
+        :class="['btn', activeButton === 'all' ? 'btn-primary' : 'btn-outline-primary']"
+        class="me-2"
+        >전체
+      </button>
+      <button 
+        @click="showSavingsByRate" 
+        class="me-2"
+        :class="['btn', activeButton === 'rate' ? 'btn-primary' : 'btn-outline-primary']"
+        >금리순
+      </button>
+      <button 
+        @click="showSavingsByLikes" 
+        :class="['btn', activeButton === 'likes' ? 'btn-primary' : 'btn-outline-primary']"
+        class="me-2"
+        >좋아요순
+      </button>
+      <button 
+        @click="showSavingsByBank" 
+        :class="['btn', activeButton === 'bank' ? 'btn-primary' : 'btn-outline-primary']"
+        class="me-2"
+        >은행명순
+      </button>
     </div>
     <div v-for="(products, productName) in groupedProducts" :key="productName" class="mb-4">
       <h3 class="mb-3">{{ productName }}</h3>
@@ -95,24 +115,31 @@ const fetchSavings = async (sortType = 'default') => {
   }
 };
 
+// 현재 활성화된 버튼 상태 관리
+const activeButton = ref('all'); // 초기값은 '전체'
+
 // 전체보기
 const showAllSavings = () => {
   fetchSavings('default');
+  activeButton.value = 'all'; // '전체' 버튼 활성화
 };
 
 // 금리순 보기
 const showSavingsByRate = () => {
   fetchSavings('rate');
+  activeButton.value = 'rate'; // '전체' 버튼 활성화
 };
 
 // 은행명순 보기
 const showSavingsByBank = () => {
   fetchSavings('bank');
+  activeButton.value = 'bank'; // '은행명순' 버튼 활성화
 };
 
 // 좋아요순 보기 함수 추가
 const showSavingsByLikes = () => {
   fetchSavings('likes');
+  activeButton.value = 'likes'; // '전체' 버튼 활성화
 };
 
 // 좋아요 상태 토글

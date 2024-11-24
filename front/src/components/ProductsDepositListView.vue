@@ -47,11 +47,36 @@
   <div class="container">
     <h2 class="mb-4">예금 상품 조회</h2>
     <div class="mb-4">
-      <button @click="showAllDeposits" class="btn btn-primary me-2">전체</button>
-      <button @click="showDepositsByRate" class="btn btn-secondary me-2">금리순</button>
-      <button @click="showDepositsByLikes" class="btn btn-secondary me-2">좋아요순</button>
-      <button @click="showDepositsByBank" class="btn btn-secondary me-2">은행명순</button>
+      <button 
+        @click="showAllDeposits" 
+        :class="['btn', activeButton === 'all' ? 'btn-primary' : 'btn-outline-primary']"
+        class="me-2"
+      >
+        전체
+      </button>
+      <button 
+        @click="showDepositsByRate" 
+        :class="['btn', activeButton === 'rate' ? 'btn-primary' : 'btn-outline-primary']"
+        class="me-2"
+      >
+        금리순
+      </button>
+      <button 
+        @click="showDepositsByLikes" 
+        :class="['btn', activeButton === 'likes' ? 'btn-primary' : 'btn-outline-primary']"
+        class="me-2"
+      >
+        좋아요순
+      </button>
+      <button 
+        @click="showDepositsByBank" 
+        :class="['btn', activeButton === 'bank' ? 'btn-primary' : 'btn-outline-primary']"
+        class="me-2"
+      >
+        은행명순
+      </button>
     </div>
+
     <div v-for="(products, productName) in groupedProducts" :key="productName" class="mb-4">
       <h3 class="mb-3">{{ productName }}</h3>
       <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -140,25 +165,34 @@ const fetchDeposits = async (sortType = 'default') => {
   }
 };
 
+// 현재 활성화된 버튼 상태 관리
+const activeButton = ref('all'); // 초기값은 '전체'
+
 // 전체보기
 const showAllDeposits = () => {
   fetchDeposits('default');
+  activeButton.value = 'all'; // '전체' 버튼 활성화
 };
 
 // 금리순 보기
 const showDepositsByRate = () => {
   fetchDeposits('rate');
-};
-
-// 은행명순 보기
-const showDepositsByBank = () => {
-  fetchDeposits('bank');
+  activeButton.value = 'rate'; // '금리순' 버튼 활성화
 };
 
 // 좋아요순 보기 함수 추가
 const showDepositsByLikes = () => {
   fetchDeposits('likes');
+  activeButton.value = 'likes'; // '은행명순' 버튼 활성화
+
 };
+
+// 은행명순 보기
+const showDepositsByBank = () => {
+  fetchDeposits('bank');
+  activeButton.value = 'bank'; // '좋아요순' 버튼 활성화
+};
+
 
 // 좋아요 상태 토글
 const toggleLike = async (product) => {

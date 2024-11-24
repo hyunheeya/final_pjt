@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div v-if="userInfo">
-      <div v-if="!isEditing && !isChangingPassword">
+      <div v-if="!isEditing && !isChangingPassword" class="profile">
         <p><strong>사용자명:</strong> {{ userInfo.username }}</p>
         <p><strong>이메일:</strong> {{ userInfo.email }}</p>
         <p><strong>닉네임:</strong> {{ userInfo.nickname }}</p>
@@ -150,5 +150,8 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+  .profile{
+    padding: 10 0 0 0;
+  }
 
 </style>

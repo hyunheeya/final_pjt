@@ -31,53 +31,59 @@
     </div>
 
     <!-- 예금 리스트 -->
-    <div v-if="currentView === 'deposit'" class="row row-cols-1 row-cols-md-3 g-4">
-      <div v-for="product in likedDeposits" :key="product.id" class="col">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">{{ product.fin_prdt_nm }}</h5>
-            <p class="text-muted small">{{ product.kor_co_nm }}</p>
-            <p class="card-text">
-              <strong>저축 기간:</strong> {{ product.save_trm }}개월<br>
-              <strong>기본 금리:</strong> {{ product.intr_rate }}%
-            </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <RouterLink 
-                :to="{ name: 'productsdepositlistdetail', params: { id: product.id } }" 
-                class="btn btn-primary"
-              >
-                상세 정보
-              </RouterLink>
-              <span class="text-danger">❤️ {{ product.like_count }}</span>
+    <div v-if="currentView === 'deposit'">
+      <div v-if="likedDeposits.length > 0" class="row row-cols-1 row-cols-md-3 g-4">
+        <div v-for="product in likedDeposits" :key="product.id" class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.fin_prdt_nm }}</h5>
+              <p class="text-muted small">{{ product.kor_co_nm }}</p>
+              <p class="card-text">
+                <strong>저축 기간:</strong> {{ product.save_trm }}개월<br>
+                <strong>기본 금리:</strong> {{ product.intr_rate }}%
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <RouterLink 
+                  :to="{ name: 'productsdepositlistdetail', params: { id: product.id } }" 
+                  class="btn btn-primary"
+                >
+                  상세 정보
+                </RouterLink>
+                <span class="text-danger">❤️ {{ product.like_count }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <p v-else class="text-center text-muted">좋아요한 예금 상품이 없습니다.</p>
     </div>
 
     <!-- 적금 리스트 -->
-    <div v-if="currentView === 'savings'" class="row row-cols-1 row-cols-md-3 g-4">
-      <div v-for="product in likedSavings" :key="product.id" class="col">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">{{ product.fin_prdt_nm }}</h5>
-            <p class="text-muted small">{{ product.kor_co_nm }}</p>
-            <p class="card-text">
-              <strong>저축 기간:</strong> {{ product.save_trm }}개월<br>
-              <strong>기본 금리:</strong> {{ product.intr_rate }}%
-            </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <RouterLink 
-                :to="{ name: 'productssavingslistdetail', params: { id: product.id } }" 
-                class="btn btn-primary"
-              >
-                상세 정보
-              </RouterLink>
-              <span class="text-danger">❤️ {{ product.like_count }}</span>
+    <div v-if="currentView === 'savings'">
+      <div v-if="likedSavings.length > 0" class="row row-cols-1 row-cols-md-3 g-4">
+        <div v-for="product in likedSavings" :key="product.id" class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.fin_prdt_nm }}</h5>
+              <p class="text-muted small">{{ product.kor_co_nm }}</p>
+              <p class="card-text">
+                <strong>저축 기간:</strong> {{ product.save_trm }}개월<br>
+                <strong>기본 금리:</strong> {{ product.intr_rate }}%
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <RouterLink 
+                  :to="{ name: 'productssavingslistdetail', params: { id: product.id } }" 
+                  class="btn btn-primary"
+                >
+                  상세 정보
+                </RouterLink>
+                <span class="text-danger">❤️ {{ product.like_count }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <p v-else class="text-center text-muted">좋아요한 적금 상품이 없습니다.</p>
     </div>
 
     <!-- 예금 금리 비교 -->
@@ -93,6 +99,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted, nextTick,watch } from 'vue';
@@ -211,17 +218,6 @@ const renderSavingsChart = async () => {
       },
     },
   });
-};
-
-// 금리 비교 버튼 클릭
-const showGraph = async (view) => {
-  currentView.value = view;
-
-  if (view === 'depositGraph') {
-    await renderDepositChart(); // 예금 그래프 렌더링
-  } else if (view === 'savingsGraph') {
-    await renderSavingsChart(); // 적금 그래프 렌더링
-  }
 };
 
 onMounted(fetchLikedProducts);

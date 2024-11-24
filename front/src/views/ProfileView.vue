@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <h1>프로필</h1>
+    <h1 class="h1">프로필</h1>
         <!-- 탭 -->
         <div class="product-tabs">
       <button 
@@ -57,6 +57,11 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+.h1{
+  margin: 0;
+  padding: 24px;
 }
 
 .title {

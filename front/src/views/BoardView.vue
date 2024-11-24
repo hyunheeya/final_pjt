@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>톡!톡! 게시판</h1>
+    <h1 class="h1">톡!톡! 게시판</h1>
     <RouterLink v-if="isAdmin" :to="{ name: 'create' }">
       [CREATE]
     </RouterLink>
-    <h2>게시글 목록</h2>
+    <h2 class="h2">게시글 목록</h2>
     <BoardArticleListView 
       :articles="store.articles" 
       :isLoading="store.isLoading" 
@@ -33,5 +33,9 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+  .h1, .h2{
+    margin: 0%;
+    padding: 10px 60px;
+  }
 
 </style>

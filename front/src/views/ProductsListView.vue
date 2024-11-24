@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="mb-4">예적금 전체 상품 리스트</h1>
+    <h1 class="h1">예적금 전체 상품 리스트</h1>
     <!-- 예금/적금 탭 -->
     <div class="product-tabs">
       <button 
@@ -72,6 +72,11 @@ onMounted(() => {
 .tab-button.active {
   color: #007bff;
   border-bottom: 2px solid #007bff;
+}
+
+.h1{
+  margin: 0px;
+  padding: 25px;
 }
 
 </style>
