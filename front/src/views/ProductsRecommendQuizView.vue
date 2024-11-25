@@ -98,8 +98,12 @@ export default {
   saveAnswer(questionId, answer) {
     // 입력값이 숫자인 경우 처리
     if (this.currentQuestion.type === 'number') {
-        const numericAnswer = parseInt(answer, 10)
-        this.answers[questionId] = numericAnswer // 숫자 값 저장
+      if ((questionId === 5 || questionId === 6) && (answer === '' || isNaN(answer))) {
+        alert('숫자를 입력해주세요.');
+        return; // 함수 실행 중단
+      }
+      const numericAnswer = parseInt(answer, 10)
+      this.answers[questionId] = numericAnswer // 숫자 값 저장
     } else {
         // 일반 텍스트 또는 옵션 타입 질문 처리
         this.answers[questionId] = answer;
@@ -114,34 +118,33 @@ export default {
     this.currentQuestion = this.questionQueue.shift();
   },
   validateNumberInput(event) {
-      const input = event.target
-      const originalValue = input.value
-      const numericValue = originalValue.replace(/[^0-9]/g, '')
-      if (this.currentQuestion.id === 5) 
-      { if (numericValue !== originalValue || numericValue === '' || parseInt(numericValue, 10) < 0) {
-          this.answers[this.currentQuestion.id] = numericValue
-          alert('숫자만 입력해주세요.')
-        } 
-        else {
-          const age = parseInt(numericValue, 10)
-          if (age > 150) {
-            input.value = ''
-            alert('최대 나이는 150세입니다.')
-          } else {
-            // 여기서 유효한 나이를 저장
-            this.answers[this.currentQuestion.id] = numericValue}}}
+    const input = event.target;
+    const originalValue = input.value;
+    const numericValue = originalValue.replace(/[^0-9]/g, '');
+    
+    // 문자가 입력되었을 때 한 번만 alert를 표시
+    if (numericValue !== originalValue) {
+        input.value = numericValue; // 숫자가 아닌 문자를 제거
+        alert('숫자만 입력해주세요.');
+        return;
+    }
 
-      else // currentQuestion.id === 6
-      { if (numericValue !== originalValue || numericValue === '' || parseInt(numericValue, 10) < 0) {
-          this.answers[this.currentQuestion.id] = numericValue
-          alert('숫자만 입력해주세요.')
-        } 
-        else {
-            // 여기서 유효한 금액을 저장
-            this.answers[this.currentQuestion.id] = numericValue
-          }
-
-  }},
+    if (this.currentQuestion.id === 5) {
+        if (numericValue !== '') {
+            const age = parseInt(numericValue, 10);
+            if (age > 150) {
+                input.value = '';
+                alert('최대 나이는 150세입니다.');
+            } else {
+                this.answers[this.currentQuestion.id] = numericValue;
+            }
+        }
+    } else { // currentQuestion.id === 6
+        if (numericValue !== '') {
+            this.answers[this.currentQuestion.id] = numericValue;
+        }
+    }
+},
   submitAnswers() {
   const token = this.token || localStorage.getItem("token"); // 토큰 확인
 
