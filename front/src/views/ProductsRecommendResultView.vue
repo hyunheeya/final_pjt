@@ -29,7 +29,7 @@
                 name: result.product_type === '예금' ? 'productsdepositlistdetail' : 'productssavingslistdetail',
                 params: { id: result.id }
               }"
-              class="btn btn-primary"
+              class="btn btn-warning"
             >
               Detail
             </RouterLink>
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="text-center mt-4">
-      <RouterLink :to="{ name: 'productsrecommend' }" class="btn btn-primary">
+      <RouterLink :to="{ name: 'productsrecommend' }" class="btn btn-success">
         다시 추천받기
       </RouterLink>
     </div>
