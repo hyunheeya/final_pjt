@@ -1,6 +1,6 @@
 <template>
-  <div class="main-container">
-    <h1 class="h1">똑!똑! 게시판</h1>
+  <div>
+    <h1 class="board-title">똑!똑! 게시판</h1>
     <div class="header-container">
       <h2 class="h2">게시글 목록</h2>
       <RouterLink 
@@ -39,9 +39,14 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.main-container{
-  margin: 4% 4% 32% 4%;
+.board-title {
+  text-align: center;
+  margin: 2rem 0;  /* 상하 여백 증가 */
+  padding: 10px;
+  font-size: 3rem;
+  font-weight: bold;
 }
+
 .h1 {
   margin: 0;
   padding: 10px 60px;
@@ -51,7 +56,7 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 60px;
+  padding: 10px 75px;
 }
 
 .h2 {

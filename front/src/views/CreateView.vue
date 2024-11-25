@@ -76,22 +76,22 @@ const goBack = function() {
 <style scoped>
 
 .post-btn {
-  background-color: #0066ff;
+  background-color: #4CAF50;
   color: white;
 }
 
 .cancel-btn {
   margin: 0 20px;
-  background-color: #4CAF50;
+  background-color: gray;
   color: white;
 }
 
 .post-btn:hover {
-  background-color: #0052cc;
+  background-color: #45a049;
 }
 
 .cancel-btn:hover {
-  background-color: #45a049;
+  background-color: rgb(121, 121, 121);
 }
 
 </style>

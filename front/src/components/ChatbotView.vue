@@ -137,7 +137,7 @@ export default {
 }
 
 .user {
-  background-color: #e3f2fd;
+  background-color: #ffffc1;
   margin-left: 20%;
 }
 
@@ -165,7 +165,7 @@ input {
 
 button {
   padding: 10px 20px;
-  background-color: #2196f3;
+  background-color: #ffc107;
   color: white;
   border: none;
   border-radius: 4px;
