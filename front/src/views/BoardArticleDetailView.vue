@@ -42,7 +42,7 @@
         <div class="d-flex justify-content-between align-items-center">
           <!-- 목록 버튼 -->
           <button @click="articleList" 
-                  class="btn btn-outline-primary">
+                  class="btn btn-outline-success">
             <i class="fas fa-list me-1"></i> 목록
           </button>
 
@@ -50,7 +50,7 @@
           <div v-if="isAdmin" class="admin-buttons">
             <RouterLink 
               :to="{ name: 'edit', params: { id: article?.id }}" 
-              class="btn btn-success me-2">
+              class="btn btn-warning me-2">
               <i class="fas fa-edit me-1"></i> 수정
             </RouterLink>
             <button @click="deleteArticle" 
