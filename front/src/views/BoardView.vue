@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-container">
     <h1 class="h1">똑!똑! 게시판</h1>
     <div class="header-container">
       <h2 class="h2">게시글 목록</h2>
@@ -39,6 +39,9 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.main-container{
+  margin: 4% 4% 32% 4%;
+}
 .h1 {
   margin: 0;
   padding: 10px 60px;

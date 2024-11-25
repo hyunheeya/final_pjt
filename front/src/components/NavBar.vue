@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <!-- 로고 -->
       <router-link to="/">
-        <img src="/design/StarPot_logo_ai.png" alt="StarPot Logo" class="logo me-3" />
+        <img src="/design/logo/StarPot_logo_ai.png" alt="StarPot Logo" class="logo me-3" />
       </router-link>
 
       <!-- 토글 버튼 -->

@@ -31,7 +31,7 @@
   <div class="footer-container">
     <!-- 회사 정보 -->
     <div class="footer-company">
-      <img src="/design/StarPot.png" alt="StarPot 로고" class="footer-logo" />
+      <img src="/design/logo/StarPot.png" alt="StarPot 로고" class="footer-logo" />
       <p>© 2024 StarPot. All Rights Reserved.</p>
       <p>주소: 서울특별시 강남구 테헤란로 123, 스타타워 12층</p>
     </div>
@@ -51,9 +51,9 @@
     <div class="footer-social">
       <h4>소셜 미디어</h4>
       <div class="social-links">
-        <a href="https://facebook.com" target="_blank">Facebook</a>
-        <a href="https://twitter.com" target="_blank">Twitter</a>
-        <a href="https://instagram.com" target="_blank">Instagram</a>
+        <a href="https://facebook.com" target="_blank">Facebook</a><br>
+        <a href="https://twitter.com" target="_blank">Twitter</a><br>
+        <a href="https://instagram.com" target="_blank">Instagram</a><br>
         <a href="https://youtube.com" target="_blank">YouTube</a>
       </div>
     </div>
@@ -178,7 +178,7 @@ const toggleChatbot = () => {
 /* Footer 스타일 */
 .footer {
   background-color: #f8f9fa;
-  margin: 300px 0px 0px 0px;
+  margin: 200px 0px 0px 0px;
   padding: 20px;
   text-align: center;
   font-size: 14px;

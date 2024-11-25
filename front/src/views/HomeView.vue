@@ -13,7 +13,7 @@
         <!-- 첫 번째 슬라이드 -->
         <div class="carousel-item active">
           <div class="content-box">
-            <img src="/design/StarPot.png" alt="StarPot 이미지" class="main-image" />
+            <img src="/design/logo/StarPot.png" alt="StarPot 이미지" class="main-image" />
             <h1 class="h1">어떤 예적금 상품을 가입할 지 고민되시나요</h1>
             <p class="p">추천을 받아보세요</p>
             <div class="inline-content">
@@ -28,7 +28,7 @@
         <!-- 두 번째 슬라이드 -->
         <div class="carousel-item">
           <div class="content-box">
-            <img src="/design/StarPot.png" alt="StarPot 이미지" class="main-image" />
+            <img src="/design/logo/StarPot.png" alt="StarPot 이미지" class="main-image" />
             <h1 class="h1">예금 적금 상품에는 무엇이 있을까요</h1>
             <p class="p">전체 상품을 확인해보세요</p>
             <div class="inline-content">
@@ -43,7 +43,7 @@
         <!-- 세 번째 슬라이드 -->
         <div class="carousel-item">
           <div class="content-box">
-            <img src="/design/StarPot.png" alt="StarPot 이미지" class="main-image" />
+            <img src="/design/logo/StarPot.png" alt="StarPot 이미지" class="main-image" />
             <h1 class="h1">주변 은행을 찾아보세요</h1>
             <p class="p">내 주변에 있는 은행을 찾아드려요</p>
             <div class="inline-content">
