@@ -4,13 +4,13 @@
     <div class="mb-4">
       <button 
         @click="currentView = 'deposit'" 
-        :class="['btn', 'me-2', currentView === 'deposit' ? 'btn-primary' : 'btn-outline-primary']"
+        :class="['btn', 'me-2', currentView === 'deposit' ? 'btn-warning' : 'btn-outline-secondary']"
       >
         예금
       </button>
       <button 
         @click="currentView = 'savings'"
-        :class="['btn', 'me-2', currentView === 'savings' ? 'btn-primary' : 'btn-outline-primary']"
+        :class="['btn', 'me-2', currentView === 'savings' ? 'btn-warning' : 'btn-outline-secondary']"
       >
         적금
       </button>
@@ -27,7 +27,7 @@
             <small class="text-muted">{{ formatDate(comment.created_at) }}</small>
             <RouterLink 
               :to="{ name: 'productsdepositlistdetail', params: { id: comment.deposit__id }}"
-              class="btn btn-sm btn-primary"
+              class="btn btn-sm btn-warning"
             >
               상품 보기
             </RouterLink>
@@ -35,6 +35,8 @@
         </div>
       </div>
     </div>
+    <p v-else class="text-center text-muted">내가 쓴 댓글이 없습니다.</p>
+
 
     <!-- 적금 댓글 목록 -->
     <div v-if="currentView === 'savings'" class="comment-list">
@@ -47,7 +49,7 @@
             <small class="text-muted">{{ formatDate(comment.created_at) }}</small>
             <RouterLink 
               :to="{ name: 'productssavingslistdetail', params: { id: comment.savings__id }}"
-              class="btn btn-sm btn-primary"
+              class="btn btn-sm btn-warning"
             >
               상품 보기
             </RouterLink>
@@ -55,6 +57,7 @@
         </div>
       </div>
     </div>
+    <p v-else class="text-center text-muted">내가 쓴 댓글이 없습니다.</p>
   </div>
 </template>
 
