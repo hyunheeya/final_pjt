@@ -115,22 +115,24 @@
   align-items: center; /* 수직 중앙 정렬 */
   gap: 120px; /* 이미지와 버튼 사이 간격 */
   margin-top: 20px; /* 상단 텍스트와 간격 추가 */
+  size: 100%;
 }
 
 /* 메인 버튼 스타일 */
 .main-btn {
   background-color: #ffc107;
   border: none;
-  padding: 15px 50px;
+  padding: clamp(10px, 2vw, 15px) clamp(20px, 5vw, 40px); /* 반응형 패딩 */
   border-radius: 5px;
-  font-size: 24px;
+  font-size: clamp(18px, 2vw, 20px); /* 반응형 텍스트 크기 */
   cursor: pointer;
-  size: 100px;
+  width: 100%; /* 버튼 너비를 부모 요소에 맞춤 */
+  max-width: 200px; /* 최대 너비 제한 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+  transition: all 0.3s ease; /* 부드러운 크기 변화 */
 }
 
-/* .btn-primary{
-  display: inline;
-} */
 
 .main-btn:hover {
   background-color: #fcd153;
@@ -154,6 +156,16 @@
 }
 
 
+/* 캐러셀 버튼 색 */
+/* 하단 버튼 */
+.carousel-indicators button{
+  background-color: #ffa600;
+}
+/* 좌우 버튼 */
+.carousel-control-prev-icon,
+.carousel-control-next-icon{
+  filter: invert(56%) sepia(89%) saturate(653%) hue-rotate(1deg) brightness(96%) contrast(101%);
+}
 
 
 </style>
