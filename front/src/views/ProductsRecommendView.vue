@@ -1,6 +1,6 @@
 <template>
   <div class="container text-center mt-5">
-    <h1 class="display-4 mb-4 font-weight-bold">예적금 상품 추천</h1>
+    <h1 class="display-4 mb-4 fw-bold">예적금 상품 추천</h1>
     <h5>나에게 맞는 금융 상품을 추천받아보세요!</h5>
     <div>
       <img :src="randomImage" alt="Random Character" class="img">
