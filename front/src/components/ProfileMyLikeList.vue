@@ -6,25 +6,25 @@
     <div class="mb-4 d-flex flex-wrap gap-2">
       <button 
         @click="currentView = 'deposit'" 
-        :class="['btn', currentView === 'deposit' ? 'btn-primary' : 'btn-outline-primary']"
+        :class="['btn', currentView === 'deposit' ? 'btn-warning' : 'btn-outline-secondary']"
       >
         예금
       </button>
       <button 
         @click="currentView = 'savings'" 
-        :class="['btn', currentView === 'savings' ? 'btn-primary' : 'btn-outline-primary']"
+        :class="['btn', currentView === 'savings' ? 'btn-warning' : 'btn-outline-secondary']"
       >
         적금
       </button>
       <button 
         @click="currentView = 'depositGraph'" 
-        :class="['btn', currentView === 'depositGraph' ? 'btn-success' : 'btn-outline-success']"
+        :class="['btn', currentView === 'depositGraph' ? 'btn-warning' : 'btn-outline-secondary']"
       >
         예금 금리 비교하기
       </button>
       <button 
         @click="currentView = 'savingsGraph'" 
-        :class="['btn', currentView === 'savingsGraph' ? 'btn-success' : 'btn-outline-success']"
+        :class="['btn', currentView === 'savingsGraph' ? 'btn-warning' : 'btn-outline-secondary']"
       >
         적금 금리 비교하기
       </button>
