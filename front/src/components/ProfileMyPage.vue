@@ -2,7 +2,11 @@
   <div class="container">
     <div v-if="userInfo">
       <div v-if="!isEditing && !isChangingPassword" class="profile">
-        <p><strong>사용자명:</strong> {{ userInfo.username }}</p>
+        <!-- 프로필 -->
+        <div class="profile-image">
+          <img src="/design/character/star5.png" alt="프로필 이미지" />
+        </div>
+        <p><strong>아이디:</strong> {{ userInfo.username }}</p>
         <p><strong>이메일:</strong> {{ userInfo.email }}</p>
         <p><strong>닉네임:</strong> {{ userInfo.nickname }}</p>
         <button @click="startEditing" class="btn btn-primary me-2">프로필 수정</button>
@@ -150,8 +154,53 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-  .profile{
-    padding: 10 0 0 0;
+  .container{
+   text-align: center;
+   margin: 10%;
+   padding: 10px 50px;
   }
+/* 프로필 컨테이너 중앙 정렬 */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 수평 중앙 정렬 */
+  justify-content: center; /* 수직 중앙 정렬 */
+  margin: 0 auto;
+  text-align: center; /* 텍스트 중앙 정렬 */
+  padding: 20px;
+}
+
+/* 프로필 이미지 스타일 */
+.profile-image img {
+  width: 150px; /* 이미지 크기 */
+  height: 150px; /* 이미지 크기 */
+  object-fit: cover; /* 비율 유지하며 크기 맞춤 */
+  border-radius: 50%; /* 둥근 프로필 이미지 */
+  margin-bottom: 20px; /* 이미지와 정보 간격 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+/* 사용자 정보 스타일 */
+.profile-info ul {
+  list-style-type: none; /* 리스트 스타일 제거 */
+  padding: 0;
+  margin: 0;
+}
+
+.profile-info ul li {
+  font-size: 18px; /* 글씨 크기 */
+  margin-bottom: 10px; /* 각 항목 간 간격 */
+}
+
+/* 버튼 컨테이너 */
+.profile-buttons {
+  margin-top: 20px;
+}
+
+.profile-buttons .btn {
+  margin: 0 10px; /* 버튼 간격 */
+  padding: 10px 20px; /* 버튼 크기 조정 */
+}
+
 
 </style>
