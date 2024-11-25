@@ -1,48 +1,3 @@
-<!-- <template>
-  <div class="container">
-    <h2 class="mb-4">예금 상품 조회</h2>
-    <div class="mb-4">
-      <button @click="showAllDeposits" class="btn btn-primary me-2">전체</button>
-      <button @click="showDepositsByRate" class="btn btn-secondary me-2">금리순</button>
-      <button @click="showDepositsByLikes" class="btn btn-secondary me-2">좋아요순</button>
-      <button @click="showDepositsByBank" class="btn btn-secondary me-2">은행명순</button>
-    </div>
-    <div v-for="(products, productName) in groupedProducts" :key="productName" class="mb-4">
-      <h3 class="mb-3">{{ productName }}</h3>
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div v-for="product in products" :key="product.id" class="col"> 
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">{{ product.fin_prdt_nm }}</h5>
-              <p class="text-muted small mb-3">{{ product.kor_co_nm }}</p>
-              <p class="card-text">
-                <strong>저축 기간:</strong> {{ product.save_trm }}개월<br>
-                <strong>기본 금리:</strong> {{ product.intr_rate }}%
-              </p>
-              <div class="d-flex justify-content-between align-items-center mt-3">
-                <RouterLink 
-                  :to="{ name: 'productsdepositlistdetail', params: { id: product.id } }" 
-                  class="btn btn-primary"
-                >
-                  상세 정보
-                </RouterLink>
-                <button 
-                  @click="toggleLike(product)" 
-                  :class="['btn', 'btn-sm', product.is_liked ? 'btn-danger' : 'btn-outline-danger']"
-                >
-                  <span class="heart-icon">❤️</span>
-                  <span class="ms-1">{{ product.like_count }}</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr class="mt-4" />
-    </div>
-  </div>
-</template> -->
-
 <template>
   <div class="container">
     <h2 class="mb-4">예금 상품 조회</h2>
@@ -132,12 +87,8 @@ const depositProducts = ref([]); // 예금 상품 리스트
 
 // 이미지 동적 로딩을 위한 설정
 const getImageUrl = (bankName) => {
-  try {
-    return new URL(`../assets/bank_logo/${bankName}.png`, import.meta.url).href;
-  } catch (error) {
-    console.error(`은행 로고 로딩 실패: ${bankName}`, error);
-    return ''; // 기본 이미지 경로 또는 빈 문자열 반환
-  }
+  if (!bankName) return '';
+  return `/bank_logo/${bankName}.png`; // public 디렉터리 기준 경로
 };
 
 // 그룹화된 상품 데이터 계산

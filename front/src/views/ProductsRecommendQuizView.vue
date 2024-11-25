@@ -203,6 +203,7 @@ export default {
   }
 
   img{
-    width: 50%;
+    width: 32%;
+    padding: 40px;
   }
 </style>
