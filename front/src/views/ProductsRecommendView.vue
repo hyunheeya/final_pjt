@@ -6,7 +6,7 @@
       <img :src="randomImage" alt="Random Character" class="img">
     </div>
     <RouterLink :to="{name: 'productsrecommendquiz'}">
-      <button class="btn btn-primary btn-lg">시작하기</button>
+      <button class="btn btn-warning btn-lg">시작하기</button>
     </RouterLink>
   </div>
 </template>

@@ -19,7 +19,7 @@
           </div>
         </RouterLink>
       </div>
-      <div v-else class="alert alert-info" role="alert">
+      <div v-else class="alert alert-warning" role="alert">
         게시글이 없습니다.
       </div>
     </div>

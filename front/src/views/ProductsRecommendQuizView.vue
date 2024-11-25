@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <h1 class="text-center mb-4">금융 상품 추천</h1>
+    <h1 class="text-center mb-4"><strong>금융 상품 추천</strong></h1>
     <!-- 현재 질문 표시 -->
     <div v-if="currentQuestion" class="card p-4 shadow-sm">
       <p class="lead text-center mb-4">{{ currentQuestion.text }}</p>
@@ -10,7 +10,7 @@
           v-for="option in currentQuestion.options"
           :key="option"
           @click="saveAnswer(currentQuestion.id, option)"
-          class="btn btn-outline-primary m-2"
+          class="btn btn-outline-success m-2"
         >
           {{ option }}
         </button>
@@ -27,7 +27,7 @@
         />
         <button
           @click="saveAnswer(currentQuestion.id, answers[currentQuestion.id])"
-          class="btn btn-primary"
+          class="btn btn-success"
         >
           다음
         </button>
@@ -40,7 +40,7 @@
       <img class="img" src="/design/pot.png" alt="pot"><br>
       <button
         @click="submitAnswers"
-        class="btn btn-success btn-lg"
+        class="btn btn-warning btn-lg"
       >
         추천받기
       </button>
