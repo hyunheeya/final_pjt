@@ -26,7 +26,7 @@
         <input
           type="submit"
           value="로그인"
-          class="btn btn-primary w-100"
+          class="btn btn-success w-100"
         >
       </div>
     </form>

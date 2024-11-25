@@ -9,7 +9,7 @@
         <p><strong>아이디:</strong> {{ userInfo.username }}</p>
         <p><strong>이메일:</strong> {{ userInfo.email }}</p>
         <p><strong>닉네임:</strong> {{ userInfo.nickname }}</p>
-        <button @click="startEditing" class="btn btn-primary me-2">프로필 수정</button>
+        <button @click="startEditing" class="btn btn-success me-2">프로필 수정</button>
         <button @click="startPasswordChange" class="btn btn-warning">비밀번호 변경</button>
       </div>
 

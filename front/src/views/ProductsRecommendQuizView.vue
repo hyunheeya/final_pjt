@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <h1 class="text-center mb-4"><strong>금융 상품 추천</strong></h1>
+    <h1 class="text-center mb-4">금융 상품 추천</h1>
     <!-- 현재 질문 표시 -->
     <div v-if="currentQuestion" class="card p-4 shadow-sm">
       <p class="lead text-center mb-4">{{ currentQuestion.text }}</p>

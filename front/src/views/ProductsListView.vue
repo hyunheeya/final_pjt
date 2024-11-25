@@ -70,8 +70,8 @@ onMounted(() => {
 }
 
 .tab-button.active {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
+  color: #ffc107;
+  border-bottom: 2px solid #ffc107;
 }
 
 .h1{

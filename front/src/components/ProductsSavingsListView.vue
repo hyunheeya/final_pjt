@@ -4,25 +4,25 @@
     <div class="mb-4">
       <button 
         @click="showAllSavings" 
-        :class="['btn', activeButton === 'all' ? 'btn-primary' : 'btn-outline-primary']"
+        :class="['btn', activeButton === 'all' ? 'btn-warning' : 'btn-outline-secondary']"
         class="me-2"
         >전체
       </button>
       <button 
         @click="showSavingsByRate" 
         class="me-2"
-        :class="['btn', activeButton === 'rate' ? 'btn-primary' : 'btn-outline-primary']"
+        :class="['btn', activeButton === 'rate' ? 'btn-warning' : 'btn-outline-secondary']"
         >금리순
       </button>
       <button 
         @click="showSavingsByLikes" 
-        :class="['btn', activeButton === 'likes' ? 'btn-primary' : 'btn-outline-primary']"
+        :class="['btn', activeButton === 'likes' ? 'btn-warning' : 'btn-outline-secondary']"
         class="me-2"
         >좋아요순
       </button>
       <button 
         @click="showSavingsByBank" 
-        :class="['btn', activeButton === 'bank' ? 'btn-primary' : 'btn-outline-primary']"
+        :class="['btn', activeButton === 'bank' ? 'btn-warning' : 'btn-outline-secondary']"
         class="me-2"
         >은행명순
       </button>
@@ -50,7 +50,7 @@
               <div class="d-flex justify-content-between align-items-center mt-3">
                 <RouterLink 
                   :to="{ name: 'productssavingslistdetail', params: { id: product.id } }" 
-                  class="btn btn-primary"
+                  class="btn btn-warning"
                 >
                   상세 정보
                 </RouterLink>
