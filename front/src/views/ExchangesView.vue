@@ -27,7 +27,7 @@
           <input type="text" :value="convertedAmount" readonly>
           <span>₩</span>
         </div>
-        <p class="note">* 엔화, 인도네시아 루피아는 100 단위, 나머지는 모두 1 단위</p>
+        <p class="note">* 엔화는 100 단위, 나머지는 모두 1 단위</p>
       </div>
     </div>
   </template>
