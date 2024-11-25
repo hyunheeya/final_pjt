@@ -1,8 +1,12 @@
 <template>
   <div>
     <h1 class="h1">톡!톡! 게시판</h1>
-    <RouterLink v-if="isAdmin" :to="{ name: 'create' }">
-      [CREATE]
+    <RouterLink 
+      v-if="isAdmin" 
+      :to="{ name: 'create' }"
+      class="create-btn"
+    >
+      CREATE
     </RouterLink>
     <h2 class="h2">게시글 목록</h2>
     <BoardArticleListView 
@@ -37,5 +41,21 @@ onMounted(async () => {
     margin: 0%;
     padding: 10px 60px;
   }
+
+  .create-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 0 60px;
+  background-color: #4CAF50;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.create-btn:hover {
+  background-color: #45a049;
+}
 
 </style>

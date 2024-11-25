@@ -20,7 +20,8 @@
           accept="image/*"
         >
       </div>
-      <button type="submit" class="btn btn-primary">게시글 작성</button>
+      <button type="submit" class="btn post-btn">게시글 작성</button>
+      <button type="submit" @click="goBack" class="btn cancel-btn">취소</button>
     </form>
   </div>
 </template>
@@ -65,4 +66,32 @@ const createArticle = function() {
     console.log(err)
   })
 }
+
+const goBack = function() {
+  router.push({ name: 'board' })
+}
+
 </script>
+
+<style scoped>
+
+.post-btn {
+  background-color: #0066ff;
+  color: white;
+}
+
+.cancel-btn {
+  margin: 0 20px;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.post-btn:hover {
+  background-color: #0052cc;
+}
+
+.cancel-btn:hover {
+  background-color: #45a049;
+}
+
+</style>

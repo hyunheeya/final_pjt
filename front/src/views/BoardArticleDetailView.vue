@@ -7,6 +7,11 @@
         <img :src="getImageUrl(article.image)" :alt="article.title">
       </div>
       <span>{{ formatDate(article.created_at) }}</span>
+      <div>
+        <button @click="articleList" class="btn btn-primary">
+          목록
+        </button>
+      </div>
       <!-- 관리자인 경우에만 수정/삭제 버튼 표시 -->
       <div v-if="isAdmin" class="button-group">
         <RouterLink 
@@ -94,6 +99,10 @@ const deleteArticle = async () => {
 
 const getImageUrl = (imagePath) => {
   return `${store.API_URL}${imagePath}`
+}
+
+const articleList = () => {
+  router.push({ name: 'board'})
 }
 
 onMounted(() => {
