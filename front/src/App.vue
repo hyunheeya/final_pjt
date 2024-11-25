@@ -4,7 +4,7 @@
     <!-- 툴팁 버튼 -->
     <div class="tooltip-button">
       <button 
-        class="btn btn-primary rounded-circle"
+        class="btn btn-warning rounded-circle"
         ref="tooltipBtn"
         data-bs-toggle="tooltip"
         data-bs-placement="top"
@@ -14,7 +14,6 @@
         <i class="bi bi-question-lg"></i>
       </button>
     </div>
-
     <!-- 챗봇 모달 -->
     <div class="chatbot-modal" :class="{ 'show': showChatbot }">
       <div class="chatbot-header">
@@ -33,15 +32,12 @@ import { ref, onMounted } from 'vue'
 import NavBar from '@/components/NavBar.vue'
 import ChatbotComponent from '@/components/ChatbotView.vue'
 import { Tooltip } from 'bootstrap'
-
 const showChatbot = ref(false)
 const tooltipBtn = ref(null)
-
 onMounted(() => {
   // 툴팁 초기화
   new Tooltip(tooltipBtn.value)
 })
-
 const toggleChatbot = () => {
   showChatbot.value = !showChatbot.value
 }
@@ -54,13 +50,11 @@ const toggleChatbot = () => {
   right: 30px;
   z-index: 1000;
 }
-
 .tooltip-button button {
   width: 50px;
   height: 50px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
-
 .chatbot-modal {
   position: fixed;
   bottom: 100px;
@@ -73,11 +67,9 @@ const toggleChatbot = () => {
   display: none;
   z-index: 1050;
 }
-
 .chatbot-modal.show {
   display: block;
 }
-
 .chatbot-header {
   padding: 15px;
   border-bottom: 1px solid #dee2e6;
@@ -85,14 +77,12 @@ const toggleChatbot = () => {
   justify-content: space-between;
   align-items: center;
 }
-
 .chatbot-body {
   height: calc(100% - 56px);
   padding: 5px;
   display: flex;
   flex-direction: column;
 }
-
 /* ChatbotComponent 내부 스타일 */
 .chatbot-body :deep(.chat-container) {
   height: 100%;
@@ -100,7 +90,6 @@ const toggleChatbot = () => {
   flex-direction: column;
   margin: 0;
 }
-
 .chatbot-body :deep(.chat-messages) {
   width: 100%;
   flex: 1;
@@ -108,13 +97,11 @@ const toggleChatbot = () => {
   padding: 10px;
   margin-bottom: 10px;
 }
-
 .chatbot-body :deep(.input-container) {
   padding: 10px;
   background: white;
   border-top: 1px solid #dee2e6;
 }
-
 .chatbot-body :deep(.input-container input) {
   width: calc(100% - 80px);
 }

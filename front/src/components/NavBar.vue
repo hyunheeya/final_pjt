@@ -28,7 +28,7 @@
             <a class="nav-link" href="#" @click.prevent="navigateTo('bankmap')">주변 은행 검색</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" @click.prevent="navigateTo('board')">톡톡 게시판</a>
+            <a class="nav-link" href="#" @click.prevent="navigateTo('board')">똑똑 게시판</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" @click.prevent="navigateTo('exchanges')">환율 계산기</a>
