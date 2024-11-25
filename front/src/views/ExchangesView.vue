@@ -1,36 +1,44 @@
 <template>
-    <div class="exchange-calculator">
-      <h2>환율 계산기</h2>
-      <div class="calculator-form">
-        <!-- 날짜 선택 입력 추가 -->
-        <div class="input-group">
-          <input 
-            type="date" 
-            v-model="selectedDate"
-            :max="today"
-            @change="getExchangeRate"
-          >
-        </div>
-  
-        <div class="input-group">
-          <select v-model="selectedCurrency" @change="getExchangeRate">
-            <option value="USD">미국 달러</option>
-            <option value="JPY">일본 엔</option>
-            <option value="EUR">유로</option>
-            <option value="CNY">중국 위안</option>
-          </select>
-          <input type="number" v-model="amount" @input="calculate">
-          <span>{{ selectedCurrency }}</span>
-        </div>
-  
-        <div class="result-group">
-          <input type="text" :value="convertedAmount" readonly>
-          <span>₩</span>
-        </div>
-        <p class="note">* 엔화는 100 단위, 나머지는 모두 1 단위</p>
+  <div class="exchange-calculator">
+    <h2>환율 계산기</h2>
+    <div class="calculator-form">
+      <div class="input-group">
+        <input 
+          type="date" 
+          v-model="selectedDate"
+          :max="today"
+          @change="getExchangeRate"
+        >
       </div>
+
+      <div class="input-group">
+        <select v-model="selectedCurrency" @change="getExchangeRate">
+          <option value="USD">미국 달러 (USD)</option>
+          <option value="JPY">일본 엔 (JPY)</option>
+          <option value="EUR">유로 (EUR)</option>
+          <option value="CNY">중국 위안 (CNY)</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <input 
+          type="number" 
+          v-model="amount" 
+          @input="calculate"
+          placeholder="금액을 입력하세요"
+        >
+        <span>{{ selectedCurrency }}</span>
+      </div>
+
+      <div class="result-group">
+        <input type="text" :value="convertedAmount" readonly>
+        <span>₩</span>
+      </div>
+
+      <p class="note">* 엔화는 100 단위, 나머지는 모두 1 단위</p>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   import axios from 'axios'
@@ -108,48 +116,87 @@
   <style scoped>
   .exchange-calculator {
     max-width: 500px;
-    margin: 0 auto;
+    margin: 40px auto;
     padding: 20px;
+    background: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 10px;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
   }
   
   .calculator-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
   }
   
   .input-group, .result-group {
     display: flex;
     align-items: center;
     gap: 10px;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
   }
   
-  select, input {
-    padding: 8px;
+  select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 140px;
+    background: #fff;
+    font-size: 14px;
+  }
+  
+  input {
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     min-width: 120px;
+    font-size: 14px;
+    text-align: right;
+  }
+  
+  input[type="date"] {
+    width: 100%;
+    margin-bottom: 10px;
+    background: white;
   }
   
   input[readonly] {
     background-color: #f5f5f5;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .result-group {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 10px;
   }
   
   .note {
     font-size: 12px;
     color: #666;
-    margin-top: 10px;
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed #ddd;
   }
   
   span {
     font-weight: bold;
     min-width: 30px;
+    color: #444;
   }
-
-  .input-group input[type="date"] {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
   </style>
