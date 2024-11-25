@@ -673,6 +673,7 @@ def recommend_deposit(user_answers):
     recommendations = [
         {
             "name": product.fin_prdt_nm,
+            "kor_co_nm" : product.kor_co_nm,
             "interest_rate": product.intr_rate,
             "save_trm": product.save_trm,
             "weight": product_weights[product.id],
@@ -737,6 +738,7 @@ def recommend_savings(user_answers):
     recommendations = [
         {
             "name": product.fin_prdt_nm,
+            "kor_co_nm" : product.kor_co_nm,
             "interest_rate": product.intr_rate,
             "save_trm": product.save_trm,
             "weight": product_weights[product.id],

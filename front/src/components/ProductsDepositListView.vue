@@ -87,12 +87,8 @@ const depositProducts = ref([]); // 예금 상품 리스트
 
 // 이미지 동적 로딩을 위한 설정
 const getImageUrl = (bankName) => {
-  try {
-    return new URL(`../assets/bank_logo/${bankName}.png`, import.meta.url).href;
-  } catch (error) {
-    console.error(`은행 로고 로딩 실패: ${bankName}`, error);
-    return ''; // 기본 이미지 경로 또는 빈 문자열 반환
-  }
+  if (!bankName) return '';
+  return `/bank_logo/${bankName}.png`; // public 디렉터리 기준 경로
 };
 
 // 그룹화된 상품 데이터 계산

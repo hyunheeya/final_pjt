@@ -12,10 +12,6 @@
           >
             ❤️ {{ likeCount }}
           </button>
-          <!-- <span class="ml-2">좋아요 {{ likeCount }}개 </span>
-          <button @click="toggleLike" :class="{ 'btn-primary': isLiked, 'btn-secondary': !isLiked }">❤️
-            {{ isLiked ? '좋아요 취소' : '좋아요' }}
-          </button> -->
         </div>
         <!-- 기존 상품 정보 표시 부분 -->
         <p class="card-text">
