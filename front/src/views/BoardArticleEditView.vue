@@ -116,6 +116,13 @@
     }
   }
   
+  const goBack = function() {
+    router.push({ 
+        name: 'boardarticledetail', 
+        params: { id: route.params.id }
+      })
+  }
+
   onMounted(() => {
     getArticle()
   })

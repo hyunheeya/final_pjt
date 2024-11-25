@@ -16,7 +16,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useCounterStore } from '@/stores/counter'
-import BoardArticleListView from '@/views/BoardArticleListView.vue'  // import 추가
+import BoardArticleListView from '@/components/BoardArticleListView.vue'  // import 추가
 
 const store = useCounterStore()
 const isAdmin = ref(false)
