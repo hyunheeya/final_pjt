@@ -57,7 +57,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { useCounterStore } from "@/stores/counter";
-import { computed } from "vue";
+import { computed,onMounted } from "vue";
 
 const router = useRouter();
 const store = useCounterStore();
@@ -73,6 +73,16 @@ const logOut = () => {
   store.logOut(); // 스토어의 로그아웃 함수 호출
 };
 
+// onMounted에서 로그인 여부 확인 후 사용자 정보 요청
+onMounted(async () => {
+  if (store.isLogin) {
+    try {
+      await store.getUserInfo();
+    } catch (error) {
+      console.error("사용자 정보를 불러오는 데 실패했습니다:", error);
+    }
+  }
+});
 </script>
 
 
