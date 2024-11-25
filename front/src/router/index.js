@@ -14,7 +14,7 @@ import ProfileView from '@/views/ProfileView.vue'
 import BankMapView from '@/views/BankMapView.vue'
 import BoardView from '@/views/BoardView.vue'
 import CreateView from '@/views/CreateView.vue'
-import BoardArticleListView from '@/views/BoardArticleListView.vue'
+import BoardArticleListView from '@/components/BoardArticleListView.vue'
 import BoardArticleDetailView from '@/views/BoardArticleDetailView.vue'
 import BoardArticleEditView from '@/views/BoardArticleEditView.vue'
 import ExchangesView from '@/views/ExchangesView.vue'
@@ -119,11 +119,11 @@ const router = createRouter({
       name: 'create',
       component: CreateView,
     },
-    {
-      path: '/board/articles',
-      name: 'boardarticlelist',
-      component: BoardArticleListView,
-    },
+    // {
+    //   path: '/board/articles',
+    //   name: 'boardarticlelist',
+    //   component: BoardArticleListView,
+    // },
     {
       path: '/board/articles/:id',
       name: 'boardarticledetail',
