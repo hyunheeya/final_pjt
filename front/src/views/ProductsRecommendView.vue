@@ -40,6 +40,12 @@ export default {
 </script>
 
 <style scoped>
+  .container{
+    text-align: center;
+    margin: 10%;
+    padding: 4%;
+    background-color: #fffbe6;
+  }
   .img{
   width: 32%;
   padding: 40px;

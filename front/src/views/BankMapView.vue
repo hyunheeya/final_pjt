@@ -352,7 +352,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 600px;
-  margin: 20px;
+  margin: 20px 20px 120px 20px;
 }
 
 .h1,p{

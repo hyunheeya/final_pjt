@@ -156,7 +156,7 @@ onMounted(async () => {
 <style scoped>
   .container{
    text-align: center;
-   margin: 10%;
+   margin: 16%;
    padding: 10px 50px;
   }
 /* 프로필 컨테이너 중앙 정렬 */
