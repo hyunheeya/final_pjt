@@ -94,3 +94,9 @@ onMounted(() => {
   fetchComments();
 });
 </script>
+
+<style>
+  .text-center{
+    padding: 8% 0%;
+  }
+</style>

@@ -229,4 +229,7 @@ canvas {
   max-width: 100%;
   height: 400px;
 }
+.text-center{
+  padding: 10% 0%;
+}
 </style>

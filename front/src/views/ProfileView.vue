@@ -54,7 +54,7 @@ onMounted(() => {
 
 <style scoped>
 .profile{
-  padding-bottom: 8%;
+  margin-bottom: 12%;
 }
 .container {
   max-width: 1200px;
@@ -92,8 +92,8 @@ onMounted(() => {
 }
 
 .tab-button.active {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
+  color: #f5b400;
+  border-bottom: 2px solid #f5b400;
 }
 
 </style>

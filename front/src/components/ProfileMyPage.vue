@@ -4,7 +4,7 @@
       <div v-if="!isEditing && !isChangingPassword" class="profile">
         <!-- 프로필 -->
         <div class="profile-image">
-          <img src="/design/character/star5.png" alt="프로필 이미지" />
+          <img src="/design/character/star8.png" alt="프로필 이미지" />
         </div>
         <p><strong>아이디:</strong> {{ userInfo.username }}</p>
         <p><strong>이메일:</strong> {{ userInfo.email }}</p>
@@ -156,8 +156,14 @@ onMounted(async () => {
 <style scoped>
   .container{
    text-align: center;
-   margin: 16%;
-   padding: 10px 100px;
+   /* padding: 10px 100px; */
+  }
+
+  .profile{
+    margin: 0% 28%;
+    padding: 10% 4%;
+    border: solid 1px #bdbbb4;
+    border-radius: 10px; 
   }
 /* 프로필 컨테이너 중앙 정렬 */
 .profile-container {
