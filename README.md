@@ -1,6 +1,3 @@
-아래는 Markdown 형식으로 정리된 보기 좋은 리드미입니다:
-
-```markdown
 # Final_PJT
 
 ## 1. 프로젝트 및 팀원 소개
