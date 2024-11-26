@@ -48,5 +48,7 @@ defineProps({
 </script>
 
 <style scoped>
-
+.list-group-item {
+  padding: 1.5%
+}
 </style>
