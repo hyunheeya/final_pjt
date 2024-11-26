@@ -3,7 +3,10 @@
     <h2 class="mb-4">{{ deposit.fin_prdt_nm }} 상세 정보</h2>
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">{{ deposit.kor_co_nm }}</h5>
+        <h5 class="card-title">
+          <img :src="`/bank_logo/${deposit.kor_co_nm}.png`" alt="은행 로고" />
+          {{ deposit.kor_co_nm }}
+        </h5>
         <div>
           <button 
             @click="toggleLike" 
@@ -48,7 +51,7 @@
             <div class="form-group">
               <textarea v-model="newComment" class="form-control" rows="3" placeholder="댓글을 입력하세요"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">댓글 작성</button>
+            <button type="submit" class="btn btn-warning">댓글 작성</button>
           </form>
         </div>
       </div>
@@ -227,6 +230,12 @@ onMounted(async () => {
 <style scoped>
 .card {
   margin-top: 20px;
+}
+
+.card-title img {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
 }
 </style>
 
