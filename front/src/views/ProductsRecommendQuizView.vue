@@ -37,7 +37,7 @@
     <!-- 추천 버튼 -->
     <div v-if="!currentQuestion && recommendations.length === 0" class="text-center mt-4">
       <h5>당신에게 맞는 금융 상품을 확인해볼까요?</h5>
-      <img class="img" src="/design/pot.png" alt="pot"><br>
+      <img class="img" src="/design/logo/pot.png" alt="pot"><br>
       <button
         @click="submitAnswers"
         class="btn btn-warning btn-lg"

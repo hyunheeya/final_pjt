@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5">
+  <div class="container mt-5 custom-padding">
     <h1 class="text-center mb-4">로그인</h1>
     <form @submit.prevent="logIn" class="w-50 mx-auto p-4 border rounded shadow-sm bg-light">
       <div class="mb-3">
@@ -52,4 +52,8 @@ const logIn = function () {
 </script>
 
 <style scoped>
+  .custom-padding {
+  padding-bottom: 8%;
+}
+
 </style>

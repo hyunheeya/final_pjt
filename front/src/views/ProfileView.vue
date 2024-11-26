@@ -1,12 +1,12 @@
 <template>
   <div class="profile">
     <h1 class="h1">프로필</h1>
-        <!-- 탭 -->
-        <div class="product-tabs">
-      <button 
-        @click="showComponent('mypage')" 
-        :class="['tab-button', currentView === 'mypage' ? 'active' : '']"
-      >
+      <!-- 탭 -->
+      <div class="product-tabs">
+        <button 
+          @click="showComponent('mypage')" 
+          :class="['tab-button', currentView === 'mypage' ? 'active' : '']"
+        >
         프로필
       </button>
       <button 
@@ -53,6 +53,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.profile{
+  padding-bottom: 8%;
+}
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -82,6 +85,10 @@ onMounted(() => {
   background: none;
   cursor: pointer;
   font-size: 1rem;
+}
+
+.tab-content{
+  margin: 0px, 0px, 120px, 0px;
 }
 
 .tab-button.active {
