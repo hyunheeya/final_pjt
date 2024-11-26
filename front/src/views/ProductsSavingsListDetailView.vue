@@ -3,7 +3,10 @@
     <h2 class="mb-4">{{ savings.fin_prdt_nm }} 상세 정보</h2>
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">{{ savings.kor_co_nm }}</h5>
+        <h5 class="card-title">
+          <img :src="`/bank_logo/${savings.kor_co_nm}.png`" alt="은행 로고" />
+          {{ savings.kor_co_nm }}
+        </h5>
         <button 
             @click="toggleLike" 
             :class="isLiked ? 'btn-danger' : 'btn-outline-danger'" 
@@ -244,6 +247,11 @@ onMounted(async () => {
 <style scoped>
 .card {
   margin-top: 20px;
+}
+.card-title img {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
 }
 </style>
 
