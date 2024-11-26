@@ -48,7 +48,7 @@
             <div class="form-group">
               <textarea v-model="newComment" class="form-control" rows="3" placeholder="댓글을 입력하세요"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">댓글 작성</button>
+            <button type="submit" class="btn btn-warning">댓글 작성</button>
           </form>
         </div>
       </div>
