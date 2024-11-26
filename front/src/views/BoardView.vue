@@ -63,6 +63,7 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   padding: 10px 10px;
+  margin: 0 65px
 }
 
 .h2 {
