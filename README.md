@@ -31,7 +31,7 @@ StarPot은 금융 초보자를 대상으로 예적금 상품을 추천하는 서
 
 
 
---
+---
 
   
 - 예적금 상품을 비교하고 싶은 모든 사람
@@ -108,7 +108,7 @@ StarPot은 금융 초보자를 대상으로 예적금 상품을 추천하는 서
 
 ### 서비스 화면
 
---
+---
 
 **메인화면**
 
@@ -121,17 +121,17 @@ StarPot은 금융 초보자를 대상으로 예적금 상품을 추천하는 서
 - 로그인을 하지 않으면 주요 기능 클릭 시, 로그인 창으로 이동
 
 
---
+---
 
 **예적금 추천 서비스**
 <img width="1433" alt="스크린샷 2024-11-26 오후 10 52 02" src="https://github.com/user-attachments/assets/bf14f8ac-124e-4554-961a-e7ecbac8a17f">
 
---
+---
 
 **예적금 추천 화면**
 <img width="1429" alt="스크린샷 2024-11-26 오후 10 51 27" src="https://github.com/user-attachments/assets/35d32051-39a7-4973-92da-9caf21662a04">
 
---
+---
 
 **예적금 추천 결과 화면**
 <img width="1429" alt="스크린샷 2024-11-26 오후 10 51 45" src="https://github.com/user-attachments/assets/0c2bb265-d857-4022-8430-ad2fabe7e0a8">
@@ -140,7 +140,7 @@ StarPot은 금융 초보자를 대상으로 예적금 상품을 추천하는 서
   
 - Detail로 상품 상세 페이지로 이동
 
---
+---
 
 **예적금 전체 상품 리스트 서비스**
 <img width="1432" alt="스크린샷 2024-11-26 오후 10 52 13" src="https://github.com/user-attachments/assets/3acc53b2-3723-4cbb-ba33-00c80d3d5714">
@@ -149,13 +149,13 @@ StarPot은 금융 초보자를 대상으로 예적금 상품을 추천하는 서
 
 - 전체, 금리순, 좋아요순, 은행명순 제공
 
---
+---
 
 **예적금 상품 상세 정보**
 <img width="1427" alt="스크린샷 2024-11-26 오후 10 56 14" src="https://github.com/user-attachments/assets/fdb58fea-d4ad-4161-b08f-7dee652beb79">
 - 각 상품마다 좋아요, 댓글 기능 구현
 
---
+---
 
 **주변 은행 찾기**
 <img width="1431" alt="스크린샷 2024-11-26 오후 10 52 29" src="https://github.com/user-attachments/assets/daadf644-88e2-4cc5-85be-0d001c8c4a42">
@@ -166,20 +166,20 @@ StarPot은 금융 초보자를 대상으로 예적금 상품을 추천하는 서
 
 - 은행명 외의 단어를 검색하면 경고창이 뜸
 
---
+---
 
 **똑! 똑! 게시판**
 <img width="1432" alt="스크린샷 2024-11-26 오후 10 54 56" src="https://github.com/user-attachments/assets/b9bc7ceb-e907-4d1f-92c1-312db085c2cb">
 
 - 사이트 공지사항 및 초보자를 위한 금융 아티클 제공
 
---
+---
 
 **환율 계산기**
   <img width="1429" alt="스크린샷 2024-11-26 오후 10 53 16" src="https://github.com/user-attachments/assets/2e12f582-f879-4b14-afd2-dbddf70abf50">
 - 반응형을 제공하여 실시간으로 입력하면서 환율 계산 확인가능
 
---
+---
 
 **챗봇 기능**
 <img width="1432" alt="스크린샷 2024-11-26 오후 10 54 16" src="https://github.com/user-attachments/assets/5983902b-8cc3-4663-ba59-43f03d994724">
