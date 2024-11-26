@@ -47,6 +47,9 @@
             <div v-if="currentImage" class="image-preview mt-3">
               <img :src="currentImage" alt="현재 이미지" class="img-fluid rounded">
             </div>
+            <div>
+              <button type="button" @click="imageDelete" class="btn-image-delete btn-secondary">이미지 삭제</button>
+            </div>
           </div>
 
           <!-- 버튼 그룹 -->
@@ -111,14 +114,31 @@ const getArticle = async () => {
   }
 }
 
+const imageDelete = function() {
+  formData.value.image = null
+  currentImage.value = null
+  // 이미지가 삭제되었음을 나타내는 플래그 추가
+  formData.value.imageDeleted = true
+  
+  // 파일 입력 초기화
+  const fileInput = document.getElementById('image')
+  if (fileInput) {
+    fileInput.value = ''
+  }
+}
+
 const updateArticle = async () => {
   try {
     const form = new FormData()
     form.append('title', formData.value.title)
     form.append('content', formData.value.content)
     
-    // 새 이미지가 선택된 경우에만 이미지 추가
-    if (formData.value.image instanceof File) {
+    // 이미지 삭제 플래그가 있는 경우
+    if (formData.value.imageDeleted) {
+      form.append('image', '') // 빈 문자열을 보내 이미지 삭제 표시
+    } 
+    // 새 이미지가 있는 경우
+    else if (formData.value.image instanceof File) {
       form.append('image', formData.value.image)
     }
 
@@ -127,10 +147,10 @@ const updateArticle = async () => {
       url: `${store.API_URL}/api/board/articles/${route.params.id}/`,
       data: form,
       headers: {
-        'Authorization': `Token ${store.token}`,
-        // Content-Type 헤더 제거 (자동으로 설정됨)
+        'Authorization': `Token ${store.token}`
       }
     })
+    
     router.push({ 
       name: 'boardarticledetail', 
       params: { id: route.params.id }
@@ -189,6 +209,7 @@ onMounted(() => {
   border-radius: 5px;
   font-weight: 500;
   transition: all 0.3s ease;
+  width: 100%;
 }
 
 .btn:hover {
@@ -201,8 +222,16 @@ onMounted(() => {
     gap: 1rem;
   }
   
-  .btn {
-    width: 100%;
+  .btn-image-delete {
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
   }
+
+  .btn-image-delete:hover {
+  transform: translateY(-2px);
+}
+
 }
 </style>
