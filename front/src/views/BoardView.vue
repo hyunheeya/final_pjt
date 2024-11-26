@@ -1,21 +1,23 @@
 <template>
-  <div>
+  <div class="main-container">
     <h1 class="board-title">똑!똑! 게시판</h1>
-    <div class="header-container">
-      <h2 class="h2">게시글 목록</h2>
-      <RouterLink 
-        v-if="isAdmin" 
-        :to="{ name: 'create' }"
-        class="create-btn"
-      >
-        CREATE
-      </RouterLink>
+      <div class="article-container">
+        <div class="header-container">
+          <h2 class="h2">게시글 목록</h2>
+          <RouterLink 
+            v-if="isAdmin" 
+            :to="{ name: 'create' }"
+            class="create-btn"
+          >
+            CREATE
+          </RouterLink>
+        </div>
+        <BoardArticleListView 
+          :articles="store.articles" 
+          :isLoading="store.isLoading" 
+          :formatDate="formatDate" 
+        />
     </div>
-    <BoardArticleListView 
-      :articles="store.articles" 
-      :isLoading="store.isLoading" 
-      :formatDate="formatDate" 
-    />
   </div>
 </template>
 
@@ -39,6 +41,10 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.article-container{
+  margin: 2% 12% 16% 12%;
+  padding: 0% 0% 8% 0%;
+}
 .board-title {
   text-align: center;
   margin: 2rem 0;  /* 상하 여백 증가 */
@@ -56,7 +62,7 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 75px;
+  padding: 10px 10px;
 }
 
 .h2 {

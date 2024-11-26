@@ -2,15 +2,17 @@
   <div class="container">
     <div v-if="userInfo">
       <div v-if="!isEditing && !isChangingPassword" class="profile">
-        <!-- 프로필 -->
-        <div class="profile-image">
-          <img src="/design/character/star5.png" alt="프로필 이미지" />
+        <div calss="profile-container">
+          <!-- 프로필 -->
+          <div class="profile-image">
+            <img src="/design/character/star8.png" alt="프로필 이미지" />
+          </div>
+          <p><strong>아이디:</strong> {{ userInfo.username }}</p>
+          <p><strong>이메일:</strong> {{ userInfo.email }}</p>
+          <p><strong>닉네임:</strong> {{ userInfo.nickname }}</p>
+          <button @click="startEditing" class="btn btn-success me-2">프로필 수정</button>
+          <button @click="startPasswordChange" class="btn btn-warning">비밀번호 변경</button>
         </div>
-        <p><strong>아이디:</strong> {{ userInfo.username }}</p>
-        <p><strong>이메일:</strong> {{ userInfo.email }}</p>
-        <p><strong>닉네임:</strong> {{ userInfo.nickname }}</p>
-        <button @click="startEditing" class="btn btn-success me-2">프로필 수정</button>
-        <button @click="startPasswordChange" class="btn btn-warning">비밀번호 변경</button>
       </div>
 
       <!-- 프로필 수정 폼 -->
@@ -156,19 +158,20 @@ onMounted(async () => {
 <style scoped>
   .container{
    text-align: center;
-   margin: 16%;
-   padding: 10px 50px;
+   /* padding: 10px 100px; */
+  }
+
+  .profile{
+    margin: 0% 28%;
+    padding: 10% 4%;
+    border: solid 1px #bdbbb4;
+    border-radius: 10px; 
   }
 /* 프로필 컨테이너 중앙 정렬 */
-.profile-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 수평 중앙 정렬 */
-  justify-content: center; /* 수직 중앙 정렬 */
-  margin: 0 auto;
-  text-align: center; /* 텍스트 중앙 정렬 */
-  padding: 20px;
-}
+  .profile-container{
+    padding: 4%;
+    background-color: aliceblue;
+  }
 
 /* 프로필 이미지 스타일 */
 .profile-image img {

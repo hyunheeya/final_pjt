@@ -37,7 +37,7 @@
     <!-- 추천 버튼 -->
     <div v-if="!currentQuestion && recommendations.length === 0" class="text-center mt-4">
       <h5>당신에게 맞는 금융 상품을 확인해볼까요?</h5>
-      <img class="img" src="/design/pot.png" alt="pot"><br>
+      <img class="img" src="/design/logo/pot.png" alt="pot"><br>
       <button
         @click="submitAnswers"
         class="btn btn-warning btn-lg"
@@ -196,17 +196,35 @@ export default {
 </script>
 
 <style scoped>
-  .card {
-  max-width: 600px;
-  margin: 0 auto;
-  }
+.container {
+  display: flex; /* Flexbox 레이아웃 사용 */
+  flex-direction: column; /* 세로 방향 정렬 */
+  justify-content: start; /* 세로 가운데 정렬 */
+  align-items: center; /* 수평 가운데 정렬 */
+  min-height: 100vh; /* 화면 전체 높이를 기준으로 중앙 정렬 */
+  text-align: center;
+  padding: 0;
+}
+.text-center{
+  padding: 0%;
+}
+.card {
+  max-width: 800px; /* 카드의 최대 너비를 기존보다 넓게 설정 */
+  width: 90%; /* 반응형 크기 설정 */
+  text-align: center;
+  margin: 4% auto; /* 수평 가운데 정렬 */
+  padding: 40px; /* 내부 여백을 늘려서 더 커보이게 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 그림자 강도를 조금 더 추가 */
+  border-radius: 12px; /* 모서리를 더 둥글게 */
+  background-color: #ffffff; /* 배경색 유지 */
+}
 
   button {
     min-width: 120px;
   }
 
   img{
-    width: 32%;
+    width: 60%;
     padding: 40px;
   }
 </style>

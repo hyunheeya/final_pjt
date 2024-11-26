@@ -15,7 +15,7 @@
           <div class="content-box">
             <img src="/design/logo/StarPot.png" alt="StarPot 이미지" class="main-image" />
             <h1 class="h1">어떤 예적금 상품을 가입할 지 고민되시나요</h1>
-            <p class="p">추천을 받아보세요</p>
+            <h5 class="h5">추천을 받아보세요</h5>
             <div class="inline-content">
               <img src="/design/character/star1.png" alt="StarPot 이미지" class="main-image" />
               <router-link to="/productsrecommend">
@@ -30,7 +30,7 @@
           <div class="content-box">
             <img src="/design/logo/StarPot.png" alt="StarPot 이미지" class="main-image" />
             <h1 class="h1">예금 적금 상품에는 무엇이 있을까요</h1>
-            <p class="p">전체 상품을 확인해보세요</p>
+            <h5 class="h5">전체 상품을 확인해보세요</h5>
             <div class="inline-content">
               <img src="/design/character/star3.png" alt="StarPot 이미지" class="main-image" />
               <router-link to="/productslist">
@@ -45,7 +45,7 @@
           <div class="content-box">
             <img src="/design/logo/StarPot.png" alt="StarPot 이미지" class="main-image" />
             <h1 class="h1">주변 은행을 찾아보세요</h1>
-            <p class="p">내 주변에 있는 은행을 찾아드려요</p>
+            <h5 class="h5">내 주변에 있는 은행을 찾아드려요</h5>
             <div class="inline-content">
               <!-- 메인 이미지 -->
               <img src="/design/character/star6.png" alt="StarPot 이미지" class="main-image" />
