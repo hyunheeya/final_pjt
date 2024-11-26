@@ -58,7 +58,7 @@ StarPot은 금융 초보자를 대상으로 예적금 상품을 추천하는 서
 ### 🛠️ **기술 스택**
 - **백엔드**: Django(4.2), Django REST Framework, SQLite
 - **프론트엔드**: Vue 3, Bootstrap
-- **API**: 금융감독원 API, 카카오맵 API, 한국수출입은행 환율 API
+- **API**: 금융감독원 API, 카카오맵 API, 한국수출입은행 환율 API, ChatGpt API
 - **협업 툴**: Notion, Git, Google Colab
 - **기타**: 생성형 AI (초보자를 위한 금융 지식 알리미)
 
