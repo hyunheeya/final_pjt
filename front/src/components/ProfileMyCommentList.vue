@@ -97,6 +97,6 @@ onMounted(() => {
 
 <style>
   .text-center{
-    padding: 8% 0%;
+    padding: 4% 0%;
   }
 </style>

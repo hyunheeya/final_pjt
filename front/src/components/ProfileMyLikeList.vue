@@ -230,6 +230,6 @@ canvas {
   height: 400px;
 }
 .text-center{
-  padding: 10% 0%;
+  padding: 4% 0%;
 }
 </style>

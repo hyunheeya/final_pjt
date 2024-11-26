@@ -116,7 +116,7 @@
   <style scoped>
   .exchange-calculator {
     max-width: 500px;
-    margin: 40px auto;
+    margin: 60px auto;
     padding: 20px;
     background: #f9f9f9;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
