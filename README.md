@@ -46,7 +46,7 @@
 ## 3. 데이터베이스 모델링(ERD)
 
 ### 📊 **데이터베이스 모델링**
-ERD 다이어그램 첨부 예정 (예: `docs/ERD.png`)
+![StarPot_ERD](https://github.com/user-attachments/assets/99d6d156-1246-4f66-b8d9-1b16072de7cf)
 
 ---
 
